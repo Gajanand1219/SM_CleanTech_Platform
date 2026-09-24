@@ -1,0 +1,394 @@
+/* ==========================================================
+   ADMIN DASHBOARD
+   ========================================================== */
+
+.admin-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ============ STATS GRID ============ */
+.admin-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.stat-wrap {
+  animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Skeleton shimmer */
+.stat-skeleton {
+  height: 110px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(
+    90deg,
+    rgba(15, 31, 53, 0.7) 0%,
+    rgba(20, 42, 70, 0.9) 50%,
+    rgba(15, 31, 53, 0.7) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border: 1px solid var(--line);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.admin-dash__empty {
+  grid-column: 1 / -1;
+  padding: 30px;
+  text-align: center;
+  color: var(--muted);
+  background: rgba(15, 31, 53, 0.5);
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-lg);
+  font-size: 13px;
+}
+
+/* ============ CONTROL CENTER CARD ============ */
+.admin-dash__control {
+  position: relative;
+  background: linear-gradient(160deg, #0e1e34, #0a1628);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 24px 26px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  isolation: isolate;
+  animation: fadeUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s both;
+}
+
+.admin-dash__control::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent),
+    var(--accent-2),
+    transparent
+  );
+  background-size: 200% auto;
+  animation: topBarShine 4s linear infinite;
+  z-index: 2;
+}
+
+.admin-dash__control::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-soft), transparent 65%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.admin-dash__control > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ CARD HEAD ============ */
+.admin-dash__control .card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-dash__control .eyebrow {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.admin-dash__control h2 {
+  font-size: 22px;
+  margin: 0 0 8px;
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.admin-dash__control .muted {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 640px;
+  margin: 0;
+}
+
+/* --- Review button --- */
+/* --- Review button (Blue) --- */
+.admin-dash__control .primary.small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+
+  /* Blue Gradient */
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  background-size: 200% auto;
+
+  border: none;
+  border-radius: var(--r-md);
+
+  /* Blue Shadow */
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shine Effect */
+.admin-dash__control .primary.small::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+
+  transition: left 0.6s ease;
+}
+
+.admin-dash__control .primary.small:hover::before {
+  left: 100%;
+}
+
+/* Hover Effect */
+.admin-dash__control .primary.small:hover {
+  transform: translateY(-2px);
+
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  background-position: 100% center;
+
+  box-shadow: 0 10px 28px rgba(37, 99, 235, 0.5);
+}
+
+/* Arrow */
+.admin-dash__control .primary.small span {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.admin-dash__control .primary.small:hover span {
+  transform: translateX(4px);
+}
+
+/* ============ WORKFLOW STRIP ============ */
+.workflow-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(6, 13, 24, 0.5);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  position: relative;
+}
+
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: var(--r-sm);
+  background: rgba(15, 31, 53, 0.4);
+  border: 1px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.workflow-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-soft),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.workflow-step:hover::before {
+  left: 100%;
+}
+
+.workflow-step:hover {
+  background: var(--accent-soft);
+  border-color: rgba(0, 212, 170, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.workflow-step__icon {
+  font-size: 20px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.workflow-step:hover .workflow-step__icon {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+.workflow-step__num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 2px 7px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 212, 170, 0.22);
+}
+
+.workflow-step__text {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.workflow-step:hover .workflow-step__text {
+  color: #fff;
+}
+
+/* ============ NOTICE ============ */
+.admin-dash__control .notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 170, 0.06),
+    rgba(0, 168, 232, 0.04)
+  );
+  border: 1px solid rgba(0, 212, 170, 0.18);
+  border-radius: var(--r-md);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-dash__control .notice::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 3px 0 0 3px;
+}
+
+.notice-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  border: 1px solid rgba(0, 212, 170, 0.25);
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.admin-dash__control .notice b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .admin-dash__control .card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-dash__control .primary.small {
+    align-self: flex-start;
+  }
+
+  .workflow-strip {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-dash__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .admin-dash__control {
+    padding: 18px 18px;
+  }
+
+  .admin-dash__control h2 {
+    font-size: 18px;
+  }
+
+  .workflow-strip {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .workflow-step {
+    padding: 10px 6px;
+  }
+
+  .workflow-step__icon { font-size: 16px; }
+  .workflow-step__text { font-size: 10px; }
+}

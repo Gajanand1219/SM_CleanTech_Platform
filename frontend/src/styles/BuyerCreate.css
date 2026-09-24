@@ -1,0 +1,756 @@
+/* ==========================================================
+   BUYER CREATE — Attractive Enquiry Form
+   ========================================================== */
+
+.bc {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: fadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ==========================================================
+   STEP PROGRESS
+   ========================================================== */
+.bc-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  background: linear-gradient(150deg, #142545, #0f1f35 60%, #0a1628);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bc-steps::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--c-teal, #00d4aa),
+    var(--c-blue, #38bdf8),
+    var(--c-purple, #a78bfa),
+    var(--c-pink, #f472b6),
+    transparent
+  );
+  background-size: 200% auto;
+  animation: topBarShine 5s linear infinite;
+}
+
+.bc-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  opacity: 0.55;
+  transition: all 0.3s ease;
+}
+
+.bc-step.is-active,
+.bc-step.is-done {
+  opacity: 1;
+}
+
+.bc-step__circle {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid var(--line-2);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bc-step.is-active .bc-step__circle {
+  background: linear-gradient(135deg, #38bdf8, #a78bfa);
+  border-color: transparent;
+  color: #0a1628;
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
+  animation: pulseRing 2.4s ease-in-out infinite;
+}
+
+.bc-step.is-done .bc-step__circle {
+  background: linear-gradient(135deg, #00d4aa, #4ade80);
+  border-color: transparent;
+  color: #0a1628;
+  box-shadow: 0 6px 18px rgba(0, 212, 170, 0.4);
+}
+
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4); }
+  50%      { box-shadow: 0 6px 22px rgba(56, 189, 248, 0.65), 0 0 0 4px rgba(56, 189, 248, 0.12); }
+}
+
+.bc-step__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.bc-step__text strong {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+
+.bc-step__text span {
+  display: block;
+  font-size: 10.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bc-step.is-active .bc-step__text span,
+.bc-step.is-done .bc-step__text span {
+  color: var(--text-dim);
+}
+
+.bc-step__line {
+  flex-shrink: 0;
+  width: 24px;
+  height: 2px;
+  background: var(--line-2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bc-step__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #00d4aa, #38bdf8);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bc-step__line.is-done::after {
+  transform: scaleX(1);
+}
+
+/* ==========================================================
+   PRIVACY BANNER
+   ========================================================== */
+.bc-privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 170, 0.08),
+    rgba(56, 189, 248, 0.06) 50%,
+    rgba(167, 139, 250, 0.04)
+  );
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--r-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.bc-privacy::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--c-teal, #00d4aa),
+    var(--c-blue, #38bdf8),
+    var(--c-purple, #a78bfa)
+  );
+  border-radius: 3px 0 0 3px;
+}
+
+.bc-privacy__icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+}
+
+.bc-privacy strong {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.bc-privacy span {
+  display: block;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+/* ==========================================================
+   FORM
+   ========================================================== */
+.bc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ==========================================================
+   SECTION
+   ========================================================== */
+.bc-section {
+  position: relative;
+  background: linear-gradient(160deg, #0e1e34, #0a1628);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: fadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.bc-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent),
+    var(--accent-2),
+    transparent
+  );
+  background-size: 200% auto;
+  animation: topBarShine 4s linear infinite;
+}
+
+.bc-section__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bc-section__icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border: 1px solid rgba(0, 212, 170, 0.25);
+}
+
+.bc-section__icon--blue {
+  background: rgba(56, 189, 248, 0.14);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.bc-section__icon--purple {
+  background: rgba(167, 139, 250, 0.14);
+  border-color: rgba(167, 139, 250, 0.3);
+}
+
+.bc-section__head h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 3px;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bc-section__head .muted {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.bc-section__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bc-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 7px;
+  background: rgba(167, 139, 250, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a78bfa;
+  letter-spacing: 0;
+}
+
+/* ==========================================================
+   PROGRESS BAR
+   ========================================================== */
+.bc-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.bc-progress__bar {
+  width: 100px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bc-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4aa, #38bdf8, #a78bfa);
+  background-size: 200% auto;
+  border-radius: 6px;
+  transition: width 0.4s ease;
+  animation: shineText 3s linear infinite;
+  box-shadow: 0 0 12px rgba(0, 212, 170, 0.5);
+}
+
+.bc-progress__text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 34px;
+  text-align: right;
+}
+
+/* ==========================================================
+   FIELDS
+   ========================================================== */
+.bc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.bc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.bc-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b0c0d0;
+  transition: color 0.25s ease;
+}
+
+.bc-field__icon {
+  font-size: 13px;
+  transition: transform 0.3s ease;
+}
+
+.bc-field__required {
+  color: #f472b6;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.bc-field:focus-within label {
+  color: var(--accent);
+}
+
+.bc-field:focus-within .bc-field__icon {
+  transform: scale(1.15);
+}
+
+.bc-field input,
+.bc-field select {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--input);
+  border: 1px solid var(--line-2);
+  border-radius: 11px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13.5px;
+  outline: none;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bc-field input::placeholder {
+  color: var(--muted-2);
+  font-size: 12.5px;
+}
+
+.bc-field input:hover,
+.bc-field select:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.bc-field input:focus,
+.bc-field select:focus {
+  border-color: var(--accent);
+  background: rgba(10, 22, 40, 1);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.bc-field select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bc-field select option {
+  background: #0a1628;
+  color: var(--text);
+}
+
+/* ==========================================================
+   QUESTIONS
+   ========================================================== */
+.bc-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bc-question {
+  position: relative;
+  padding: 16px 18px;
+  background: rgba(6, 13, 24, 0.55);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeUp 0.4s ease both;
+  overflow: hidden;
+}
+
+.bc-question::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #a78bfa, #38bdf8);
+  transform: scaleY(0.4);
+  transition: transform 0.35s ease;
+  border-radius: 0 3px 3px 0;
+}
+
+.bc-question:hover {
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(6, 13, 24, 0.8);
+}
+
+.bc-question:hover::before {
+  transform: scaleY(1);
+}
+
+.bc-question.is-answered {
+  border-color: rgba(0, 212, 170, 0.35);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 170, 0.06),
+    rgba(6, 13, 24, 0.85)
+  );
+}
+
+.bc-question.is-answered::before {
+  background: linear-gradient(180deg, #00d4aa, #4ade80);
+  transform: scaleY(1);
+}
+
+.bc-question__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bc-question__num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: rgba(167, 139, 250, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #a78bfa;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bc-question.is-answered .bc-question__num {
+  background: linear-gradient(135deg, #00d4aa, #4ade80);
+  border-color: transparent;
+  color: #0a1628;
+  box-shadow: 0 4px 14px rgba(0, 212, 170, 0.4);
+}
+
+.bc-question__text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.bc-question__required {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  background: rgba(244, 114, 182, 0.14);
+  border: 1px solid rgba(244, 114, 182, 0.3);
+  border-radius: 20px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f472b6;
+}
+
+.bc-question textarea {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(6, 13, 24, 0.7);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.55;
+  outline: none;
+  resize: vertical;
+  min-height: 76px;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bc-question textarea::placeholder {
+  color: var(--muted-2);
+}
+
+.bc-question textarea:focus {
+  border-color: #a78bfa;
+  background: rgba(6, 13, 24, 0.95);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+}
+
+.bc-question.is-answered textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* ==========================================================
+   QUESTION SKELETONS
+   ========================================================== */
+.bc-q-skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bc-q-skeleton {
+  height: 130px;
+  border-radius: var(--r-md);
+  background: linear-gradient(
+    90deg,
+    rgba(15, 31, 53, 0.7) 0%,
+    rgba(20, 42, 70, 0.9) 50%,
+    rgba(15, 31, 53, 0.7) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border: 1px solid var(--line);
+}
+
+/* ==========================================================
+   SUBMIT
+   ========================================================== */
+.bc-submit-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.bc-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 34px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00d4aa, #38bdf8, #a78bfa);
+  background-size: 200% auto;
+  color: #0a1628;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 10px 30px rgba(0, 212, 170, 0.35),
+    0 0 0 1px rgba(167, 139, 250, 0.3);
+  position: relative;
+  overflow: hidden;
+  min-width: 280px;
+}
+
+.bc-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.bc-submit:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.bc-submit:hover:not(:disabled) {
+  transform: translateY(-3px);
+  background-position: 100% center;
+  box-shadow:
+    0 16px 42px rgba(0, 212, 170, 0.5),
+    0 0 0 1px rgba(167, 139, 250, 0.5);
+}
+
+.bc-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+.bc-submit__arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.bc-submit:hover:not(:disabled) .bc-submit__arrow {
+  transform: translateX(5px);
+}
+
+.bc-submit-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0;
+  text-align: center;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+@media (max-width: 900px) {
+  .bc-steps {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .bc-step {
+    flex: 1 1 45%;
+  }
+
+  .bc-step__line {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .bc-steps {
+    padding: 14px;
+  }
+
+  .bc-step__circle {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .bc-step__text span {
+    display: none;
+  }
+
+  .bc-section {
+    padding: 18px;
+  }
+
+  .bc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bc-submit {
+    width: 100%;
+    min-width: unset;
+    padding: 14px 20px;
+  }
+
+  .bc-progress {
+    display: none;
+  }
+
+  .bc-question {
+    padding: 14px;
+  }
+}

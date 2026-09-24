@@ -1,0 +1,121 @@
+/* ==========================================================
+   STAT CARD — COLORFUL, auto-themed
+   ========================================================== */
+.stat,
+.stat-card {
+  --stat-color: var(--accent);
+
+  position: relative;
+  background:
+    linear-gradient(
+      150deg,
+      color-mix(in srgb, var(--stat-color) 12%, #101f38),
+      #0e1e34 60%,
+      #0a1628
+    );
+  border: 1px solid color-mix(in srgb, var(--stat-color) 30%, transparent);
+  border-radius: var(--r-lg);
+  padding: 20px 22px 18px;
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  isolation: isolate;
+}
+
+/* Top accent bar */
+.stat::before,
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--stat-color),
+    color-mix(in srgb, var(--stat-color) 40%, transparent),
+    transparent
+  );
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+
+/* Soft radial glow behind */
+.stat__glow,
+.stat .stat__glow {
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 60%;
+  height: 90%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--stat-color) 35%, transparent),
+    transparent 70%
+  );
+  opacity: 0.6;
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.stat:hover,
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--stat-color) 55%, transparent);
+  box-shadow:
+    var(--shadow-md),
+    0 0 30px color-mix(in srgb, var(--stat-color) 25%, transparent);
+}
+
+/* Top row */
+.stat__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Value — uses the stat color */
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    135deg,
+    var(--stat-color),
+    color-mix(in srgb, var(--stat-color) 55%, #ffffff)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Small colored dot */
+.stat__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--stat-color);
+  box-shadow: 0 0 12px var(--stat-color);
+  animation: dotPulse 2s ease-in-out infinite;
+  margin-top: 8px;
+}
+
+/* Label */
+.stat-label,
+.stat-card .label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--stat-color) 65%, var(--text));
+  line-height: 1.35;
+  margin-top: 8px;
+}
