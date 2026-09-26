@@ -64,7 +64,6 @@ app.include_router(buyer.router, prefix="/api")
 app.include_router(vendor.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 
-
 @app.get("/")
 def root():
     return {

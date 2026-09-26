@@ -994,3 +994,151 @@
   background: rgba(18, 43, 76, 0.35);
   border-color: rgba(59, 130, 246, 0.25);
 }
+
+/* 
+.enq-table__cell--action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.btn-delete {
+  width: 38px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(245, 94, 108, 0.35);
+  border-radius: 10px;
+
+  background: rgba(245, 94, 108, 0.08);
+  color: #f55e6c;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: rgba(245, 94, 108, 0.18);
+  border-color: #f55e6c;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(245, 94, 108, 0.18);
+}
+
+.btn-delete:active {
+  transform: scale(0.94);
+}
+
+.btn-delete:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+} */
+
+
+/* ============================================================
+   ENQUIRY ACTION BUTTON FIX
+   ============================================================ */
+
+.enq-table__row {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.6fr)
+    minmax(180px, 1fr)
+    minmax(130px, .8fr)
+    minmax(150px, .9fr)
+    180px;
+
+  align-items: center;
+  gap: 14px;
+}
+
+.enq-table__head {
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1.6fr)
+    minmax(180px, 1fr)
+    minmax(130px, .8fr)
+    minmax(150px, .9fr)
+    180px;
+
+  align-items: center;
+  gap: 14px;
+}
+
+/* Action column */
+.enq-table__cell--action {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 10px;
+
+  min-width: 180px;
+  width: 180px;
+
+  padding-left: 0 !important;
+  padding-right: 10px !important;
+
+  overflow: visible !important;
+}
+
+/* Review button */
+.enq-table__cell--action .btn-review {
+  flex: 0 0 auto;
+
+  min-width: 82px;
+  width: 82px;
+  height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 12px;
+
+  white-space: nowrap;
+  overflow: visible;
+
+  box-sizing: border-box;
+}
+
+/* Review arrow */
+.enq-table__cell--action .btn-review__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+/* Delete button */
+.enq-table__cell--action .btn-delete {
+  flex: 0 0 42px;
+
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+}
+
+/* SVG */
+.enq-table__cell--action .btn-delete svg {
+  width: 18px;
+  height: 18px;
+
+  display: block;
+  flex-shrink: 0;
+}

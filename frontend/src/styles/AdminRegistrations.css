@@ -812,3 +812,55 @@
   transform: translateY(-2px);
   transition: all 0.25s ease;
 }
+
+
+.reg-table__cell--action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Delete Button */
+.btn-delete {
+  width: 38px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(245, 94, 108, 0.35);
+  border-radius: 10px;
+
+  background: rgba(245, 94, 108, 0.08);
+  color: #f55e6c;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: rgba(245, 94, 108, 0.18);
+  border-color: rgba(245, 94, 108, 0.75);
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(245, 94, 108, 0.18);
+}
+
+.btn-delete:active {
+  transform: scale(0.94);
+}
+
+.btn-delete:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}

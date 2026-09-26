@@ -75,6 +75,42 @@ export default function AdminEnquiries() {
     }
   }
 
+
+
+  const deleteEnquiry = async (id, title) => {
+  const confirmed = window.confirm(
+    `Are you sure you want to permanently delete enquiry #${id} "${title}"?`
+  )
+
+  if (!confirmed) return
+
+  setBusy(`delete-${id}`)
+  setMsg('')
+
+  try {
+    await API.delete(`/admin/enquiries/${id}`)
+
+    setMsg('✓ Enquiry deleted successfully.')
+    setMsgType('success')
+
+    if (selected?.id === id) {
+      setSelected(null)
+    }
+
+    await load()
+  } catch (err) {
+    setMsg(
+      err.response?.data?.detail ||
+      'Unable to delete enquiry.'
+    )
+    setMsgType('error')
+  } finally {
+    setBusy(null)
+  }
+}
+
+
+
   const statusClass = (s) =>
     ({
       submitted: 'status--submitted',
@@ -178,15 +214,48 @@ export default function AdminEnquiries() {
                     </span>
                   </div>
 
-                  <div className="enq-table__cell enq-table__cell--action">
-                    <button
-                      className="btn-review"
-                      onClick={() => open(r.id)}
+                 <div className="enq-table__cell enq-table__cell--action">
+
+                <button
+                  className="btn-review"
+                  onClick={() => open(r.id)}
+                >
+                  <span>Review</span>
+                  <span className="btn-review__arrow">→</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-delete"
+                  title="Delete enquiry"
+                  disabled={busy === `delete-${r.id}`}
+                  onClick={() =>
+                    deleteEnquiry(r.id, r.title)
+                  }
+                >
+                  {busy === `delete-${r.id}` ? (
+                    <span className="spinner" />
+                  ) : (
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <span>Review</span>
-                      <span className="btn-review__arrow">→</span>
-                    </button>
-                  </div>
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                    </svg>
+                  )}
+                </button>
+
+              </div>
                 </div>
               ))}
             </div>

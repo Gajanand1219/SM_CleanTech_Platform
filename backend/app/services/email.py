@@ -1153,3 +1153,70 @@ async def send_quotation_deadline_reminder_email(
             "DEADLINE APPROACHING",
         ),
     )
+
+
+# ============================================================
+# WEBSITE CONTACT FORM → ADMIN
+# ============================================================
+
+async def send_contact_form_email(
+    name: str,
+    mobile: str,
+    email: str,
+    message: str,
+) -> bool:
+
+    subject = f"New Website Enquiry - {name}"
+
+    body = f"""
+        <p>Hello Admin,</p>
+
+        <p>
+            A new enquiry has been submitted from the
+            <strong>SM Clean Tech website contact form</strong>.
+        </p>
+
+        <div style="
+            background:#f7faf8;
+            padding:20px;
+            border-radius:8px;
+            border:1px solid #e2e8e4;
+            margin:20px 0;
+        ">
+
+            <p>
+                <strong>Name:</strong><br>
+                {escape(name)}
+            </p>
+
+            <p>
+                <strong>Mobile Number:</strong><br>
+                {escape(mobile)}
+            </p>
+
+            <p>
+                <strong>Email:</strong><br>
+                {escape(email)}
+            </p>
+
+            <p>
+                <strong>Requirement:</strong><br>
+                {escape(message)}
+            </p>
+
+        </div>
+
+        <p>
+            Please contact the person regarding their requirement.
+        </p>
+    """
+
+    return await send_email(
+        to="gajanand1902@gmail.com",
+        subject=subject,
+        html=email_template(
+            "New Website Enquiry",
+            body,
+            "NEW ENQUIRY",
+        ),
+    )

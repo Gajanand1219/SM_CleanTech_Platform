@@ -154,7 +154,8 @@ async def match_existing_enquiries_for_vendor(
         db.query(Enquiry)
         .filter(
             Enquiry.status.in_(
-                [
+                [  
+                    EnquiryStatus.APPROVED.value,
                     EnquiryStatus.MATCHED.value,
                     EnquiryStatus.QUOTATION.value,
                     EnquiryStatus.ACCEPTED.value,

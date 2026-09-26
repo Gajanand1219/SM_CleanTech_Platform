@@ -47,6 +47,37 @@ export default function AdminRegistrations() {
     }
   }
 
+  const deleteAccount = async (id, role, name) => {
+  const confirmed = window.confirm(
+    `Are you sure you want to permanently delete ${role} "${name}"?`
+  )
+
+  if (!confirmed) return
+
+  setMsg('')
+  setBusy(`delete-${id}`)
+
+  try {
+    await API.delete(`/admin/registrations/${id}`)
+
+    setMsg(
+      `${role.charAt(0).toUpperCase() + role.slice(1)} account deleted successfully.`
+    )
+    setMsgType('success')
+
+    await load()
+  } catch (err) {
+    setMsg(
+      err.response?.data?.detail ||
+      'Unable to delete account.'
+    )
+    setMsgType('error')
+  } finally {
+    setBusy(null)
+  }
+}
+
+
   const filtered = rows.filter((r) => {
     if (filter !== 'all' && r.role !== filter) return false
     if (search.trim()) {
@@ -229,11 +260,13 @@ export default function AdminRegistrations() {
 
                   {/* Action */}
                   <div className="reg-table__cell reg-table__cell--action">
+
                     {r.status !== 'blocked' ? (
                       <button
                         className="btn-block"
                         disabled={busy === r.id}
                         onClick={() => block(r.id)}
+                        title="Block account"
                       >
                         {busy === r.id ? (
                           <>
@@ -248,8 +281,47 @@ export default function AdminRegistrations() {
                         )}
                       </button>
                     ) : (
-                      <span className="reg-locked">Locked</span>
+                      <span className="reg-locked">
+                        Locked
+                      </span>
                     )}
+
+                    {/* DELETE */}
+                    <button
+                      type="button"
+                      className="btn-delete"
+                      disabled={busy === `delete-${r.id}`}
+                      onClick={() =>
+                        deleteAccount(
+                          r.id,
+                          r.role,
+                          r.company_name || r.name || r.email
+                        )
+                      }
+                      title={`Delete ${r.role}`}
+                    >
+                      {busy === `delete-${r.id}` ? (
+                        <span className="spinner" />
+                      ) : (
+                        <svg
+                          width="17"
+                          height="17"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="3 6 5 6 21 6" />
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                          <path d="M10 11v6" />
+                          <path d="M14 11v6" />
+                          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                        </svg>
+                      )}
+                    </button>
+
                   </div>
                 </div>
               ))}

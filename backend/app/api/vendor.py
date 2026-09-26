@@ -69,6 +69,7 @@ def dashboard(
             EnquiryMatch.vendor_id == user.id,
             Enquiry.status.in_(
                 [
+                    EnquiryStatus.APPROVED.value,
                     EnquiryStatus.MATCHED.value,
                     EnquiryStatus.QUOTATION.value,
                     EnquiryStatus.ACCEPTED.value,
@@ -155,6 +156,7 @@ def view_enquiry(
     e = match.enquiry
 
     if e.status not in [
+        EnquiryStatus.APPROVED.value,
         EnquiryStatus.MATCHED.value,
         EnquiryStatus.QUOTATION.value,
         EnquiryStatus.ACCEPTED.value,

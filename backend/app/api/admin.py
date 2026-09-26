@@ -306,6 +306,115 @@ async def update_registration(
     }
 
 
+
+# ============================================================
+# DELETE BUYER / VENDOR
+# ============================================================
+
+@router.delete("/registrations/{user_id}")
+def delete_registration(
+    user_id: int,
+    user=Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    target = db.get(User, user_id)
+
+    # User not found or trying to delete admin
+    if not target or target.role == Role.ADMIN.value:
+        raise HTTPException(
+            status_code=404,
+            detail="Buyer/Vendor account not found",
+        )
+
+    # Only buyer/vendor can be deleted
+    if target.role not in [
+        Role.BUYER.value,
+        Role.VENDOR.value,
+    ]:
+        raise HTTPException(
+            status_code=400,
+            detail="Only buyer/vendor accounts can be deleted",
+        )
+
+    role = target.role
+    email = target.email
+
+    try:
+        db.delete(target)
+        db.commit()
+
+        return {
+            "message": f"{role.capitalize()} account deleted successfully",
+            "user_id": user_id,
+            "role": role,
+            "email": email,
+        }
+
+    except Exception as exc:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to delete account. It may have related records.",
+        )
+
+
+# ============================================================
+# DELETE ENQUIRY
+# ============================================================
+
+@router.delete("/enquiries/{enquiry_id}")
+def delete_enquiry(
+    enquiry_id: int,
+    user=Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    enquiry = db.get(Enquiry, enquiry_id)
+
+    if not enquiry:
+        raise HTTPException(
+            status_code=404,
+            detail="Enquiry not found",
+        )
+
+    try:
+        # Delete related records first
+        db.query(EnquiryMatch).filter(
+            EnquiryMatch.enquiry_id == enquiry_id
+        ).delete(
+            synchronize_session=False
+        )
+
+        db.query(Quotation).filter(
+            Quotation.enquiry_id == enquiry_id
+        ).delete(
+            synchronize_session=False
+        )
+
+        db.query(CRMEvent).filter(
+            CRMEvent.enquiry_id == enquiry_id
+        ).delete(
+            synchronize_session=False
+        )
+
+        # Delete enquiry
+        db.delete(enquiry)
+
+        db.commit()
+
+        return {
+            "message": "Enquiry deleted successfully",
+            "enquiry_id": enquiry_id,
+        }
+
+    except Exception:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=500,
+            detail="Unable to delete enquiry.",
+        )
+    
 # ============================================================
 # ALL ENQUIRIES
 # ============================================================
