@@ -104,11 +104,7 @@ const dummyBuyers = [
   },
 ]
 
-const displayVendors =
-  vendors.length > 0 ? vendors : dummyVendors
 
-const displayBuyers =
-  buyers.length > 0 ? buyers : dummyBuyers
 
 
 
@@ -194,6 +190,12 @@ function Counter({ end, suffix = '', duration = 1500 }) {
 export default function Home() {
   const [buyers, setBuyers] = useState([])
   const [vendors, setVendors] = useState([])
+
+  const displayVendors =
+    vendors.length > 0 ? vendors : dummyVendors
+
+  const displayBuyers =
+    buyers.length > 0 ? buyers : dummyBuyers
 
   useScrollReveal()
 
