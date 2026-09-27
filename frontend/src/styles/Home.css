@@ -48,7 +48,246 @@
 /* =========================================================
    HERO
    ========================================================= */
+/* =========================================================
+   DIRECT CONTACT CARD
+   ========================================================= */
 
+.contact-person-card {
+  width: 100%;
+  max-width: 500px;
+
+  margin-top: 28px;
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #dce9e2;
+  border-radius: 14px;
+
+  box-shadow:
+    0 7px 22px rgba(20, 70, 45, 0.07);
+}
+
+
+/* =========================================================
+   CONTACT PERSON HEADER
+   ========================================================= */
+
+.contact-person-top {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+.contact-person-avatar {
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #087f45,
+      #35a56b
+    );
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  box-shadow:
+    0 6px 15px rgba(8, 127, 69, 0.18);
+}
+
+.contact-person-label {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #7b8a83;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.contact-person-top h3 {
+  margin: 0;
+
+  color: #183b2c;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   DIRECT CONTACT LINKS
+   ========================================================= */
+
+.contact-direct-link {
+  width: 100%;
+
+  min-height: 57px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 9px 10px;
+
+  margin-top: 8px;
+
+  text-decoration: none;
+
+  background: #f7fbf9;
+
+  border: 1px solid #e1ece6;
+  border-radius: 10px;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.contact-direct-link:hover {
+  background: #f0f9f4;
+
+  border-color: #bcdcca;
+
+  transform: translateX(3px);
+
+  box-shadow:
+    0 5px 15px rgba(20, 70, 45, 0.06);
+}
+
+
+/* =========================================================
+   CONTACT ICON
+   ========================================================= */
+
+.contact-direct-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 15px;
+}
+
+.contact-email-icon {
+  background: #e8f6ef;
+
+  color: #087f45;
+}
+
+.contact-phone-icon {
+  background: #edf7f2;
+
+  color: #087f45;
+}
+
+
+/* =========================================================
+   CONTACT TEXT
+   ========================================================= */
+
+.contact-direct-content {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.contact-direct-content span {
+  color: #83918a;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.07em;
+}
+
+.contact-direct-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #284b3a;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.contact-direct-arrow {
+  width: 27px;
+  height: 27px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #087f45;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  border: 1px solid #dbe9e2;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.contact-direct-link:hover .contact-direct-arrow {
+  transform: translateX(3px);
+
+  background: #087f45;
+
+  color: #ffffff;
+}
 .hero {
   width: 100%;
   background:
@@ -2901,4 +3140,226 @@
   .partner-box {
     width: 92px;
   }
+}
+
+
+/* =========================================================
+   DIRECT CONTACT
+========================================================= */
+
+.contact-person-card {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 28px;
+  padding: 18px;
+
+  background: #fff;
+  border: 1px solid #dce9e2;
+  border-radius: 14px;
+
+  box-shadow: 0 7px 22px rgba(20, 70, 45, 0.07);
+}
+
+.contact-person-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.contact-person-avatar {
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #087f45,
+    #35a56b
+  );
+
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.contact-person-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #7b8a83;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.contact-person-top h3 {
+  margin: 0;
+
+  color: #183b2c;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+/* ================= DIRECT LINKS ================= */
+
+.contact-direct-link {
+  width: 100%;
+
+  min-height: 57px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 9px 10px;
+
+  margin-top: 8px;
+
+  text-decoration: none;
+
+  background: #f7fbf9;
+
+  border: 1px solid #e1ece6;
+
+  border-radius: 10px;
+
+  transition: all 0.2s ease;
+}
+
+.contact-direct-link:hover {
+  background: #f0f9f4;
+
+  border-color: #bcdcca;
+
+  transform: translateX(3px);
+}
+
+
+/* ================= ICON ================= */
+
+.contact-direct-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 15px;
+}
+
+.contact-email-icon,
+.contact-phone-icon {
+  background: #e8f6ef;
+  color: #087f45;
+}
+
+
+/* ================= TEXT ================= */
+
+.contact-direct-content {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.contact-direct-content span {
+  color: #83918a;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.contact-direct-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #284b3a;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* ================= ARROW ================= */
+
+.contact-direct-arrow {
+  width: 27px;
+  height: 27px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #fff;
+
+  border: 1px solid #dbe9e2;
+
+  color: #087f45;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.contact-direct-link:hover .contact-direct-arrow {
+  background: #087f45;
+  color: #fff;
+
+  transform: translateX(3px);
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+  .contact-person-card {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .contact-direct-content strong {
+    font-size: 10px;
+  }
+
+  .contact-direct-link {
+    min-height: 54px;
+  }
+
 }
