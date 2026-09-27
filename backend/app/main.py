@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.db import Base, engine, SessionLocal
-from app.api import auth, public, buyer, vendor, admin
+from app.api import auth, public, buyer, vendor, admin, chatbot
+
 from app.services.seed import seed_database
 from app.models import Enquiry, EnquiryStatus
 
@@ -63,6 +64,8 @@ app.include_router(public.router, prefix="/api")
 app.include_router(buyer.router, prefix="/api")
 app.include_router(vendor.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
+app.include_router(chatbot.router, prefix="/api")
+
 
 @app.get("/")
 def root():
