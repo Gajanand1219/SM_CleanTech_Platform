@@ -680,143 +680,239 @@ useEffect(() => {
 
 </section>
         {/* ================= CONTACT ================= */}
+{/* ================= CONTACT ================= */}
 
-        <section
-          className="contact"
-          id="contact"
-        >
+<section
+  className="contact"
+  id="contact"
+>
 
-          <div className="section-container">
+  <div className="section-container">
 
-            <div className="contact-layout">
+    <div className="contact-layout">
 
-              <div className="contact-intro">
+      {/* ================= LEFT SIDE ================= */}
 
-                <span className="section-label">
-                  CONTACT US
-                </span>
+      <div className="contact-intro">
 
-                <h2>
-                  Have an industrial requirement?
-                </h2>
+        <span className="section-label">
+          CONTACT US
+        </span>
 
-                <p>
-                  Tell us about your requirement. Our platform is designed
-                  to structure your enquiry and connect it with relevant
-                  technical solution providers.
-                </p>
+        <h2>
+          Have an industrial requirement?
+        </h2>
 
-
-                <div className="contact-points">
-
-                  <div>
-                    <strong>01</strong>
-                    <span>Share your requirement</span>
-                  </div>
-
-                  <div>
-                    <strong>02</strong>
-                    <span>Technical information</span>
-                  </div>
-
-                  <div>
-                    <strong>03</strong>
-                    <span>Connect with relevant specialists</span>
-                  </div>
-
-                </div>
-
-              </div>
+        <p>
+          Tell us about your requirement. Our platform is designed
+          to structure your enquiry and connect it with relevant
+          technical solution providers.
+        </p>
 
 
-              <div className="contact-card">
+        {/* ================= DIRECT CONTACT ================= */}
 
-                <h3>
-                  Send an Enquiry
-                </h3>
+        <div className="contact-person-card">
 
-                <p>
-                  Fill in your details and our team will get back to you.
-                </p>
+          <div className="contact-person-top">
 
+            <div className="contact-person-avatar">
+              SM
+            </div>
 
-                <form
-                  className="contact-form"
-                  onSubmit={handleContactSubmit}
-                >
+            <div>
+              <span className="contact-person-label">
+                DIRECT CONTACT
+              </span>
 
-                  <div className="form-row">
-
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Name"
-                      value={contactForm.name}
-                      onChange={handleContactChange}
-                      required
-                    />
-
-           <input
-            type="tel"
-            name="mobile"
-            placeholder="Mobile Number"
-            value={contactForm.mobile}
-            onChange={handleContactChange}
-            required
-          />
-
-                  </div>
-
-
-                 <input
-                  type="email"
-                  name="email"
-                  placeholder="Email ID"
-                  value={contactForm.email}
-                  onChange={handleContactChange}
-                  required
-                />
-
-
-                  <textarea
-                    name="message"
-                    placeholder="Tell us about your requirement..."
-                    rows="5"
-                    value={contactForm.message}
-                    onChange={handleContactChange}
-                    required
-                  />
-
-                    {contactSuccess && (
-                      <div className="contact-success">
-                        ✓ {contactSuccess}
-                      </div>
-                    )}
-
-                    {contactError && (
-                      <div className="contact-error">
-                        {contactError}
-                      </div>
-                    )}
-
-                   <button
-                    type="submit"
-                    className="contact-submit"
-                    disabled={contactLoading}
-                  >
-                    {contactLoading ? 'SENDING...' : 'SEND ENQUIRY'}
-                  </button>
-
-                </form>
-
-              </div>
-
+              <h3>
+                Contact Our Team
+              </h3>
             </div>
 
           </div>
 
-        </section>
 
+          {/* EMAIL */}
+
+          <a
+            href="mailto:satyapalmungal3112@gmail.com"
+            className="contact-direct-link"
+          >
+
+            <div className="contact-direct-icon contact-email-icon">
+              ✉
+            </div>
+
+            <div className="contact-direct-content">
+
+              <span>
+                Email
+              </span>
+
+              <strong>
+                satyapalmungal3112@gmail.com
+              </strong>
+
+            </div>
+
+            <span className="contact-direct-arrow">
+              →
+            </span>
+
+          </a>
+
+
+          {/* PHONE */}
+
+          <a
+            href="tel:+919112767997"
+            className="contact-direct-link"
+          >
+
+            <div className="contact-direct-icon contact-phone-icon">
+              ☎
+            </div>
+
+            <div className="contact-direct-content">
+
+              <span>
+                Phone
+              </span>
+
+              <strong>
+                +91 91127 67997
+              </strong>
+
+            </div>
+
+            <span className="contact-direct-arrow">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+
+        {/* ================= PROCESS ================= */}
+
+        <div className="contact-points">
+
+          <div>
+            <strong>01</strong>
+            <span>Share your requirement</span>
+          </div>
+
+          <div>
+            <strong>02</strong>
+            <span>Technical information</span>
+          </div>
+
+          <div>
+            <strong>03</strong>
+            <span>Connect with relevant specialists</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      {/* ================= RIGHT SIDE FORM ================= */}
+
+      <div className="contact-card">
+
+        <h3>
+          Send an Enquiry
+        </h3>
+
+        <p>
+          Fill in your details and our team will get back to you.
+        </p>
+
+
+        <form
+          className="contact-form"
+          onSubmit={handleContactSubmit}
+        >
+
+          <div className="form-row">
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={contactForm.name}
+              onChange={handleContactChange}
+              required
+            />
+
+            <input
+              type="tel"
+              name="mobile"
+              placeholder="Mobile Number"
+              value={contactForm.mobile}
+              onChange={handleContactChange}
+              required
+            />
+
+          </div>
+
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email ID"
+            value={contactForm.email}
+            onChange={handleContactChange}
+            required
+          />
+
+
+          <textarea
+            name="message"
+            placeholder="Tell us about your requirement..."
+            rows="5"
+            value={contactForm.message}
+            onChange={handleContactChange}
+            required
+          />
+
+
+          {contactSuccess && (
+            <div className="contact-success">
+              ✓ {contactSuccess}
+            </div>
+          )}
+
+
+          {contactError && (
+            <div className="contact-error">
+              {contactError}
+            </div>
+          )}
+
+
+          <button
+            type="submit"
+            className="contact-submit"
+            disabled={contactLoading}
+          >
+            {contactLoading
+              ? 'SENDING...'
+              : 'SEND ENQUIRY'}
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
         {/* ================= FOOTER ================= */}
 
