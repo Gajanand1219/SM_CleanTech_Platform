@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import API from '../services/api'
 const INITIAL_SUGGESTIONS = [
   {
     icon: '🌱',
@@ -76,92 +76,89 @@ export default function Chatbot() {
      BACKEND WILL BE CONNECTED HERE LATER
   ===================================================== */
 
-  function sendMessage(customText = '') {
+async function sendMessage(customText = '') {
+  const question = (customText || input).trim()
 
-    const question = (
-      customText || input
-    ).trim()
+  if (!question || loading) {
+    return
+  }
 
-    if (!question || loading) {
-      return
-    }
+  // USER MESSAGE
+  const userMessage = {
+    id: `user-${Date.now()}`,
+    role: 'user',
+    content: question,
+  }
 
-    /* USER MESSAGE */
+  setMessages((prev) => [
+    ...prev,
+    userMessage,
+  ])
 
-    const userMessage = {
-      id: `user-${Date.now()}`,
-      role: 'user',
-      content: question,
-    }
+  setInput('')
+  setLoading(true)
 
-    setMessages((prev) => [
-      ...prev,
-      userMessage,
-    ])
-
-    setInput('')
-    setLoading(true)
-
-
-    /*
-    ======================================================
-    BACKEND LATER
-    ======================================================
-
+  try {
     const response = await fetch(
-      '/api/chat',
+      'https://sm-cleantech-platform.onrender.com/api/chat',
       {
         method: 'POST',
-
         headers: {
-          'Content-Type':
-            'application/json',
+          'Content-Type': 'application/json',
         },
-
         body: JSON.stringify({
-          question,
+          question: question,
         }),
       }
     )
 
     const data = await response.json()
 
-    const answer = data.answer
+    if (!response.ok) {
+      throw new Error(
+        data?.detail ||
+        'Unable to get response from AI.'
+      )
+    }
 
-    ======================================================
-    */
+    const botMessage = {
+      id: `bot-${Date.now()}`,
+      role: 'assistant',
+      content:
+        data?.answer ||
+        'Sorry, I could not generate an answer.',
+      suggestions: [],
+    }
 
+    setMessages((prev) => [
+      ...prev,
+      botMessage,
+    ])
 
-    /*
+  } catch (error) {
 
-      NO DUMMY AI RESPONSE.
+    console.error(
+      'SM CleanTech chatbot error:',
+      error
+    )
 
-      For now only show backend status.
-    */
+    const errorMessage = {
+      id: `error-${Date.now()}`,
+      role: 'assistant',
+      content:
+        '⚠️ Sorry, I am unable to connect to the AI service right now. Please make sure the SM CleanTech backend is running.',
+      suggestions: [],
+    }
 
-    setTimeout(() => {
+    setMessages((prev) => [
+      ...prev,
+      errorMessage,
+    ])
 
-      const backendMessage = {
-        id: `system-${Date.now()}`,
-
-        role: 'assistant',
-
-        content:
-          '⚠️ AI backend is not connected yet.\n\nThe chatbot interface is ready. Backend integration will be added next.',
-
-        suggestions: [],
-      }
-
-      setMessages((prev) => [
-        ...prev,
-        backendMessage,
-      ])
-
-      setLoading(false)
-
-    }, 500)
+  } finally {
+    setLoading(false)
   }
-
+}
 
   /* =====================================================
      CLEAR CHAT
