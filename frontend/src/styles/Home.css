@@ -1961,4 +1961,69 @@
   }
 }
 
+.partner-marquee {
+  width: 100%;
+  overflow: hidden;
+  padding: 12px 0;
+}
 
+.partner-marquee marquee {
+  width: 100%;
+}
+
+.partner-marquee-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.partner-company {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 180px;
+  margin: 0 8px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.partner-company-logo {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.partner-company-logo img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.partner-company-logo span {
+  display: none;
+}
+
+.partner-company-logo--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef5f1;
+  border-radius: 8px;
+}
+
+.partner-company-logo--fallback span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  font-weight: 700;
+}
+
+.partner-company-name {
+  white-space: nowrap;
+}
