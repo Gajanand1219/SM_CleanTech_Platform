@@ -131,13 +131,14 @@
 }
 
 .back-home:hover {
-  background: #eaf7f0;
+  background: yellow;
   border-color: #a7d3b8;
   transform: translateX(-2px);
 }
 
 .back-home span {
   font-size: 14px;
+   background: blue;
 }
 
 /* =========================================================
@@ -994,6 +995,7 @@
   .back-home {
     padding: 8px 13px;
     font-size: 11.5px;
+     background: blue;
   }
 
   .login-main {
@@ -1203,6 +1205,7 @@
   .back-home {
     padding: 7px 11px;
     font-size: 11px;
+     background: blue;
   }
 
   .login-card {
