@@ -643,6 +643,132 @@ export default function Home() {
   </div>
 </section>
 
+
+
+      {/* ================= PLATFORM DATA ================= */}
+
+<section className="platform-data">
+  <div className="section-container">
+
+    <div className="platform-data-heading" data-reveal>
+      <span className="section-label">PLATFORM AT A GLANCE</span>
+
+      <h2>Built for Industrial Project Connections</h2>
+
+      <p>
+        Structured requirements, technical matching and verified business
+        connections — all through one organized CleanTech platform.
+      </p>
+    </div>
+
+    <div className="platform-data-grid">
+
+      {/* CARD 1 */}
+      <div className="platform-data-card" data-reveal>
+        <div className="platform-data-icon">🌱</div>
+
+        <div className="platform-data-content">
+          <strong>05</strong>
+          <h3>Core CleanTech Verticals</h3>
+          <p>
+            Water, Waste, Solar, ESG and Pollution Control solutions.
+          </p>
+        </div>
+      </div>
+
+      {/* CARD 2 */}
+      <div
+        className="platform-data-card"
+        data-reveal
+        style={{ transitionDelay: '0.06s' }}
+      >
+        <div className="platform-data-icon">⚙️</div>
+
+        <div className="platform-data-content">
+          <strong>10+</strong>
+          <h3>Technical Parameters</h3>
+          <p>
+            Structured technical information for better requirement matching.
+          </p>
+        </div>
+      </div>
+
+      {/* CARD 3 */}
+      <div
+        className="platform-data-card"
+        data-reveal
+        style={{ transitionDelay: '0.12s' }}
+      >
+        <div className="platform-data-icon">⏱️</div>
+
+        <div className="platform-data-content">
+          <strong>240h</strong>
+          <h3>Active Response Window</h3>
+          <p>
+            A defined response window for matched industrial opportunities.
+          </p>
+        </div>
+      </div>
+
+      {/* CARD 4 */}
+      <div
+        className="platform-data-card"
+        data-reveal
+        style={{ transitionDelay: '0.18s' }}
+      >
+        <div className="platform-data-icon">🏢</div>
+
+        <div className="platform-data-content">
+          <strong>NETWORK</strong>
+          <h3>Verified Businesses</h3>
+          <p>
+            Industrial buyers and CleanTech solution providers connected
+            through the platform.
+          </p>
+        </div>
+      </div>
+
+      {/* CARD 5 */}
+      <div
+        className="platform-data-card"
+        data-reveal
+        style={{ transitionDelay: '0.24s' }}
+      >
+        <div className="platform-data-icon">📋</div>
+
+        <div className="platform-data-content">
+          <strong>QUOTE</strong>
+          <h3>Quotation Workflow</h3>
+          <p>
+            Matched vendors can review opportunities and submit quotations.
+          </p>
+        </div>
+      </div>
+
+      {/* CARD 6 */}
+      <div
+        className="platform-data-card"
+        data-reveal
+        style={{ transitionDelay: '0.30s' }}
+      >
+        <div className="platform-data-icon">🤝</div>
+
+        <div className="platform-data-content">
+          <strong>SECURE</strong>
+          <h3>Mutual Handshake</h3>
+          <p>
+            Contact details remain protected until both parties accept.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+      
+
         {/* ================= CONTACT ================= */}
 
         <section className="contact" id="contact">
