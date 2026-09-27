@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-// import './Login.css'
+import './Login.css'
 
 function getErrorMessage(error) {
   const detail = error?.response?.data?.detail
@@ -22,7 +22,8 @@ function getErrorMessage(error) {
   }
 
   if (typeof detail === 'string') return detail
-  if (typeof error?.response?.data?.message === 'string') return error.response.data.message
+  if (typeof error?.response?.data?.message === 'string')
+    return error.response.data.message
   if (typeof error?.message === 'string') return error.message
 
   return 'Login failed. Please try again.'
@@ -34,6 +35,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showRegisterChoice, setShowRegisterChoice] = useState(false)
 
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -61,6 +63,11 @@ export default function Login() {
     }
   }
 
+  const goToRegister = (type) => {
+    setShowRegisterChoice(false)
+    navigate(`/register/${type}`)
+  }
+
   return (
     <div className="login-page">
       <div className="login-bg login-bg--one" />
@@ -68,8 +75,6 @@ export default function Login() {
 
       {/* Top bar */}
       <div className="login-topbar">
-        
-
         <div className="login-brand">
           <div className="login-brand-logo">
             <img src="/logo.jpeg" alt="SM Clean Tech" />
@@ -80,16 +85,18 @@ export default function Login() {
           </div>
         </div>
 
-        <button type="button" className="back-home" onClick={() => navigate('/')}>
+        <button
+          type="button"
+          className="back-home"
+          onClick={() => navigate('/')}
+        >
           <span>←</span>
           Back
         </button>
-        
       </div>
 
       {/* Main split */}
       <main className="login-main">
-
         {/* LEFT — FORM CARD */}
         <section className="login-card">
           <div className="login-card-header">
@@ -148,16 +155,15 @@ export default function Login() {
                 <input type="checkbox" />
                 <span>Remember me</span>
               </label>
-              {/* <button type="button" className="forgot-btn">
-                Forgot password?
-              </button> */}
             </div>
 
             {error && (
               <div className="login-message login-message--error">
                 <span className="message-icon">!</span>
                 <span>{error}</span>
-                <button type="button" onClick={() => setError('')}>×</button>
+                <button type="button" onClick={() => setError('')}>
+                  ×
+                </button>
               </div>
             )}
 
@@ -181,7 +187,10 @@ export default function Login() {
 
             <div className="login-footer">
               <span>New to SM Clean Tech?</span>
-              <button type="button" onClick={() => navigate('/register/buyer')}>
+              <button
+                type="button"
+                onClick={() => setShowRegisterChoice(true)}
+              >
                 Create account
               </button>
             </div>
@@ -191,7 +200,7 @@ export default function Login() {
             </div>
           </form>
 
-          {/* Demo box — subtle */}
+          {/* Demo box */}
           <div className="demo-box">
             <span className="demo-dot" />
             <div>
@@ -217,7 +226,6 @@ export default function Login() {
             five-year project history — all in one secure place.
           </p>
 
-          {/* MIDDLE — LOGO */}
           <div className="intro-logo">
             <div className="intro-logo__halo" />
             <div className="intro-logo__frame">
@@ -225,7 +233,6 @@ export default function Login() {
             </div>
           </div>
 
-          {/* BOTTOM — FEATURES */}
           <div className="intro-features">
             <div className="intro-feature">
               <div className="feature-icon">✓</div>
@@ -253,6 +260,62 @@ export default function Login() {
           </div>
         </aside>
       </main>
+
+      {/* ================= REGISTER CHOICE MODAL ================= */}
+      {showRegisterChoice && (
+        <div
+          className="register-modal-overlay"
+          onClick={() => setShowRegisterChoice(false)}
+        >
+          <div
+            className="register-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="register-modal__close"
+              onClick={() => setShowRegisterChoice(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <span className="register-modal__label">JOIN THE NETWORK</span>
+            <h2>Create your account</h2>
+            <p>Choose how you want to register</p>
+
+            <div className="register-modal__options">
+              {/* BUYER */}
+              <button
+                type="button"
+                className="register-option register-option--buyer"
+                onClick={() => goToRegister('buyer')}
+              >
+                <div className="register-option__icon">🏢</div>
+                <div className="register-option__text">
+                  <strong>Register as Buyer</strong>
+                  <span>Post industrial requirements</span>
+                </div>
+                <div className="register-option__arrow">→</div>
+              </button>
+
+              {/* VENDOR */}
+              <button
+                type="button"
+                className="register-option register-option--vendor"
+                onClick={() => goToRegister('vendor')}
+              >
+                <div className="register-option__icon">⚙️</div>
+                <div className="register-option__text">
+                  <strong>Register as Vendor</strong>
+                  <span>Offer EPC & CleanTech solutions</span>
+                </div>
+                <div className="register-option__arrow">→</div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
