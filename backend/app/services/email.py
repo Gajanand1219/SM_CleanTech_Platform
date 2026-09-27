@@ -2,8 +2,17 @@ import asyncio
 import smtplib
 from html import escape
 from email.message import EmailMessage
-
+import requests
 from app.core.config import settings
+
+
+
+# ============================================================
+# PYTHONANYWHERE EMAIL RELAY
+# ============================================================
+
+EMAIL_RELAY_URL = "https://gajanan.pythonanywhere.com/api/send-email"
+EMAIL_RELAY_SECRET = "SM_CLEAN_TECH_EMAIL_2026_SECRET"
 
 
 # ============================================================
@@ -12,71 +21,129 @@ from app.core.config import settings
 
 async def send_email(to: str, subject: str, html: str) -> bool:
     """
-    Central email sender.
+    Central email sender using the PythonAnywhere Flask email relay.
 
-    All application emails should use this function.
+    All application emails use this function. Existing auth.py,
+    admin.py, buyer.py and vendor.py do not need to be changed.
     """
 
     if not to:
         print(f"[EMAIL SKIPPED] No recipient for subject: {subject}")
         return False
 
-    # Development mode
-    if (
-        not settings.SMTP_HOST
-        or not settings.SMTP_USERNAME
-        or not settings.SMTP_PASSWORD
-        or not settings.SMTP_FROM_EMAIL
-    ):
-        print(
-            f"\n[DEV EMAIL]\n"
-            f"TO: {to}\n"
-            f"SUBJECT: {subject}\n"
-            f"HTML:\n{html}\n"
-        )
-        return True
+    payload = {
+        "to": to,
+        "subject": subject,
+        "html": html,
+        "text": "Please view this email in an HTML-compatible email client.",
+    }
+
+    headers = {
+        "Authorization": f"Bearer {EMAIL_RELAY_SECRET}",
+        "Content-Type": "application/json",
+    }
 
     def _send():
-        msg = EmailMessage()
-
-        msg["Subject"] = subject
-        msg["From"] = (
-            f"{settings.SMTP_FROM_NAME} "
-            f"<{settings.SMTP_FROM_EMAIL}>"
+        response = requests.post(
+            EMAIL_RELAY_URL,
+            headers=headers,
+            json=payload,
+            timeout=30,
         )
-        msg["To"] = to
-
-        msg.set_content(
-            "Please view this message in an HTML-capable email client."
-        )
-
-        msg.add_alternative(
-            html,
-            subtype="html",
-        )
-
-        with smtplib.SMTP(
-            settings.SMTP_HOST,
-            settings.SMTP_PORT,
-            timeout=20,
-        ) as server:
-
-            server.starttls()
-
-            server.login(
-                settings.SMTP_USERNAME,
-                settings.SMTP_PASSWORD,
-            )
-
-            server.send_message(msg)
+        response.raise_for_status()
+        return response.json()
 
     try:
-        await asyncio.to_thread(_send)
+        result = await asyncio.to_thread(_send)
+
+        print(
+            f"[EMAIL RELAY SENT] "
+            f"to={to} subject={subject} result={result}"
+        )
+
         return True
 
     except Exception as exc:
-        print(f"[EMAIL ERROR] {exc}")
+        print(
+            f"[EMAIL RELAY ERROR] "
+            f"to={to} subject={subject} error={exc}"
+        )
         return False
+
+
+
+
+# # ============================================================
+# # LOW-LEVEL EMAIL SENDER
+# # ============================================================
+
+# async def send_email(to: str, subject: str, html: str) -> bool:
+#     """
+#     Central email sender.
+
+#     All application emails should use this function.
+#     """
+
+#     if not to:
+#         print(f"[EMAIL SKIPPED] No recipient for subject: {subject}")
+#         return False
+
+#     # Development mode
+#     if (
+#         not settings.SMTP_HOST
+#         or not settings.SMTP_USERNAME
+#         or not settings.SMTP_PASSWORD
+#         or not settings.SMTP_FROM_EMAIL
+#     ):
+#         print(
+#             f"\n[DEV EMAIL]\n"
+#             f"TO: {to}\n"
+#             f"SUBJECT: {subject}\n"
+#             f"HTML:\n{html}\n"
+#         )
+#         return True
+
+#     def _send():
+#         msg = EmailMessage()
+
+#         msg["Subject"] = subject
+#         msg["From"] = (
+#             f"{settings.SMTP_FROM_NAME} "
+#             f"<{settings.SMTP_FROM_EMAIL}>"
+#         )
+#         msg["To"] = to
+
+#         msg.set_content(
+#             "Please view this message in an HTML-capable email client."
+#         )
+
+#         msg.add_alternative(
+#             html,
+#             subtype="html",
+#         )
+
+#         with smtplib.SMTP(
+#             settings.SMTP_HOST,
+#             settings.SMTP_PORT,
+#             timeout=20,
+#         ) as server:
+
+#             server.starttls()
+
+#             server.login(
+#                 settings.SMTP_USERNAME,
+#                 settings.SMTP_PASSWORD,
+#             )
+
+#             server.send_message(msg)
+
+#     try:
+#         await asyncio.to_thread(_send)
+#         return True
+
+#     except Exception as exc:
+#         print(f"[EMAIL ERROR] {exc}")
+#         return False
 
 
 # ============================================================
