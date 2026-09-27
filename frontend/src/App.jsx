@@ -4,7 +4,7 @@ import './styles.css'
 
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-
+import ScrollToTop from './components/ScrollToTop'
 import Chatbot from './components/Chatbot'
 import FloatingChatButton from './components/FloatingChatButton'
 
@@ -36,6 +36,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           {/* ============ PUBLIC ROUTES ============ */}
           <Route path="/" element={<Home />} />
