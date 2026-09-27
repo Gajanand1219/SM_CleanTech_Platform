@@ -1236,7 +1236,7 @@ async def send_contact_form_email(
     subject = f"New Website Enquiry - {name}"
 
     body = f"""
-        <p>Hello Admin,</p>
+        <p>Hello Sachin 👋,</p>
 
         <p>
             A new enquiry has been submitted from the
@@ -1279,7 +1279,7 @@ async def send_contact_form_email(
     """
 
     return await send_email(
-        to="gajanand1902@gmail.com",
+        to="satyapalmungal3112@gmail.com",
         subject=subject,
         html=email_template(
             "New Website Enquiry",
