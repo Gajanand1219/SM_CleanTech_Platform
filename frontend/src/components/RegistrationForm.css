@@ -43,6 +43,7 @@
 }
 
 /* ============ BACKDROP ============ */
+
 .registration-bg {
   position: fixed;
   border-radius: 50%;
@@ -76,13 +77,13 @@
 }
 
 /* ============ TOP BAR ============ */
+
 .registration-topbar {
   position: relative;
   z-index: 10;
   padding: 12px 28px;
   display: flex;
-  justify-content: space-around;
-
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--line);
   background: rgba(6, 13, 24, 0.6);
@@ -156,7 +157,8 @@
   font-weight: 500;
 }
 
-/* ============ MAIN — Split, no page scroll ============ */
+/* ============ MAIN — Split Layout ============ */
+
 .registration-main {
   position: relative;
   z-index: 2;
@@ -175,6 +177,7 @@
 /* ==========================================================
    LEFT — FORM CARD with INNER SCROLL
    ========================================================== */
+
 .registration-card {
   position: relative;
   background: linear-gradient(160deg, #0e1e34, #0a1628);
@@ -213,7 +216,8 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Card Header (fixed at top) --- */
+/* --- Card Header --- */
+
 .registration-card-header {
   display: flex;
   justify-content: space-between;
@@ -265,6 +269,7 @@
 }
 
 /* --- Scrollable Form Body --- */
+
 .modern-registration-form {
   display: flex;
   flex-direction: column;
@@ -277,7 +282,6 @@
   scrollbar-color: var(--accent) transparent;
 }
 
-/* Custom scrollbar — WebKit */
 .modern-registration-form::-webkit-scrollbar {
   width: 8px;
 }
@@ -301,6 +305,7 @@
 }
 
 /* --- Section Titles --- */
+
 .form-section-title {
   display: flex;
   align-items: center;
@@ -341,6 +346,7 @@
 }
 
 /* --- Form Grid --- */
+
 .registration-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -417,8 +423,9 @@
 }
 
 /* ==========================================================
-   DOMAIN SECTION — VERY SMALL CUTE BOXES
+   DOMAIN SECTION
    ========================================================== */
+
 .domain-section {
   margin-top: 0;
 }
@@ -511,6 +518,7 @@
 /* ==========================================================
    MESSAGES
    ========================================================== */
+
 .registration-message {
   display: flex;
   align-items: flex-start;
@@ -569,8 +577,9 @@
 .registration-message button:hover { opacity: 1; }
 
 /* ==========================================================
-   SUBMIT
+   SUBMIT BUTTON
    ========================================================== */
+
 .registration-submit {
   display: flex;
   align-items: center;
@@ -641,8 +650,9 @@
 }
 
 /* ==========================================================
-   FOOTER (inside scroll)
+   FORM FOOTER
    ========================================================== */
+
 .registration-footer {
   display: flex;
   justify-content: center;
@@ -680,8 +690,9 @@
 }
 
 /* ==========================================================
-   RIGHT — INFO PANEL (fixed, no scroll)
+   RIGHT — INFO PANEL
    ========================================================== */
+
 .registration-intro {
   position: relative;
   padding: 26px 24px;
@@ -775,7 +786,8 @@
   margin: 0 0 20px;
 }
 
-/* --- Intro features (bottom of right panel) --- */
+/* --- Intro features --- */
+
 .intro-features {
   display: flex;
   flex-direction: column;
@@ -855,97 +867,9 @@
 }
 
 /* ==========================================================
-   RESPONSIVE
+   HERO LOGO (middle of intro panel)
    ========================================================== */
-@media (max-width: 1024px) {
-  .registration-page {
-    height: auto;
-    min-height: 100vh;
-    overflow: auto;
-  }
 
-  .registration-main {
-    grid-template-columns: 1fr;
-    padding: 16px 20px 30px;
-    gap: 18px;
-    overflow: visible;
-  }
-
-  .registration-card {
-    max-height: none;
-  }
-
-  .modern-registration-form {
-    overflow: visible;
-    max-height: none;
-  }
-
-  .registration-intro {
-    order: -1;
-    padding: 22px;
-  }
-
-  .intro-features {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 16px;
-  }
-
-  .intro-feature {
-    flex: 1;
-    min-width: 180px;
-  }
-}
-
-@media (max-width: 640px) {
-  .registration-topbar { padding: 12px 16px; }
-  .registration-brand span { display: none; }
-
-  .registration-main {
-    padding: 14px 14px 28px;
-    gap: 16px;
-  }
-
-  .registration-card-header {
-    padding: 16px 18px 12px;
-  }
-
-  .modern-registration-form {
-    padding: 16px 18px 20px;
-  }
-
-  .registration-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .domain-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .intro-features {
-    flex-direction: column;
-  }
-
-  .intro-feature { min-width: auto; }
-
-  .registration-intro h1 { font-size: 19px; }
-}
-
-/* ============ REDUCED MOTION ============ */
-@media (prefers-reduced-motion: reduce) {
-  .registration-page *,
-  .registration-page *::before,
-  .registration-page *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-
-/* ==========================================================
-   RIGHT PANEL — HERO LOGO (middle)
-   ========================================================== */
 .intro-logo {
   flex: 1;
   display: flex;
@@ -976,7 +900,6 @@
   isolation: isolate;
 }
 
-/* Rotating conic ring behind the frame */
 .intro-logo__frame::before {
   content: '';
   position: absolute;
@@ -994,7 +917,6 @@
   opacity: 0.5;
 }
 
-/* Inner mask that covers the ring except for a soft glow */
 .intro-logo__frame::after {
   content: '';
   position: absolute;
@@ -1019,7 +941,6 @@
   transform: scale(1.06);
 }
 
-/* Pulsing halo behind the logo */
 .intro-logo__halo {
   position: absolute;
   width: 100%;
@@ -1044,4 +965,269 @@
 @keyframes haloPulse {
   0%, 100% { opacity: 0.4; transform: scale(1); }
   50%      { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* ==========================================================
+   RESPONSIVE — TABLET (max-width: 1024px)
+   ========================================================== */
+
+@media (max-width: 1024px) {
+  .registration-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .registration-main {
+    grid-template-columns: 1fr;
+    padding: 16px 20px 30px;
+    gap: 18px;
+    overflow: visible;
+  }
+
+  /* FORM COMES FIRST */
+  .registration-card {
+    order: 1;
+    max-height: none;
+  }
+
+  .modern-registration-form {
+    overflow: visible;
+    max-height: none;
+  }
+
+  /* INFO PANEL BELOW FORM */
+  .registration-intro {
+    order: 2;
+    padding: 22px;
+  }
+
+  .intro-features {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .intro-feature {
+    flex: 1;
+    min-width: 180px;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE — MOBILE (max-width: 640px)
+   ========================================================== */
+
+@media (max-width: 640px) {
+  /* ============ TOP BAR ============ */
+
+  .registration-topbar {
+    padding: 10px 14px;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .registration-brand-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .registration-brand strong {
+    font-size: 12.5px;
+  }
+
+  .registration-brand span {
+    display: none;
+  }
+
+  .back-home {
+    padding: 6px 11px;
+    font-size: 11px;
+  }
+
+  /* ============ MAIN ============ */
+
+  .registration-main {
+    padding: 14px 12px 24px;
+    gap: 14px;
+  }
+
+  /* ============ FORM CARD ============ */
+
+  .registration-card {
+    order: 1;
+    border-radius: 14px;
+  }
+
+  .registration-card-header {
+    padding: 14px 16px 12px;
+  }
+
+  .registration-card-header h2 {
+    font-size: 15px;
+  }
+
+  .registration-card-header p {
+    font-size: 11px;
+  }
+
+  .role-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+
+  .form-kicker {
+    font-size: 9px;
+  }
+
+  /* ============ FORM BODY ============ */
+
+  .modern-registration-form {
+    padding: 14px 16px 18px;
+  }
+
+  /* Single column form */
+  .registration-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .field-group input {
+    padding: 9px 11px;
+    font-size: 12.5px;
+  }
+
+  .field-group label {
+    font-size: 10.5px;
+  }
+
+  /* Domain grid single column */
+  .domain-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .domain-card {
+    padding: 9px 11px;
+    font-size: 11.5px;
+    min-height: 38px;
+  }
+
+  /* Submit */
+  .registration-submit {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    margin-top: 14px;
+  }
+
+  /* Footer */
+  .registration-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  /* ============ INFO PANEL — BELOW FORM ============ */
+
+  .registration-intro {
+    order: 2;
+    padding: 20px 18px;
+    border-radius: 14px;
+    display: block;
+  }
+
+  .intro-badge {
+    font-size: 9px;
+    padding: 5px 10px;
+    margin-bottom: 14px;
+  }
+
+  .registration-intro h1 {
+    font-size: 19px;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .registration-intro > p {
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  /* HIDE the big logo on mobile — clean look */
+  .intro-logo {
+    display: none;
+  }
+
+  /* Features stacked */
+  .intro-features {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  .intro-feature {
+    flex: none;
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  .intro-feature strong {
+    font-size: 12px;
+  }
+
+  .intro-feature span {
+    font-size: 10.5px;
+  }
+
+  .feature-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE — VERY SMALL MOBILE (max-width: 400px)
+   ========================================================== */
+
+@media (max-width: 400px) {
+  .registration-main {
+    padding: 12px 10px 22px;
+  }
+
+  .registration-card-header h2 {
+    font-size: 14.5px;
+  }
+
+  .modern-registration-form {
+    padding: 12px 14px 16px;
+  }
+
+  .registration-submit {
+    font-size: 12.5px;
+    padding: 12px 16px;
+  }
+
+  .registration-intro h1 {
+    font-size: 17.5px;
+  }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .registration-page *,
+  .registration-page *::before,
+  .registration-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
