@@ -8,3 +8,8 @@ bcrypt
 email-validator
 python-multipart
 requests
+faiss-cpu
+numpy
+google-genai
+groq
+python-dotenv
