@@ -47,6 +47,71 @@ const solutionsList = [
   }
 ]
 
+
+const dummyVendors = [
+  {
+    id: 'dummy-v1',
+    company_name: 'EcoTech Engineering',
+    logo: 'https://www.google.com/s2/favicons?domain=ecotechengineering.com&sz=128',
+  },
+  {
+    id: 'dummy-v2',
+    company_name: 'GreenPower EPC',
+    logo: 'https://www.google.com/s2/favicons?domain=greenpowerepc.com&sz=128',
+  },
+  {
+    id: 'dummy-v3',
+    company_name: 'Clean Energy Solutions',
+    logo: 'https://www.google.com/s2/favicons?domain=cleanenergysolutions.com&sz=128',
+  },
+  {
+    id: 'dummy-v4',
+    company_name: 'Industrial GreenTech',
+    logo: 'https://www.google.com/s2/favicons?domain=industrialgreentech.com&sz=128',
+  },
+  {
+    id: 'dummy-v5',
+    company_name: 'Sustainable EPC India',
+    logo: 'https://www.google.com/s2/favicons?domain=sustainableepcindia.com&sz=128',
+  },
+]
+
+const dummyBuyers = [
+  {
+    id: 'dummy-b1',
+    company_name: 'Tata Industrial Solutions',
+    logo: 'https://www.google.com/s2/favicons?domain=tata.com&sz=128',
+  },
+  {
+    id: 'dummy-b2',
+    company_name: 'Reliance Industries',
+    logo: 'https://www.google.com/s2/favicons?domain=riliance.com&sz=128',
+  },
+  {
+    id: 'dummy-b3',
+    company_name: 'Aditya Manufacturing',
+    logo: 'https://www.google.com/s2/favicons?domain=aditya.com&sz=128',
+  },
+  {
+    id: 'dummy-b4',
+    company_name: 'Mahindra Industrial',
+    logo: 'https://www.google.com/s2/favicons?domain=mahindra.com&sz=128',
+  },
+  {
+    id: 'dummy-b5',
+    company_name: 'JSW Industrial',
+    logo: 'https://www.google.com/s2/favicons?domain=jsw.in&sz=128',
+  },
+]
+
+const displayVendors =
+  vendors.length > 0 ? vendors : dummyVendors
+
+const displayBuyers =
+  buyers.length > 0 ? buyers : dummyBuyers
+
+
+
 const workflowSteps = [
   'Buyer requirement',
   'Technical dossier',
@@ -459,8 +524,8 @@ export default function Home() {
 
                 <div className="partner-marquee">
                   <div className="partner-marquee-track">
-                    {vendors.length > 0 ? (
-                      [...vendors, ...vendors].map((company, index) => (
+                    {displayVendors.length > 0 ? (
+  [...displayVendors, ...displayVendors].map((company, index) => (
                         <div
                           className="partner-company"
                           key={`${company.id}-${index}`}
@@ -489,7 +554,7 @@ export default function Home() {
                       ))
                     ) : (
                       <div className="partner-empty">
-                        No approved vendors yet.
+                        Verified network providers
                       </div>
                     )}
                   </div>
@@ -519,8 +584,8 @@ export default function Home() {
 
                 <div className="partner-marquee">
                   <div className="partner-marquee-track partner-marquee-track--reverse">
-                    {buyers.length > 0 ? (
-                      [...buyers, ...buyers].map((company, index) => (
+                    {displayBuyers.length > 0 ? (
+  [...displayBuyers, ...displayBuyers].map((company, index) => (
                         <div
                           className="partner-company"
                           key={`${company.id}-${index}`}
@@ -549,7 +614,7 @@ export default function Home() {
                       ))
                     ) : (
                       <div className="partner-empty">
-                        No verified buyers yet.
+                        Trusted network companies
                       </div>
                     )}
                   </div>
