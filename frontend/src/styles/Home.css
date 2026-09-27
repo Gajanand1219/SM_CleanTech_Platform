@@ -3363,3 +3363,268 @@
   }
 
 }
+
+/* ==========================================================
+   CONTACT FORM — MOBILE FIX
+   ========================================================== */
+
+@media (max-width: 700px) {
+
+  .contact {
+    padding: 45px 0;
+    overflow-x: hidden;
+  }
+
+  .contact .section-container {
+    width: 92%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .contact-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  /* ================= LEFT CONTACT INFO ================= */
+
+  .contact-intro {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact-intro h2 {
+    width: 100%;
+    max-width: 100%;
+    margin: 8px auto 12px;
+    font-size: 27px;
+    line-height: 1.2;
+  }
+
+  .contact-intro > p {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  /* ================= DIRECT CONTACT CARD ================= */
+
+  .contact-person-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 22px auto 0;
+    padding: 14px;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  .contact-person-top {
+    margin-bottom: 11px;
+  }
+
+  .contact-direct-link {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ================= PROCESS ================= */
+
+  .contact-points {
+    width: 100%;
+    margin-top: 20px;
+    align-items: stretch;
+    gap: 9px;
+  }
+
+  .contact-points div {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+
+  /* ================= FORM CARD ================= */
+
+  .contact-card {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    padding: 20px 15px;
+    margin: 0;
+
+    border-radius: 14px;
+  }
+
+  .contact-card h3 {
+    font-size: 21px;
+    margin-bottom: 6px;
+  }
+
+  .contact-card > p {
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+
+  /* ================= FORM ================= */
+
+  .contact-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Name + Mobile become UP-DOWN */
+
+  .form-row {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+  }
+
+  .form-row input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 11px 0;
+  }
+
+  /* Email */
+
+  .contact-form > input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 11px 0;
+  }
+
+  /* Message */
+
+  .contact-form textarea {
+    width: 100%;
+    min-height: 120px;
+    box-sizing: border-box;
+    margin: 0 0 13px 0;
+    resize: vertical;
+  }
+
+
+  /* ================= INPUT SIZE ================= */
+
+  .contact-form input {
+    height: 45px;
+    padding: 11px 12px;
+    font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .contact-form textarea {
+    padding: 11px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 7px;
+  }
+
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    font-size: 11px;
+  }
+
+
+  /* ================= SUCCESS / ERROR ================= */
+
+  .contact-success,
+  .contact-error {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 11px;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 9px 10px;
+    border-radius: 7px;
+    text-align: left;
+  }
+
+
+  /* ================= BUTTON ================= */
+
+  .contact-submit {
+    width: 100%;
+    max-width: 100%;
+    height: 44px;
+
+    margin: 0;
+
+    font-size: 12px;
+    border-radius: 7px;
+  }
+}
+
+
+/* ==========================================================
+   SMALL MOBILE
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+  .contact {
+    padding: 38px 0;
+  }
+
+  .contact .section-container {
+    width: 91%;
+  }
+
+  .contact-layout {
+    gap: 24px;
+  }
+
+  .contact-intro h2 {
+    font-size: 24px;
+  }
+
+  .contact-intro > p {
+    font-size: 11px;
+  }
+
+  .contact-person-card {
+    padding: 12px;
+  }
+
+  .contact-direct-link {
+    min-height: 52px;
+    padding: 8px;
+  }
+
+  .contact-direct-content strong {
+    font-size: 10px;
+  }
+
+  .contact-card {
+    padding: 18px 12px;
+  }
+
+  .contact-card h3 {
+    font-size: 19px;
+  }
+
+  .contact-card > p {
+    font-size: 10.5px;
+  }
+
+  .contact-form input {
+    height: 43px;
+  }
+
+  .contact-form textarea {
+    min-height: 110px;
+  }
+}
