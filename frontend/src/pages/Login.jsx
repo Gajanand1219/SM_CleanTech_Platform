@@ -68,10 +68,7 @@ export default function Login() {
 
       {/* Top bar */}
       <div className="login-topbar">
-        <button type="button" className="back-home" onClick={() => navigate('/')}>
-          <span>←</span>
-          Back
-        </button>
+        
 
         <div className="login-brand">
           <div className="login-brand-logo">
@@ -82,6 +79,12 @@ export default function Login() {
             <span>Engineering Solutions</span>
           </div>
         </div>
+
+        <button type="button" className="back-home" onClick={() => navigate('/')}>
+          <span>←</span>
+          Back
+        </button>
+        
       </div>
 
       {/* Main split */}
