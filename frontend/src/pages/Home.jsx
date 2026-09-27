@@ -47,67 +47,6 @@ const solutionsList = [
   }
 ]
 
-
-const dummyVendors = [
-  {
-    id: 'dummy-v1',
-    company_name: 'EcoTech Engineering',
-    logo: 'https://53.fs1.hubspotusercontent-na1.net/hubfs/53/image8-2.jpg&sz=128',
-  },
-  {
-    id: 'dummy-v2',
-    company_name: 'GreenPower EPC',
-    logo: 'https://www.google.com/s2/favicons?domain=greenpowerepc.com&sz=128',
-  },
-  {
-    id: 'dummy-v3',
-    company_name: 'Clean Energy Solutions',
-    logo: 'https://www.google.com/s2/favicons?domain=cleanenergysolutions.com&sz=128',
-  },
-  {
-    id: 'dummy-v4',
-    company_name: 'Industrial GreenTech',
-    logo: 'https://www.google.com/s2/favicons?domain=industrialgreentech.com&sz=128',
-  },
-  {
-    id: 'dummy-v5',
-    company_name: 'Sustainable EPC India',
-    logo: 'https://www.google.com/s2/favicons?domain=sustainableepcindia.com&sz=128',
-  },
-]
-
-const dummyBuyers = [
-  {
-    id: 'dummy-b1',
-    company_name: 'Tata Industrial Solutions',
-    logo: 'https://www.google.com/s2/favicons?domain=tata.com&sz=128',
-  },
-  {
-    id: 'dummy-b2',
-    company_name: 'Reliance Industries',
-    logo: 'https://www.google.com/s2/favicons?domain=riliance.com&sz=128',
-  },
-  {
-    id: 'dummy-b3',
-    company_name: 'Aditya Manufacturing',
-    logo: 'https://www.google.com/s2/favicons?domain=aditya.com&sz=128',
-  },
-  {
-    id: 'dummy-b4',
-    company_name: 'Mahindra Industrial',
-    logo: 'https://www.google.com/s2/favicons?domain=mahindra.com&sz=128',
-  },
-  {
-    id: 'dummy-b5',
-    company_name: 'JSW Industrial',
-    logo: 'https://www.google.com/s2/favicons?domain=jsw.in&sz=128',
-  },
-]
-
-
-
-
-
 const workflowSteps = [
   'Buyer requirement',
   'Technical dossier',
@@ -190,12 +129,6 @@ function Counter({ end, suffix = '', duration = 1500 }) {
 export default function Home() {
   const [buyers, setBuyers] = useState([])
   const [vendors, setVendors] = useState([])
-
-  const displayVendors =
-    vendors.length > 0 ? vendors : dummyVendors
-
-  const displayBuyers =
-    buyers.length > 0 ? buyers : dummyBuyers
 
   useScrollReveal()
 
@@ -526,8 +459,8 @@ export default function Home() {
 
                 <div className="partner-marquee">
                   <div className="partner-marquee-track">
-                    {displayVendors.length > 0 ? (
-  [...displayVendors, ...displayVendors].map((company, index) => (
+                    {vendors.length > 0 ? (
+                      [...vendors, ...vendors].map((company, index) => (
                         <div
                           className="partner-company"
                           key={`${company.id}-${index}`}
@@ -556,7 +489,7 @@ export default function Home() {
                       ))
                     ) : (
                       <div className="partner-empty">
-                        Verified network providers
+                        No approved vendors yet.
                       </div>
                     )}
                   </div>
@@ -586,8 +519,8 @@ export default function Home() {
 
                 <div className="partner-marquee">
                   <div className="partner-marquee-track partner-marquee-track--reverse">
-                    {displayBuyers.length > 0 ? (
-  [...displayBuyers, ...displayBuyers].map((company, index) => (
+                    {buyers.length > 0 ? (
+                      [...buyers, ...buyers].map((company, index) => (
                         <div
                           className="partner-company"
                           key={`${company.id}-${index}`}
@@ -616,7 +549,7 @@ export default function Home() {
                       ))
                     ) : (
                       <div className="partner-empty">
-                        Trusted network companies
+                        No verified buyers yet.
                       </div>
                     )}
                   </div>
@@ -645,7 +578,7 @@ export default function Home() {
                   solution providers.
                 </p>
 
-                <div className="contact-person-card">
+                <div className="contact-person-card" align="center">
                   <div className="contact-person-top">
                     <div className="contact-person-avatar">SM</div>
                     <div>
