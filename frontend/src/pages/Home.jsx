@@ -52,7 +52,7 @@ const dummyVendors = [
   {
     id: 'dummy-v1',
     company_name: 'EcoTech Engineering',
-    logo: 'https://www.google.com/s2/favicons?domain=ecotechengineering.com&sz=128',
+    logo: 'https://53.fs1.hubspotusercontent-na1.net/hubfs/53/image8-2.jpg&sz=128',
   },
   {
     id: 'dummy-v2',
