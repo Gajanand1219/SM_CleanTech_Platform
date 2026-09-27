@@ -70,7 +70,8 @@
   margin: 0 auto 22px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+background:black;
+   justify-content: space-around;
   gap: 15px;
 }
 
