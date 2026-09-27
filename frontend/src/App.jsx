@@ -5,6 +5,9 @@ import './styles.css'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
+import Chatbot from './components/Chatbot'
+import FloatingChatButton from './components/FloatingChatButton'
+
 // Public pages
 import Home from './pages/Home'
 import { Solutions, HowItWorks } from './pages/Static'
@@ -84,44 +87,50 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+              path="/chatbot"
+              element={<Chatbot />}
+            />
+
+
 
           {/* ============ VENDOR ROUTES ============ */}
-{/* ============ VENDOR ROUTES ============ */}
-<Route
-  path="/vendor"
-  element={
-    <ProtectedRoute role="vendor">
-      <VendorDashboard />
-    </ProtectedRoute>
-  }
-/>
+            {/* ============ VENDOR ROUTES ============ */}
+            <Route
+              path="/vendor"
+              element={
+                <ProtectedRoute role="vendor">
+                  <VendorDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-<Route
-  path="/vendor/enquiries"
-  element={
-    <ProtectedRoute role="vendor">
-      <VendorDashboard />
-    </ProtectedRoute>
-  }
-/>
+                    <Route
+                      path="/vendor/enquiries"
+                      element={
+                        <ProtectedRoute role="vendor">
+                          <VendorDashboard />
+                        </ProtectedRoute>
+                      }
+                    />
 
-<Route
-  path="/vendor/enquiries/:id"
-  element={
-    <ProtectedRoute role="vendor">
-      <VendorEnquiry />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/vendor/enquiries/:id"
+            element={
+              <ProtectedRoute role="vendor">
+                <VendorEnquiry />
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/vendor/crm"
-  element={
-    <ProtectedRoute role="vendor">
-      <CRM role="vendor" />
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/vendor/crm"
+            element={
+              <ProtectedRoute role="vendor">
+                <CRM role="vendor" />
+              </ProtectedRoute>
+            }
+          />
           {/* ============ ADMIN ROUTES ============ */}
           <Route
             path="/admin"
@@ -147,7 +156,10 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
         </Routes>
+            <FloatingChatButton />
+
       </BrowserRouter>
     </AuthProvider>
   )
