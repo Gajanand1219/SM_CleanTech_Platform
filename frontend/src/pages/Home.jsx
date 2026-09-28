@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import '../styles/Home.css'
 import API from '../services/api'
 import { useEffect, useState, useRef } from 'react'
-import '../styles/ScrollAnimations.css'
+// import '../styles/ScrollAnimations.css'
 const solutionsList = [
   {
     name: 'Water & Wastewater',
