@@ -10,10 +10,11 @@ import './RegistrationForm.css'
 
 const buyerFields = [
   ['full_name', 'Full name', 'text', true],
-  ['email', 'Email', 'email', true],
+  ['email', 'Business Email', 'email', true],
   ['phone', 'Phone', 'tel', true],
   ['password', 'Password', 'password', true],
   ['company_name', 'Company name', 'text', true],
+  ['director_email', 'Director Email', 'email', true],
   ['industry', 'Industry', 'text', true],
   ['registered_address', 'Registered address', 'text', true],
   ['plant_location', 'Plant location', 'text', true],
@@ -25,9 +26,11 @@ const buyerFields = [
 
 const vendorFields = [
   ['full_name', 'Full name', 'text', true],
-  ['email', 'Email', 'email', true],
-  ['phone', 'Phone', 'tel', true],
+  ['email', 'Business Email', 'email', true],
+  ['phone', 'Mobile Number', 'tel', true],
   ['password', 'Password', 'password', true],
+  ['contact_2', 'Contact NO', 'tel', true],
+  ['director_email', 'Director Email', 'email', true],
   ['company_name', 'Company name', 'text', true],
   ['industry_type', 'Industry type', 'text', true],
   ['address', 'Address', 'text', true],
