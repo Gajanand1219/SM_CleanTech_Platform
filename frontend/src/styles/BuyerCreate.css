@@ -1,48 +1,36 @@
 /* ==========================================================
-   BUYER CREATE — Attractive Enquiry Form
+   BUYER CREATE ENQUIRY — Clean Green/White Theme
+   SM Clean Tech
    ========================================================== */
 
 .bc {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  animation: fadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+  gap: 16px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================
    STEP PROGRESS
    ========================================================== */
+
 .bc-steps {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 18px 20px;
-  background: linear-gradient(150deg, #142545, #0f1f35 60%, #0a1628);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-lg);
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
+  gap: 8px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(20, 70, 45, 0.05);
 }
 
-.bc-steps::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--c-teal, #00d4aa),
-    var(--c-blue, #38bdf8),
-    var(--c-purple, #a78bfa),
-    var(--c-pink, #f472b6),
-    transparent
-  );
-  background-size: 200% auto;
-  animation: topBarShine 5s linear infinite;
-}
+/* ============ STEP ============ */
 
 .bc-step {
   display: flex;
@@ -51,7 +39,7 @@
   flex: 1;
   min-width: 0;
   opacity: 0.55;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .bc-step.is-active,
@@ -59,42 +47,39 @@
   opacity: 1;
 }
 
+/* ============ STEP CIRCLE ============ */
+
 .bc-step__circle {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid var(--line-2);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--muted);
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #f4f8f5;
+  border: 1.5px solid #dce7e1;
+  color: #7a8881;
+  font-size: 12.5px;
+  font-weight: 800;
+  transition: all 0.3s ease;
 }
 
 .bc-step.is-active .bc-step__circle {
-  background: linear-gradient(135deg, #38bdf8, #a78bfa);
-  border-color: transparent;
-  color: #0a1628;
-  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
-  animation: pulseRing 2.4s ease-in-out infinite;
+  background: #eaf7f0;
+  border-color: #c9e7d7;
+  color: #087f45;
+  box-shadow: 0 0 0 4px rgba(8, 127, 69, 0.1);
 }
 
 .bc-step.is-done .bc-step__circle {
-  background: linear-gradient(135deg, #00d4aa, #4ade80);
-  border-color: transparent;
-  color: #0a1628;
-  box-shadow: 0 6px 18px rgba(0, 212, 170, 0.4);
+  background: #087f45;
+  border-color: #087f45;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(8, 127, 69, 0.25);
 }
 
-@keyframes pulseRing {
-  0%, 100% { box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4); }
-  50%      { box-shadow: 0 6px 22px rgba(56, 189, 248, 0.65), 0 0 0 4px rgba(56, 189, 248, 0.12); }
-}
+/* ============ STEP TEXT ============ */
 
 .bc-step__text {
   min-width: 0;
@@ -103,17 +88,17 @@
 
 .bc-step__text strong {
   display: block;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #fff;
+  color: #17201c;
+  font-size: 12px;
+  font-weight: 800;
   margin-bottom: 2px;
   letter-spacing: 0.02em;
 }
 
 .bc-step__text span {
   display: block;
+  color: #5f6d66;
   font-size: 10.5px;
-  color: var(--muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -121,14 +106,17 @@
 
 .bc-step.is-active .bc-step__text span,
 .bc-step.is-done .bc-step__text span {
-  color: var(--text-dim);
+  color: #087f45;
+  font-weight: 700;
 }
+
+/* ============ STEP LINE ============ */
 
 .bc-step__line {
   flex-shrink: 0;
-  width: 24px;
+  width: 22px;
   height: 2px;
-  background: var(--line-2);
+  background: #e4ece7;
   border-radius: 2px;
   position: relative;
   overflow: hidden;
@@ -138,10 +126,10 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #00d4aa, #38bdf8);
+  background: #087f45;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s ease;
 }
 
 .bc-step__line.is-done::after {
@@ -151,115 +139,76 @@
 /* ==========================================================
    PRIVACY BANNER
    ========================================================== */
+
 .bc-privacy {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 14px 18px;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 170, 0.08),
-    rgba(56, 189, 248, 0.06) 50%,
-    rgba(167, 139, 250, 0.04)
-  );
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  border-radius: var(--r-md);
-  position: relative;
-  overflow: hidden;
-}
-
-.bc-privacy::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(
-    180deg,
-    var(--c-teal, #00d4aa),
-    var(--c-blue, #38bdf8),
-    var(--c-purple, #a78bfa)
-  );
-  border-radius: 3px 0 0 3px;
+  gap: 12px;
+  padding: 13px 16px;
+  background: #f0faf4;
+  border: 1px solid #cfe9db;
+  border-left: 3px solid #087f45;
+  border-radius: 10px;
 }
 
 .bc-privacy__icon {
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
-  background: rgba(56, 189, 248, 0.15);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  border-radius: 10px;
+  font-size: 16px;
+  background: #ffffff;
+  border: 1px solid #cfe9db;
+  border-radius: 9px;
 }
 
 .bc-privacy strong {
   display: block;
+  color: #126b40;
   font-size: 12.5px;
-  font-weight: 700;
-  color: #fff;
+  font-weight: 800;
   margin-bottom: 3px;
 }
 
 .bc-privacy span {
   display: block;
-  font-size: 12px;
-  color: var(--text-dim);
-  line-height: 1.55;
+  color: #2b3d33;
+  font-size: 11.5px;
+  line-height: 1.5;
 }
 
 /* ==========================================================
    FORM
    ========================================================== */
+
 .bc-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 /* ==========================================================
    SECTION
    ========================================================== */
-.bc-section {
-  position: relative;
-  background: linear-gradient(160deg, #0e1e34, #0a1628);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: 22px 24px;
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  animation: fadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
-}
 
-.bc-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent),
-    var(--accent-2),
-    transparent
-  );
-  background-size: 200% auto;
-  animation: topBarShine 4s linear infinite;
+.bc-section {
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 3px 10px rgba(20, 70, 45, 0.05);
+  animation: fadeUp 0.4s ease both;
 }
 
 .bc-section__head {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 18px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eaf0ec;
 }
 
 .bc-section__icon {
@@ -270,27 +219,26 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  border-radius: 12px;
-  background: var(--accent-soft);
-  border: 1px solid rgba(0, 212, 170, 0.25);
+  border-radius: 11px;
+  background: #eaf7f0;
+  border: 1px solid #c9e7d7;
 }
 
 .bc-section__icon--blue {
-  background: rgba(56, 189, 248, 0.14);
-  border-color: rgba(56, 189, 248, 0.3);
+  background: #eaf4ff;
+  border-color: #b8d4f5;
 }
 
 .bc-section__icon--purple {
-  background: rgba(167, 139, 250, 0.14);
-  border-color: rgba(167, 139, 250, 0.3);
+  background: #f0edfe;
+  border-color: #d4cbfa;
 }
 
 .bc-section__head h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 15.5px;
-  font-weight: 700;
-  color: #fff;
   margin: 0 0 3px;
+  color: #126b40;
+  font-size: 15.5px;
+  font-weight: 800;
   letter-spacing: -0.01em;
   display: flex;
   align-items: center;
@@ -298,16 +246,19 @@
 }
 
 .bc-section__head .muted {
-  font-size: 12px;
-  color: var(--muted);
   margin: 0;
+  color: #5f6d66;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .bc-section__body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
+
+/* ============ COUNT BADGE ============ */
 
 .bc-count {
   display: inline-flex;
@@ -315,20 +266,19 @@
   justify-content: center;
   min-width: 22px;
   height: 20px;
-  padding: 0 7px;
-  background: rgba(167, 139, 250, 0.15);
-  border: 1px solid rgba(167, 139, 250, 0.3);
+  padding: 0 8px;
+  background: #f0edfe;
+  border: 1px solid #d4cbfa;
   border-radius: 20px;
-  font-family: 'Space Grotesk', sans-serif;
+  color: #6366f1;
   font-size: 11px;
-  font-weight: 700;
-  color: #a78bfa;
-  letter-spacing: 0;
+  font-weight: 800;
 }
 
 /* ==========================================================
    PROGRESS BAR
    ========================================================== */
+
 .bc-progress {
   display: flex;
   align-items: center;
@@ -337,28 +287,24 @@
 }
 
 .bc-progress__bar {
-  width: 100px;
+  width: 90px;
   height: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #eaf0ec;
   border-radius: 6px;
   overflow: hidden;
 }
 
 .bc-progress__fill {
   height: 100%;
-  background: linear-gradient(90deg, #00d4aa, #38bdf8, #a78bfa);
-  background-size: 200% auto;
+  background: linear-gradient(90deg, #087f45, #35a56b);
   border-radius: 6px;
   transition: width 0.4s ease;
-  animation: shineText 3s linear infinite;
-  box-shadow: 0 0 12px rgba(0, 212, 170, 0.5);
 }
 
 .bc-progress__text {
-  font-family: 'Space Grotesk', sans-serif;
+  color: #087f45;
   font-size: 12px;
-  font-weight: 700;
-  color: var(--accent);
+  font-weight: 800;
   min-width: 34px;
   text-align: right;
 }
@@ -366,91 +312,90 @@
 /* ==========================================================
    FIELDS
    ========================================================== */
+
 .bc-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 12px;
 }
 
 .bc-field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
 }
 
 .bc-field label {
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #2b3d33;
   font-size: 12px;
-  font-weight: 600;
-  color: #b0c0d0;
-  transition: color 0.25s ease;
+  font-weight: 700;
+  transition: color 0.2s ease;
 }
 
 .bc-field__icon {
   font-size: 13px;
-  transition: transform 0.3s ease;
 }
 
 .bc-field__required {
-  color: #f472b6;
-  font-weight: 700;
+  color: #d32f2f;
+  font-weight: 800;
   margin-left: 2px;
+  font-size: 14px;
 }
 
 .bc-field:focus-within label {
-  color: var(--accent);
-}
-
-.bc-field:focus-within .bc-field__icon {
-  transform: scale(1.15);
+  color: #087f45;
 }
 
 .bc-field input,
 .bc-field select {
   width: 100%;
   padding: 11px 14px;
-  background: var(--input);
-  border: 1px solid var(--line-2);
-  border-radius: 11px;
-  color: var(--text);
+  background: #fafdfb;
+  border: 1px solid #cfdcd5;
+  border-radius: 9px;
+  color: #17201c;
   font-family: inherit;
   font-size: 13.5px;
   outline: none;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
 .bc-field input::placeholder {
-  color: var(--muted-2);
+  color: #89968f;
   font-size: 12.5px;
 }
 
 .bc-field input:hover,
 .bc-field select:hover {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: #b8cec3;
+  background: #ffffff;
 }
 
 .bc-field input:focus,
 .bc-field select:focus {
-  border-color: var(--accent);
-  background: rgba(10, 22, 40, 1);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: #087f45;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(8, 127, 69, 0.1);
 }
 
 .bc-field select:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .bc-field select option {
-  background: #0a1628;
-  color: var(--text);
+  background: #ffffff;
+  color: #17201c;
 }
 
 /* ==========================================================
    QUESTIONS
    ========================================================== */
+
 .bc-questions {
   display: flex;
   flex-direction: column;
@@ -458,88 +403,61 @@
 }
 
 .bc-question {
-  position: relative;
-  padding: 16px 18px;
-  background: rgba(6, 13, 24, 0.55);
-  border: 1px solid var(--line-2);
-  border-radius: var(--r-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: fadeUp 0.4s ease both;
-  overflow: hidden;
-}
-
-.bc-question::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, #a78bfa, #38bdf8);
-  transform: scaleY(0.4);
-  transition: transform 0.35s ease;
-  border-radius: 0 3px 3px 0;
+  padding: 14px 16px;
+  background: #f7fbf9;
+  border: 1px solid #e4ece7;
+  border-left: 3px solid #c9e7d7;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  animation: fadeUp 0.35s ease both;
 }
 
 .bc-question:hover {
-  border-color: rgba(167, 139, 250, 0.35);
-  background: rgba(6, 13, 24, 0.8);
-}
-
-.bc-question:hover::before {
-  transform: scaleY(1);
+  border-color: #a8d4bc;
+  border-left-color: #087f45;
+  background: #f0faf4;
 }
 
 .bc-question.is-answered {
-  border-color: rgba(0, 212, 170, 0.35);
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 170, 0.06),
-    rgba(6, 13, 24, 0.85)
-  );
-}
-
-.bc-question.is-answered::before {
-  background: linear-gradient(180deg, #00d4aa, #4ade80);
-  transform: scaleY(1);
+  background: #f0faf4;
+  border-color: #a8d4bc;
+  border-left-color: #087f45;
 }
 
 .bc-question__head {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 11px;
+  margin-bottom: 10px;
 }
 
 .bc-question__num {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9px;
-  background: rgba(167, 139, 250, 0.15);
-  border: 1px solid rgba(167, 139, 250, 0.28);
-  font-family: 'Space Grotesk', sans-serif;
+  border-radius: 8px;
+  background: #eaf7f0;
+  border: 1px solid #c9e7d7;
+  color: #087f45;
   font-size: 11.5px;
-  font-weight: 700;
-  color: #a78bfa;
-  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 800;
+  transition: all 0.25s ease;
 }
 
 .bc-question.is-answered .bc-question__num {
-  background: linear-gradient(135deg, #00d4aa, #4ade80);
-  border-color: transparent;
-  color: #0a1628;
-  box-shadow: 0 4px 14px rgba(0, 212, 170, 0.4);
+  background: #087f45;
+  border-color: #087f45;
+  color: #ffffff;
 }
 
 .bc-question__text {
   flex: 1;
+  color: #17201c;
   font-size: 13px;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 700;
   line-height: 1.5;
   display: flex;
   flex-wrap: wrap;
@@ -550,51 +468,50 @@
 .bc-question__required {
   display: inline-flex;
   align-items: center;
-  padding: 2px 7px;
-  background: rgba(244, 114, 182, 0.14);
-  border: 1px solid rgba(244, 114, 182, 0.3);
+  padding: 2px 8px;
+  background: #fdeaea;
+  border: 1px solid #f5c2c2;
   border-radius: 20px;
+  color: #c0392b;
   font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #f472b6;
 }
 
 .bc-question textarea {
   width: 100%;
-  padding: 11px 14px;
-  background: rgba(6, 13, 24, 0.7);
-  border: 1px solid var(--line-2);
-  border-radius: 10px;
-  color: var(--text);
+  padding: 11px 13px;
+  background: #ffffff;
+  border: 1px solid #cfdcd5;
+  border-radius: 9px;
+  color: #17201c;
   font-family: inherit;
   font-size: 13px;
   line-height: 1.55;
   outline: none;
   resize: vertical;
-  min-height: 76px;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 72px;
+  transition: all 0.2s ease;
 }
 
 .bc-question textarea::placeholder {
-  color: var(--muted-2);
+  color: #89968f;
+}
+
+.bc-question textarea:hover {
+  border-color: #b8cec3;
 }
 
 .bc-question textarea:focus {
-  border-color: #a78bfa;
-  background: rgba(6, 13, 24, 0.95);
-  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
-}
-
-.bc-question.is-answered textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: #087f45;
+  box-shadow: 0 0 0 3px rgba(8, 127, 69, 0.1);
 }
 
 /* ==========================================================
    QUESTION SKELETONS
    ========================================================== */
+
 .bc-q-skeletons {
   display: flex;
   flex-direction: column;
@@ -602,27 +519,29 @@
 }
 
 .bc-q-skeleton {
-  height: 130px;
-  border-radius: var(--r-md);
-  background: linear-gradient(
-    90deg,
-    rgba(15, 31, 53, 0.7) 0%,
-    rgba(20, 42, 70, 0.9) 50%,
-    rgba(15, 31, 53, 0.7) 100%
-  );
+  height: 120px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0f6f2 0%, #e6efe9 50%, #f0f6f2 100%);
   background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  border: 1px solid var(--line);
+  animation: shimmer 1.5s ease-in-out infinite;
+  border: 1px solid #dce7e1;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* ==========================================================
    SUBMIT
    ========================================================== */
+
 .bc-submit-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  padding-top: 4px;
 }
 
 .bc-submit {
@@ -630,23 +549,24 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 15px 34px;
+  padding: 14px 32px;
+  min-width: 280px;
   border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #00d4aa, #38bdf8, #a78bfa);
-  background-size: 200% auto;
-  color: #0a1628;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14.5px;
-  font-weight: 700;
+  border-radius: 11px;
+
+  background: #087f45;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 10px 30px rgba(0, 212, 170, 0.35),
-    0 0 0 1px rgba(167, 139, 250, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 22px rgba(8, 127, 69, 0.25);
   position: relative;
   overflow: hidden;
-  min-width: 280px;
 }
 
 .bc-submit::before {
@@ -656,13 +576,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  transition: left 0.7s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
 }
 
 .bc-submit:hover:not(:disabled)::before {
@@ -670,42 +585,115 @@
 }
 
 .bc-submit:hover:not(:disabled) {
-  transform: translateY(-3px);
-  background-position: 100% center;
-  box-shadow:
-    0 16px 42px rgba(0, 212, 170, 0.5),
-    0 0 0 1px rgba(167, 139, 250, 0.5);
+  background: #056b3a;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(8, 127, 69, 0.35);
 }
 
 .bc-submit:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
-  filter: grayscale(0.3);
 }
 
 .bc-submit__arrow {
-  font-size: 16px;
-  transition: transform 0.3s ease;
+  font-size: 15px;
+  transition: transform 0.25s ease;
 }
 
 .bc-submit:hover:not(:disabled) .bc-submit__arrow {
-  transform: translateX(5px);
+  transform: translateX(4px);
 }
 
 .bc-submit-hint {
-  font-size: 11.5px;
-  color: var(--muted);
   margin: 0;
+  color: #5f6d66;
+  font-size: 11.5px;
   text-align: center;
 }
 
 /* ==========================================================
-   RESPONSIVE
+   MESSAGES
    ========================================================== */
+
+.bc .message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin-top: 4px;
+  animation: fadeUp 0.3s ease;
+}
+
+.bc .message--success {
+  background: #e8f6ef;
+  border: 1px solid #b8e0c8;
+  color: #087f45;
+}
+
+.bc .message--error {
+  background: #fdeaea;
+  border: 1px solid #f5c2c2;
+  color: #c0392b;
+}
+
+.bc .message__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.bc .message--success .message__icon { background: #087f45; }
+.bc .message--error   .message__icon { background: #c0392b; }
+
+.bc .message__close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.6;
+  line-height: 1;
+}
+
+.bc .message__close:hover { opacity: 1; }
+
+/* ==========================================================
+   SPINNER
+   ========================================================== */
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================
+   RESPONSIVE — TABLET
+   ========================================================== */
+
 @media (max-width: 900px) {
   .bc-steps {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
 
   .bc-step {
@@ -717,15 +705,152 @@
   }
 }
 
+/* ==========================================================
+   RESPONSIVE — MOBILE
+   ========================================================== */
+
 @media (max-width: 640px) {
+  .bc {
+    gap: 12px;
+  }
+
   .bc-steps {
-    padding: 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    gap: 4px;
+  }
+
+  .bc-step {
+    gap: 8px;
+    flex: 1 1 100%;
   }
 
   .bc-step__circle {
+    width: 28px;
+    height: 28px;
+    font-size: 11.5px;
+  }
+
+  .bc-step__text strong {
+    font-size: 11.5px;
+  }
+
+  .bc-step__text span {
+    display: block;
+    font-size: 10px;
+  }
+
+  /* Privacy */
+  .bc-privacy {
+    padding: 11px 13px;
+    gap: 10px;
+  }
+
+  .bc-privacy__icon {
     width: 30px;
     height: 30px;
-    font-size: 12px;
+    font-size: 14px;
+  }
+
+  .bc-privacy strong { font-size: 12px; }
+  .bc-privacy span   { font-size: 11px; }
+
+  /* Section */
+  .bc-section {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  .bc-section__head {
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+
+  .bc-section__icon {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .bc-section__head h3 {
+    font-size: 14px;
+  }
+
+  .bc-section__head .muted {
+    font-size: 11.5px;
+  }
+
+  /* Grid */
+  .bc-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bc-field label {
+    font-size: 11.5px;
+  }
+
+  .bc-field input,
+  .bc-field select {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* Questions */
+  .bc-question {
+    padding: 12px 13px;
+    border-radius: 9px;
+  }
+
+  .bc-question__head {
+    gap: 9px;
+    margin-bottom: 8px;
+  }
+
+  .bc-question__num {
+    width: 26px;
+    height: 26px;
+    font-size: 10.5px;
+    border-radius: 7px;
+  }
+
+  .bc-question__text {
+    font-size: 12.5px;
+  }
+
+  .bc-question textarea {
+    padding: 10px 12px;
+    font-size: 12.5px;
+    min-height: 66px;
+  }
+
+  /* Progress — hide on mobile */
+  .bc-progress {
+    display: none;
+  }
+
+  /* Submit */
+  .bc-submit {
+    width: 100%;
+    min-width: unset;
+    padding: 13px 20px;
+    font-size: 13.5px;
+  }
+
+  .bc-submit-hint {
+    font-size: 11px;
+  }
+}
+
+/* ==========================================================
+   VERY SMALL MOBILE
+   ========================================================== */
+
+@media (max-width: 400px) {
+  .bc-steps {
+    padding: 10px 12px;
   }
 
   .bc-step__text span {
@@ -733,24 +858,27 @@
   }
 
   .bc-section {
-    padding: 18px;
+    padding: 12px 14px;
   }
 
-  .bc-grid {
-    grid-template-columns: 1fr;
+  .bc-section__head h3 {
+    font-size: 13.5px;
   }
 
-  .bc-submit {
-    width: 100%;
-    min-width: unset;
-    padding: 14px 20px;
+  .bc-question__text {
+    font-size: 12px;
   }
+}
 
-  .bc-progress {
-    display: none;
-  }
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
 
-  .bc-question {
-    padding: 14px;
+@media (prefers-reduced-motion: reduce) {
+  .bc *,
+  .bc *::before,
+  .bc *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
