@@ -20,12 +20,12 @@ export default function VerifyEmail() {
   const { saveAuth } = useAuth()
   const inputsRef = useRef([])
 
-  // Auto-focus first empty box on mount
+  /* AUTO-FOCUS FIRST BOX */
   useEffect(() => {
     if (email) inputsRef.current[0]?.focus()
   }, [email])
 
-  // Countdown timer for resend
+  /* COUNTDOWN */
   useEffect(() => {
     if (resendCooldown <= 0) return
     const t = setTimeout(() => setResendCooldown((c) => c - 1), 1000)
@@ -35,6 +35,7 @@ export default function VerifyEmail() {
   const code = digits.join('')
   const isComplete = code.length === 6 && digits.every((d) => d !== '')
 
+  /* HANDLE DIGIT INPUT */
   const handleDigit = (index, value) => {
     const v = value.replace(/\D/g, '').slice(-1)
     const next = [...digits]
@@ -47,6 +48,7 @@ export default function VerifyEmail() {
     }
   }
 
+  /* HANDLE KEY NAVIGATION */
   const handleKeyDown = (index, e) => {
     if (e.key === 'Backspace' && !digits[index] && index > 0) {
       inputsRef.current[index - 1]?.focus()
@@ -59,9 +61,13 @@ export default function VerifyEmail() {
     }
   }
 
+  /* HANDLE PASTE */
   const handlePaste = (e) => {
     e.preventDefault()
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6)
+    const pasted = e.clipboardData
+      .getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 6)
     if (!pasted) return
     const next = ['', '', '', '', '', '']
     pasted.split('').forEach((ch, i) => (next[i] = ch))
@@ -70,6 +76,7 @@ export default function VerifyEmail() {
     inputsRef.current[focusIdx]?.focus()
   }
 
+  /* SUBMIT */
   const submit = async (e) => {
     e.preventDefault()
     setError('')
@@ -85,7 +92,7 @@ export default function VerifyEmail() {
     try {
       const { data } = await API.post('/auth/verify-email', {
         email,
-        code,
+        code
       })
 
       saveAuth(data)
@@ -98,7 +105,9 @@ export default function VerifyEmail() {
         else if (data.role === 'vendor') nav('/vendor')
       }, 900)
     } catch (err) {
-      setError(err.response?.data?.detail || 'Verification failed. Please try again.')
+      setError(
+        err.response?.data?.detail || 'Verification failed. Please try again.'
+      )
       setDigits(['', '', '', '', '', ''])
       inputsRef.current[0]?.focus()
     } finally {
@@ -106,6 +115,7 @@ export default function VerifyEmail() {
     }
   }
 
+  /* RESEND */
   const resend = async () => {
     if (resendCooldown > 0 || resending) return
     setResending(true)
@@ -130,8 +140,19 @@ export default function VerifyEmail() {
       <div className="ve-bg ve-bg--one" />
       <div className="ve-bg ve-bg--two" />
 
-      {/* Top bar */}
+      {/* ================= TOP BAR ================= */}
+
       <header className="ve-topbar">
+        <div className="ve-brand">
+          <div className="ve-brand__logo">
+            <img src="/logo2.jpeg" alt="SM Clean Tech" />
+          </div>
+          <div>
+            <strong>SM Clean Tech</strong>
+            <span>Engineering Solutions</span>
+          </div>
+        </div>
+
         <button
           type="button"
           className="ve-back"
@@ -140,21 +161,11 @@ export default function VerifyEmail() {
           <span>←</span>
           Back
         </button>
-
-        <div className="ve-brand">
-          <div className="ve-brand__logo">
-            <img src="/logo.jpeg" alt="SM Clean Tech" />
-          </div>
-          <div>
-            <strong>SM Clean Tech</strong>
-            <span>Engineering Solutions</span>
-          </div>
-        </div>
       </header>
 
-      {/* Main */}
+      {/* ================= MAIN — CENTERED FORM ================= */}
+
       <main className="ve-main">
-        {/* LEFT — FORM CARD */}
         <section className="ve-card">
           <div className="ve-card__header">
             <div className="ve-card__icon">✉️</div>
@@ -168,7 +179,7 @@ export default function VerifyEmail() {
           </div>
 
           <form onSubmit={submit} className="ve-form" noValidate>
-            {/* Email */}
+            {/* EMAIL */}
             <div className="ve-field">
               <label>
                 <span className="ve-field__icon">📧</span>
@@ -229,10 +240,12 @@ export default function VerifyEmail() {
               </div>
             </div>
 
-            {/* Messages */}
+            {/* MESSAGES */}
             {msg && (
-              <div className="ve-msg ve-msg--success">
-                <span className="ve-msg__icon">✓</span>
+              <div className={`ve-msg ve-msg--${msgType}`}>
+                <span className="ve-msg__icon">
+                  {msgType === 'success' ? '✓' : '!'}
+                </span>
                 <span>{msg}</span>
               </div>
             )}
@@ -244,7 +257,7 @@ export default function VerifyEmail() {
               </div>
             )}
 
-            {/* Submit */}
+            {/* SUBMIT */}
             <button
               type="submit"
               className="ve-submit"
@@ -264,7 +277,7 @@ export default function VerifyEmail() {
               )}
             </button>
 
-            {/* Footer */}
+            {/* FOOTER */}
             <div className="ve-footer">
               <span>Wrong email?</span>
               <button
@@ -280,58 +293,6 @@ export default function VerifyEmail() {
             </div>
           </form>
         </section>
-
-        {/* RIGHT — INFO PANEL */}
-        <aside className="ve-intro">
-          <div className="ve-intro__badge">
-            <span className="ve-intro__dot" />
-            Secure Onboarding
-          </div>
-
-          <h1>
-            One step away from your <span>CleanTech dashboard.</span>
-          </h1>
-
-          <p>
-            Email verification keeps your account secure and unlocks the full
-            platform — enquiries, matched vendors, quotations, and CRM history.
-          </p>
-
-          {/* Logo */}
-          <div className="ve-logo">
-            <div className="ve-logo__halo" />
-            <div className="ve-logo__frame">
-              <img src="/logo.jpeg" alt="SM Clean Tech" />
-            </div>
-          </div>
-
-          {/* Feature list */}
-          <div className="ve-features">
-            <div className="ve-feature">
-              <div className="ve-feature__icon">🛡️</div>
-              <div>
-                <strong>OTP Protected</strong>
-                <span>Only you can activate your account</span>
-              </div>
-            </div>
-
-            <div className="ve-feature">
-              <div className="ve-feature__icon">⚡</div>
-              <div>
-                <strong>Instant Access</strong>
-                <span>Auto-redirect to your dashboard</span>
-              </div>
-            </div>
-
-            <div className="ve-feature">
-              <div className="ve-feature__icon">🔒</div>
-              <div>
-                <strong>Privacy First</strong>
-                <span>Contacts stay masked until handshake</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </main>
     </div>
   )
