@@ -9,7 +9,7 @@ import './RegistrationForm.css'
    ========================================================= */
 
 const buyerFields = [
-  ['full_name', 'Contact person', 'text', true],
+  ['full_name', 'Full name', 'text', true],
   ['email', 'Email', 'email', true],
   ['phone', 'Phone', 'tel', true],
   ['password', 'Password', 'password', true],
@@ -18,13 +18,13 @@ const buyerFields = [
   ['registered_address', 'Registered address', 'text', true],
   ['plant_location', 'Plant location', 'text', true],
   ['gst_number', 'GST number', 'text', false],
-  ['website', 'Website', 'url', false],
+  ['website', 'Website', 'url', true],
   ['head_office_contact', 'Head office contact', 'tel', false],
   ['ehs_contact', 'EHS/EHS head contact', 'tel', false]
 ]
 
 const vendorFields = [
-  ['full_name', 'Contact person', 'text', true],
+  ['full_name', 'Full name', 'text', true],
   ['email', 'Email', 'email', true],
   ['phone', 'Phone', 'tel', true],
   ['password', 'Password', 'password', true],
@@ -37,7 +37,7 @@ const vendorFields = [
   ['specialization', 'Specialization', 'text', true],
   ['gst_number', 'GST number', 'text', false],
   ['msme_number', 'MSME number', 'text', false],
-  ['website', 'Website', 'url', false]
+  ['website', 'Website', 'url', true]
 ]
 
 const domains = [
@@ -116,7 +116,14 @@ export default function RegistrationForm({ type }) {
   /* ================= VALIDATION ================= */
 
   const validateForm = () => {
-    const requiredFields = ['full_name', 'email', 'phone', 'password', 'company_name']
+    const requiredFields = [
+        'full_name',
+        'email',
+        'phone',
+        'password',
+        'company_name',
+        'website'
+      ]
 
     if (!isBuyer) {
       requiredFields.push(
