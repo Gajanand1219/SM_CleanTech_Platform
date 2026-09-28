@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.dependencies import require_roles
-
+from sqlalchemy import inspect
 from app.models import (
     User,
     BuyerProfile,
@@ -15,6 +15,7 @@ from app.models import (
     Role,
     EnquiryStatus,
     CRMEvent,
+    LoginEvent,
 )
 
 from app.schemas.admin import (
@@ -742,4 +743,330 @@ async def approve_enquiry(
         "matched_vendors": len(
             matched_vendors
         ),
+    }
+
+# ============================================================
+# LOGIN CRM
+# ============================================================
+
+@router.get("/crm/logins")
+def login_crm(
+    user=Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    """
+    Admin login CRM.
+
+    Shows:
+    - total login count
+    - login count per user
+    - last login
+    - complete login history
+    """
+
+    # --------------------------------------------------------
+    # LOGIN HISTORY
+    # --------------------------------------------------------
+
+    events = (
+        db.query(LoginEvent)
+        .join(User, LoginEvent.user_id == User.id)
+        .order_by(LoginEvent.login_at.desc())
+        .all()
+    )
+
+    # --------------------------------------------------------
+    # USER SUMMARY
+    # --------------------------------------------------------
+
+    users = (
+        db.query(User)
+        .order_by(User.id.desc())
+        .all()
+    )
+
+    summary = []
+
+    for account in users:
+
+        login_events = (
+            db.query(LoginEvent)
+            .filter(
+                LoginEvent.user_id == account.id
+            )
+            .order_by(
+                LoginEvent.login_at.desc()
+            )
+            .all()
+        )
+
+        summary.append({
+            "user_id": account.id,
+            "name": account.full_name,
+            "email": account.email,
+            "role": account.role,
+            "login_count": len(login_events),
+            "last_login": (
+                login_events[0].login_at
+                if login_events
+                else None
+            ),
+        })
+
+    # --------------------------------------------------------
+    # HISTORY
+    # --------------------------------------------------------
+
+    history = []
+
+    for event in events:
+
+        account = event.user
+
+        history.append({
+            "id": event.id,
+            "user_id": event.user_id,
+            "name": (
+                account.full_name
+                if account
+                else "Unknown"
+            ),
+            "email": (
+                account.email
+                if account
+                else None
+            ),
+            "role": event.role,
+            "login_at": event.login_at,
+        })
+
+    return {
+        "total_logins": len(events),
+        "total_users": len(users),
+        "summary": summary,
+        "history": history,
+    }
+
+
+
+
+# ============================================================
+# ADMIN - USER PROFILE + LOGIN CRM + BUYER/VENDOR CRM
+# ============================================================
+
+@router.get("/registrations/{user_id}/crm")
+def admin_user_crm(
+    user_id: int,
+    user=Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    # --------------------------------------------------------
+    # FIND USER
+    # --------------------------------------------------------
+
+    target_user = (
+        db.query(User)
+        .filter(User.id == user_id)
+        .first()
+    )
+
+    if not target_user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+    # --------------------------------------------------------
+    # PROFILE
+    # --------------------------------------------------------
+
+    profile = None
+
+    if target_user.role == "buyer":
+        profile = target_user.buyer_profile
+
+    elif target_user.role == "vendor":
+        profile = target_user.vendor_profile
+
+    profile_data = {}
+
+    if profile:
+        mapper = inspect(profile)
+
+        for column in mapper.mapper.column_attrs:
+            value = getattr(profile, column.key, None)
+
+            if hasattr(value, "isoformat"):
+                value = value.isoformat()
+
+            profile_data[column.key] = value
+
+    # --------------------------------------------------------
+    # LOGIN CRM
+    # --------------------------------------------------------
+
+    login_events = (
+        db.query(LoginEvent)
+        .filter(
+            LoginEvent.user_id == target_user.id
+        )
+        .order_by(
+            LoginEvent.login_at.desc()
+        )
+        .all()
+    )
+
+    login_history = [
+        {
+            "id": event.id,
+            "user_id": event.user_id,
+            "role": event.role,
+            "login_at": (
+                event.login_at.isoformat()
+                if event.login_at
+                else None
+            ),
+        }
+        for event in login_events
+    ]
+
+    # --------------------------------------------------------
+    # COMMON USER DATA
+    # --------------------------------------------------------
+
+    user_data = {
+        "id": target_user.id,
+        "name": target_user.full_name,
+        "email": target_user.email,
+        "phone": getattr(target_user, "phone", None),
+        "role": target_user.role,
+        "status": target_user.status,
+        "email_verified": target_user.email_verified,
+        "created_at": (
+            target_user.created_at.isoformat()
+            if getattr(target_user, "created_at", None)
+            else None
+        ),
+    }
+
+    # --------------------------------------------------------
+    # BUYER CRM
+    # --------------------------------------------------------
+
+    buyer_crm = []
+
+    if target_user.role == "buyer":
+
+        rows = (
+            db.query(
+                CRMEvent,
+                Enquiry,
+            )
+            .join(
+                Enquiry,
+                Enquiry.id == CRMEvent.enquiry_id,
+            )
+            .filter(
+                Enquiry.buyer_id == target_user.id
+            )
+            .order_by(
+                CRMEvent.created_at.desc()
+            )
+            .all()
+        )
+
+        buyer_crm = [
+            {
+                "enquiry_id": enquiry.id,
+                "title": enquiry.title,
+                "event": event.event_type,
+                "note": event.note,
+                "created_at": (
+                    event.created_at.isoformat()
+                    if event.created_at
+                    else None
+                ),
+            }
+            for event, enquiry in rows
+        ]
+
+    # --------------------------------------------------------
+    # VENDOR CRM
+    # --------------------------------------------------------
+
+    vendor_crm = []
+
+    if target_user.role == "vendor":
+
+        rows = (
+            db.query(
+                CRMEvent,
+                Enquiry,
+            )
+            .join(
+                Enquiry,
+                Enquiry.id == CRMEvent.enquiry_id,
+            )
+            .join(
+                EnquiryMatch,
+                EnquiryMatch.enquiry_id == Enquiry.id,
+            )
+            .filter(
+                EnquiryMatch.vendor_id == target_user.id
+            )
+            .order_by(
+                CRMEvent.created_at.desc()
+            )
+            .all()
+        )
+
+        vendor_crm = [
+            {
+                "enquiry_id": enquiry.id,
+                "title": enquiry.title,
+                "event": event.event_type,
+                "note": event.note,
+                "created_at": (
+                    event.created_at.isoformat()
+                    if event.created_at
+                    else None
+                ),
+            }
+            for event, enquiry in rows
+        ]
+
+    # --------------------------------------------------------
+    # FINAL RESPONSE
+    # --------------------------------------------------------
+
+    return {
+        "user": user_data,
+
+        "profile": profile_data,
+
+        "login_crm": {
+            "total_logins": len(login_history),
+            "last_login": (
+                login_history[0]["login_at"]
+                if login_history
+                else None
+            ),
+            "history": login_history,
+        },
+
+        "crm": {
+            "role": target_user.role,
+
+            "total_events": (
+                len(buyer_crm)
+                if target_user.role == "buyer"
+                else len(vendor_crm)
+            ),
+
+            "events": (
+                buyer_crm
+                if target_user.role == "buyer"
+                else vendor_crm
+            ),
+        },
     }
