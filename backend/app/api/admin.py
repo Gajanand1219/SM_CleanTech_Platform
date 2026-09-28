@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+
 from app.db import get_db
 from app.dependencies import require_roles
 from sqlalchemy import inspect
@@ -40,74 +41,74 @@ router = APIRouter(
 # DOMAIN-BASED VENDOR MATCHING
 # ============================================================
 
-def _find_matching_vendors(
-    db: Session,
-    enquiry: Enquiry,
-):
-    """
-    Match vendors ONLY by registered domain.
+# def _find_matching_vendors(
+#     db: Session,
+#     enquiry: Enquiry,
+# ):
+#     """
+#     Match vendors ONLY by registered domain.
 
-    Rules:
-    - Vendor must be ACTIVE
-    - Vendor email must be verified
-    - Vendor must have a vendor profile
-    - Enquiry domain must exactly match one of vendor domains
-    - Maximum 10 vendors
-    """
+#     Rules:
+#     - Vendor must be ACTIVE
+#     - Vendor email must be verified
+#     - Vendor must have a vendor profile
+#     - Enquiry domain must exactly match one of vendor domains
+#     - Maximum 10 vendors
+#     """
 
-    if not enquiry.domain:
-        return []
+#     if not enquiry.domain:
+#         return []
 
-    enquiry_domain = (
-        enquiry.domain.name
-        .strip()
-        .casefold()
-    )
+#     enquiry_domain = (
+#         enquiry.domain.name
+#         .strip()
+#         .casefold()
+#     )
 
-    vendors = (
-        db.query(User)
-        .join(
-            VendorProfile,
-            VendorProfile.user_id == User.id,
-        )
-        .filter(
-            User.role == Role.VENDOR.value,
-            User.status == AccountStatus.ACTIVE.value,
-            User.email_verified.is_(True),
-        )
-        .order_by(User.id.asc())
-        .all()
-    )
+#     vendors = (
+#         db.query(User)
+#         .join(
+#             VendorProfile,
+#             VendorProfile.user_id == User.id,
+#         )
+#         .filter(
+#             User.role == Role.VENDOR.value,
+#             User.status == AccountStatus.ACTIVE.value,
+#             User.email_verified.is_(True),
+#         )
+#         .order_by(User.id.asc())
+#         .all()
+#     )
 
-    matched = []
+#     matched = []
 
-    for vendor in vendors:
+#     for vendor in vendors:
 
-        profile = vendor.vendor_profile
+#         profile = vendor.vendor_profile
 
-        if not profile:
-            continue
+#         if not profile:
+#             continue
 
-        vendor_domains = {
-            str(domain)
-            .strip()
-            .casefold()
-            for domain in (profile.domains or [])
-            if domain
-        }
+#         vendor_domains = {
+#             str(domain)
+#             .strip()
+#             .casefold()
+#             for domain in (profile.domains or [])
+#             if domain
+#         }
 
-        # Exact domain match
-        if enquiry_domain in vendor_domains:
+#         # Exact domain match
+#         if enquiry_domain in vendor_domains:
 
-            matched.append(
-                (
-                    vendor,
-                    100.0,
-                )
-            )
+#             matched.append(
+#                 (
+#                     vendor,
+#                     100.0,
+#                 )
+#             )
 
-    # Maximum 10 vendor slots
-    return matched[:10]
+#     # Maximum 10 vendor slots
+#     return matched[:10]
 
 
 # ============================================================
@@ -529,221 +530,221 @@ def enquiry_detail(
 # APPROVE / REJECT ENQUIRY
 # ============================================================
 
-@router.post(
-    "/enquiries/{enquiry_id}/approval"
-)
-async def approve_enquiry(
-    enquiry_id: int,
-    payload: EnquiryApprovalAction,
-    user=Depends(require_roles("admin")),
-    db: Session = Depends(get_db),
-):
+# @router.post(
+#     "/enquiries/{enquiry_id}/approval"
+# )
+# async def approve_enquiry(
+#     enquiry_id: int,
+#     payload: EnquiryApprovalAction,
+#     user=Depends(require_roles("admin")),
+#     db: Session = Depends(get_db),
+# ):
 
-    e = db.get(
-        Enquiry,
-        enquiry_id,
-    )
+#     e = db.get(
+#         Enquiry,
+#         enquiry_id,
+#     )
 
-    if not e:
-        raise HTTPException(
-            status_code=404,
-            detail="Enquiry not found",
-        )
+#     if not e:
+#         raise HTTPException(
+#             status_code=404,
+#             detail="Enquiry not found",
+#         )
 
-    # --------------------------------------------------------
-    # Only submitted/rejected enquiries can be reviewed
-    # --------------------------------------------------------
+#     # --------------------------------------------------------
+#     # Only submitted/rejected enquiries can be reviewed
+#     # --------------------------------------------------------
 
-    if e.status not in [
-        EnquiryStatus.SUBMITTED.value,
-        EnquiryStatus.REJECTED.value,
-    ]:
-        raise HTTPException(
-            status_code=400,
-            detail=(
-                f"Enquiry is already {e.status} "
-                f"and cannot be approved again."
-            ),
-        )
+#     if e.status not in [
+#         EnquiryStatus.SUBMITTED.value,
+#         EnquiryStatus.REJECTED.value,
+#     ]:
+#         raise HTTPException(
+#             status_code=400,
+#             detail=(
+#                 f"Enquiry is already {e.status} "
+#                 f"and cannot be approved again."
+#             ),
+#         )
 
-    # ========================================================
-    # REJECT
-    # ========================================================
+#     # ========================================================
+#     # REJECT
+#     # ========================================================
 
-    if payload.status == EnquiryStatus.REJECTED.value:
+#     if payload.status == EnquiryStatus.REJECTED.value:
 
-        e.status = (
-            EnquiryStatus.REJECTED.value
-        )
+#         e.status = (
+#             EnquiryStatus.REJECTED.value
+#         )
 
-        db.add(
-            CRMEvent(
-                enquiry_id=e.id,
-                actor_id=user.id,
-                event_type="enquiry_rejected",
-                note=(
-                    payload.note
-                    or "Enquiry rejected by platform admin."
-                ),
-            )
-        )
+#         db.add(
+#             CRMEvent(
+#                 enquiry_id=e.id,
+#                 actor_id=user.id,
+#                 event_type="enquiry_rejected",
+#                 note=(
+#                     payload.note
+#                     or "Enquiry rejected by platform admin."
+#                 ),
+#             )
+#         )
 
-        db.commit()
+#         db.commit()
 
-        # ----------------------------------------------------
-        # EMAIL BUYER - ENQUIRY REJECTED
-        # ----------------------------------------------------
+#         # ----------------------------------------------------
+#         # EMAIL BUYER - ENQUIRY REJECTED
+#         # ----------------------------------------------------
 
-        if e.buyer and e.buyer.email:
+#         if e.buyer and e.buyer.email:
 
-            await send_enquiry_rejected_email(
-                buyer=e.buyer,
-                enquiry=e,
-                reason=payload.note,
-            )
+#             await send_enquiry_rejected_email(
+#                 buyer=e.buyer,
+#                 enquiry=e,
+#                 reason=payload.note,
+#             )
 
-        return {
-            "message": "Enquiry rejected",
-            "status": e.status,
-            "matched_vendors": 0,
-        }
+#         return {
+#             "message": "Enquiry rejected",
+#             "status": e.status,
+#             "matched_vendors": 0,
+#         }
 
-    # ========================================================
-    # APPROVE
-    # ========================================================
+#     # ========================================================
+#     # APPROVE
+#     # ========================================================
 
-    # Existing matches
-    existing_vendor_ids = {
-        match.vendor_id
-        for match in (
-            db.query(EnquiryMatch)
-            .filter(
-                EnquiryMatch.enquiry_id
-                == e.id
-            )
-            .all()
-        )
-    }
+#     # Existing matches
+#     existing_vendor_ids = {
+#         match.vendor_id
+#         for match in (
+#             db.query(EnquiryMatch)
+#             .filter(
+#                 EnquiryMatch.enquiry_id
+#                 == e.id
+#             )
+#             .all()
+#         )
+#     }
 
-    # --------------------------------------------------------
-    # DOMAIN-BASED MATCHING
-    # --------------------------------------------------------
+#     # --------------------------------------------------------
+#     # DOMAIN-BASED MATCHING
+#     # --------------------------------------------------------
 
-    matched_vendors = _find_matching_vendors(
-        db,
-        e,
-    )
+#     matched_vendors = _find_matching_vendors(
+#         db,
+#         e,
+#     )
 
-    created_matches = []
+#     created_matches = []
 
-    for vendor, score in matched_vendors:
+#     for vendor, score in matched_vendors:
 
-        # Prevent duplicate match
-        if vendor.id in existing_vendor_ids:
-            continue
+#         # Prevent duplicate match
+#         if vendor.id in existing_vendor_ids:
+#             continue
 
-        match = EnquiryMatch(
-            enquiry_id=e.id,
-            vendor_id=vendor.id,
-            match_score=score,
-            notified=False,
-        )
+#         match = EnquiryMatch(
+#             enquiry_id=e.id,
+#             vendor_id=vendor.id,
+#             match_score=score,
+#             notified=False,
+#         )
 
-        db.add(match)
+#         db.add(match)
 
-        created_matches.append(
-            (
-                match,
-                vendor,
-                score,
-            )
-        )
+#         created_matches.append(
+#             (
+#                 match,
+#                 vendor,
+#                 score,
+#             )
+#         )
 
-    # --------------------------------------------------------
-    # Enquiry status
-    # --------------------------------------------------------
+#     # --------------------------------------------------------
+#     # Enquiry status
+#     # --------------------------------------------------------
 
-    if matched_vendors or existing_vendor_ids:
+#     if matched_vendors or existing_vendor_ids:
 
-        e.status = (
-            EnquiryStatus.MATCHED.value
-        )
+#         e.status = (
+#             EnquiryStatus.MATCHED.value
+#         )
 
-    else:
+#     else:
 
-        e.status = (
-            EnquiryStatus.APPROVED.value
-        )
+#         e.status = (
+#             EnquiryStatus.APPROVED.value
+#         )
 
-    # --------------------------------------------------------
-    # CRM event
-    # --------------------------------------------------------
+#     # --------------------------------------------------------
+#     # CRM event
+#     # --------------------------------------------------------
 
-    db.add(
-        CRMEvent(
-            enquiry_id=e.id,
-            actor_id=user.id,
-            event_type="enquiry_approved",
-            note=(
-                "Enquiry approved by admin. "
-                f"{len(matched_vendors)} "
-                "domain-matched vendor "
-                "suggestion(s) created."
-            ),
-        )
-    )
+#     db.add(
+#         CRMEvent(
+#             enquiry_id=e.id,
+#             actor_id=user.id,
+#             event_type="enquiry_approved",
+#             note=(
+#                 "Enquiry approved by admin. "
+#                 f"{len(matched_vendors)} "
+#                 "domain-matched vendor "
+#                 "suggestion(s) created."
+#             ),
+#         )
+#     )
 
-    db.commit()
+#     db.commit()
 
-    # ========================================================
-    # EMAIL BUYER - ENQUIRY APPROVED
-    # ========================================================
+#     # ========================================================
+#     # EMAIL BUYER - ENQUIRY APPROVED
+#     # ========================================================
 
-    if e.buyer and e.buyer.email:
+#     if e.buyer and e.buyer.email:
 
-        await send_enquiry_approved_email(
-            buyer=e.buyer,
-            enquiry=e,
-            matched_count=len(matched_vendors),
-        )
+#         await send_enquiry_approved_email(
+#             buyer=e.buyer,
+#             enquiry=e,
+#             matched_count=len(matched_vendors),
+#         )
 
-    # ========================================================
-    # EMAIL MATCHED VENDORS
-    # ========================================================
+#     # ========================================================
+#     # EMAIL MATCHED VENDORS
+#     # ========================================================
 
-    for (
-        match,
-        vendor,
-        score,
-    ) in created_matches:
+#     for (
+#         match,
+#         vendor,
+#         score,
+#     ) in created_matches:
 
-        if not vendor.email:
-            continue
+#         if not vendor.email:
+#             continue
 
-        await send_vendor_matched_email(
-            vendor=vendor,
-            enquiry=e,
-        )
+#         await send_vendor_matched_email(
+#             vendor=vendor,
+#             enquiry=e,
+#         )
 
-        match.notified = True
+#         match.notified = True
 
-    db.commit()
+#     db.commit()
 
-    # ========================================================
-    # RESPONSE
-    # ========================================================
+#     # ========================================================
+#     # RESPONSE
+#     # ========================================================
 
-    return {
-        "message": (
-            "Enquiry approved and "
-            "domain-matched vendor "
-            "suggestions created"
-        ),
-        "status": e.status,
-        "matched_vendors": len(
-            matched_vendors
-        ),
-    }
+#     return {
+#         "message": (
+#             "Enquiry approved and "
+#             "domain-matched vendor "
+#             "suggestions created"
+#         ),
+#         "status": e.status,
+#         "matched_vendors": len(
+#             matched_vendors
+#         ),
+#     }
 
 # ============================================================
 # LOGIN CRM
