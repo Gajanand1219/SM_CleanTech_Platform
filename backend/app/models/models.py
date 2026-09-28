@@ -34,6 +34,7 @@ class BuyerProfile(Base):
     website: Mapped[str | None] = mapped_column(String(255))
     head_office_contact: Mapped[str | None] = mapped_column(String(150))
     ehs_contact: Mapped[str | None] = mapped_column(String(150))
+    director_email = mapped_column(String(255), nullable=True)
     user = relationship("User", back_populates="buyer_profile")
 
 class VendorProfile(Base):
@@ -51,6 +52,9 @@ class VendorProfile(Base):
     msme_number: Mapped[str | None] = mapped_column(String(80))
     website: Mapped[str | None] = mapped_column(String(255))
     domains: Mapped[list] = mapped_column(JSON, default=list)
+    director_email: Mapped[str | None] = mapped_column(String(255))
+    contact_2: Mapped[str | None] = mapped_column(String(30))
+
     user = relationship("User", back_populates="vendor_profile")
 
 class Domain(Base):
