@@ -397,6 +397,7 @@ def enquiry(
     approved_for_matching = (
         e.status
         in {
+            EnquiryStatus.APPROVED.value,
             EnquiryStatus.MATCHED.value,
             EnquiryStatus.QUOTATION.value,
             EnquiryStatus.ACCEPTED.value,
