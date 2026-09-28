@@ -2413,3 +2413,140 @@
   }
 
 }
+
+
+
+/* =========================================================
+   PARTNER MARQUEE - MOBILE FIX
+   ========================================================= */
+
+.partner-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.partner-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  min-width: max-content;
+  flex-wrap: nowrap;
+
+  animation: partnerMarquee 28s linear infinite;
+  will-change: transform;
+}
+
+.partner-marquee-track--reverse {
+  animation: partnerMarqueeReverse 32s linear infinite;
+  will-change: transform;
+}
+
+.partner-company {
+  flex: 0 0 auto;
+  width: 175px;
+  min-width: 175px;
+}
+
+/* Desktop */
+@keyframes partnerMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes partnerMarqueeReverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+/* =========================================================
+   MOBILE MARQUEE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .partner-marquee {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 18px 0;
+  }
+
+  .partner-marquee-track,
+  .partner-marquee-track--reverse {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: max-content;
+
+    animation-duration: 18s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+
+    will-change: transform;
+  }
+
+  .partner-marquee-track--reverse {
+    animation-duration: 20s;
+  }
+
+  .partner-company {
+    flex: 0 0 155px;
+    width: 155px;
+    min-width: 155px;
+
+    margin: 0 6px;
+    padding: 9px 11px;
+  }
+
+  .partner-company-logo {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+  }
+
+  .partner-company-logo img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .partner-company-name {
+    max-width: 100px;
+    font-size: 11px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .partner-marquee-track {
+    animation-duration: 16s;
+  }
+
+  .partner-marquee-track--reverse {
+    animation-duration: 18s;
+  }
+
+  .partner-company {
+    flex: 0 0 145px;
+    width: 145px;
+    min-width: 145px;
+  }
+}
