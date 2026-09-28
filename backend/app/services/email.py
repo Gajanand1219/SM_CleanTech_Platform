@@ -19,7 +19,7 @@ EMAIL_RELAY_SECRET = "SM_CLEAN_TECH_EMAIL_2026_SECRET"
 # LOW-LEVEL EMAIL SENDER
 # ============================================================
 
-async def send_email(to: str, subject: str, html: str) -> bool:
+async def send_email(to, subject: str, html: str) -> bool:
     """
     Central email sender using the PythonAnywhere Flask email relay.
 
