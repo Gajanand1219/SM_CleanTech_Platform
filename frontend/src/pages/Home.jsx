@@ -456,137 +456,210 @@ export default function Home() {
         </section>
 
         {/* ================= TRUSTED NETWORK ================= */}
+{/* ================= TRUSTED NETWORK ================= */}
 
-        <section className="partners">
-          <div className="section-container">
-            <div className="partners-heading" data-reveal>
-              <span className="section-label">OUR NETWORK</span>
-              <h2>Trusted Industrial Network</h2>
-              <p>
-                Connecting verified industrial buyers with approved CleanTech
-                engineering and EPC solution providers.
-              </p>
-            </div>
+<section className="partners">
 
-            <div className="partners-grid">
-              {/* VENDORS */}
-              <div className="partner-network-card" data-reveal>
-                <div className="partner-network-header">
-                  <div className="partner-network-icon">⚙️</div>
-                  <div>
-                    <span className="partner-network-kicker">
-                      TECHNICAL NETWORK
-                    </span>
-                    <h3>Approved EPC Providers</h3>
-                  </div>
-                </div>
+  <div className="section-container">
 
-                <div className="partner-marquee">
-                  <div className="partner-marquee-track">
-                    {vendors.length > 0 ? (
-                      [...vendors, ...vendors].map((company, index) => (
-                        <div
-                          className="partner-company"
-                          key={`${company.id}-${index}`}
-                        >
-                          <div className="partner-company-logo">
-                            <img
-                              src={company.logo}
-                              alt={company.company_name}
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                                e.currentTarget.parentElement.classList.add(
-                                  'partner-company-logo--fallback'
-                                )
-                              }}
-                            />
-                            <span>
-                              {company.company_name
-                                ?.charAt(0)
-                                ?.toUpperCase()}
-                            </span>
-                          </div>
-                          <span className="partner-company-name">
-                            {company.company_name}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="partner-empty">
-                        No approved vendors yet.
-                      </div>
-                    )}
-                  </div>
-                </div>
+    <div className="partners-heading">
+      <span className="section-label">
+        OUR NETWORK
+      </span>
 
-                <div className="partner-network-footer">
-                  <span className="network-status-dot" />
-                  Verified CleanTech Solution Providers
-                </div>
-              </div>
+      <h2>
+        Trusted Industrial Network
+      </h2>
 
-              {/* BUYERS */}
-              <div
-                className="partner-network-card"
-                data-reveal
-                style={{ transitionDelay: '0.1s' }}
-              >
-                <div className="partner-network-header">
-                  <div className="partner-network-icon">🏢</div>
-                  <div>
-                    <span className="partner-network-kicker">
-                      TRUSTED NETWORK
-                    </span>
-                    <h3>Verified Industrial Buyers</h3>
-                  </div>
-                </div>
+      <p>
+        Connecting verified industrial buyers with approved
+        CleanTech engineering and EPC solution providers.
+      </p>
+    </div>
 
-                <div className="partner-marquee">
-                  <div className="partner-marquee-track partner-marquee-track--reverse">
-                    {buyers.length > 0 ? (
-                      [...buyers, ...buyers].map((company, index) => (
-                        <div
-                          className="partner-company"
-                          key={`${company.id}-${index}`}
-                        >
-                          <div className="partner-company-logo">
-                            <img
-                              src={company.logo}
-                              alt={company.company_name}
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                                e.currentTarget.parentElement.classList.add(
-                                  'partner-company-logo--fallback'
-                                )
-                              }}
-                            />
-                            <span>
-                              {company.company_name
-                                ?.charAt(0)
-                                ?.toUpperCase()}
-                            </span>
-                          </div>
-                          <span className="partner-company-name">
-                            {company.company_name}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="partner-empty">
-                        No verified buyers yet.
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                <div className="partner-network-footer">
-                  <span className="network-status-dot" />
-                  Verified Industrial Businesses
-                </div>
-              </div>
-            </div>
+    <div className="partners-grid">
+
+      {/* ================= VENDORS ================= */}
+
+      <div className="partner-network-card partner-network-card--vendor">
+
+        <div className="partner-network-header">
+
+          <div className="partner-network-icon">
+            ⚙️
           </div>
-        </section>
+
+          <div>
+            <span className="partner-network-kicker">
+              TECHNICAL NETWORK
+            </span>
+
+            <h3>
+              Approved EPC Providers
+            </h3>
+          </div>
+
+        </div>
+
+
+        <div className="partner-marquee">
+
+          <div className="partner-marquee-track">
+
+            {vendors.length > 0 ? (
+              [
+                ...vendors,
+                ...vendors
+              ].map((company, index) => (
+
+                <div
+                  className="partner-company"
+                  key={`${company.id}-${index}`}
+                >
+
+                  <div className="partner-company-logo">
+
+                    <img
+                      src={company.logo}
+                      alt={company.company_name}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                        e.currentTarget.parentElement.classList.add(
+                          'partner-company-logo--fallback'
+                        )
+                      }}
+                    />
+
+                    <span>
+                      {company.company_name?.charAt(0)?.toUpperCase()}
+                    </span>
+
+                  </div>
+
+                  <span className="partner-company-name">
+                    {company.company_name}
+                  </span>
+
+                </div>
+
+              ))
+            ) : (
+
+              <div className="partner-empty">
+                No approved vendors yet.
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+
+        <div className="partner-network-footer">
+
+          <span className="network-status-dot" />
+
+          Verified CleanTech Solution Providers
+
+        </div>
+
+      </div>
+
+
+      {/* ================= BUYERS ================= */}
+
+      <div className="partner-network-card partner-network-card--buyer">
+
+        <div className="partner-network-header">
+
+          <div className="partner-network-icon">
+            🏢
+          </div>
+
+          <div>
+            <span className="partner-network-kicker">
+              TRUSTED NETWORK
+            </span>
+
+            <h3>
+              Verified Industrial Buyers
+            </h3>
+          </div>
+
+        </div>
+
+
+        <div className="partner-marquee">
+
+          <div className="partner-marquee-track partner-marquee-track--reverse">
+
+            {buyers.length > 0 ? (
+              [
+                ...buyers,
+                ...buyers
+              ].map((company, index) => (
+
+                <div
+                  className="partner-company"
+                  key={`${company.id}-${index}`}
+                >
+
+                  <div className="partner-company-logo">
+
+                    <img
+                      src={company.logo}
+                      alt={company.company_name}
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                        e.currentTarget.parentElement.classList.add(
+                          'partner-company-logo--fallback'
+                        )
+                      }}
+                    />
+
+                    <span>
+                      {company.company_name?.charAt(0)?.toUpperCase()}
+                    </span>
+
+                  </div>
+
+                  <span className="partner-company-name">
+                    {company.company_name}
+                  </span>
+
+                </div>
+
+              ))
+            ) : (
+
+              <div className="partner-empty">
+                No verified buyers yet.
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+
+        <div className="partner-network-footer">
+
+          <span className="network-status-dot" />
+
+          Verified Industrial Businesses
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
         {/* ================= CONTACT ================= */}
 
