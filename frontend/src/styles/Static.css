@@ -1417,3 +1417,105 @@
     font-size: 10.5px;
   }
 }
+
+
+/* =========================================================
+   FOOTER LOGO - FINAL OVERRIDE
+   ========================================================= */
+
+.footer .footer__logo-image {
+  width: 58px !important;
+  height: 58px !important;
+
+  min-width: 58px !important;
+  min-height: 58px !important;
+
+  max-width: 58px !important;
+  max-height: 58px !important;
+
+  display: block !important;
+
+  object-fit: cover !important;
+  object-position: center !important;
+
+  border-radius: 50% !important;
+  border: 2px solid #087f45 !important;
+
+  background: #ffffff !important;
+  padding: 2px !important;
+
+  box-sizing: border-box !important;
+
+  box-shadow: 0 3px 10px rgba(8, 127, 69, 0.18) !important;
+
+  margin: 0 !important;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease !important;
+}
+
+.footer .footer__logo-image:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 5px 16px rgba(8, 127, 69, 0.28) !important;
+}
+
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (max-width: 900px) {
+  .footer .footer__logo-image {
+    width: 58px !important;
+    height: 58px !important;
+
+    min-width: 58px !important;
+    min-height: 58px !important;
+
+    max-width: 58px !important;
+    max-height: 58px !important;
+
+    margin: 0 auto !important;
+  }
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 700px) {
+  .footer .footer__logo-image {
+    width: 50px !important;
+    height: 50px !important;
+
+    min-width: 50px !important;
+    min-height: 50px !important;
+
+    max-width: 50px !important;
+    max-height: 50px !important;
+
+    margin: 0 auto !important;
+
+    border-radius: 50% !important;
+  }
+}
+
+
+/* =========================
+   VERY SMALL MOBILE
+   ========================= */
+
+@media (max-width: 380px) {
+  .footer .footer__logo-image {
+    width: 46px !important;
+    height: 46px !important;
+
+    min-width: 46px !important;
+    min-height: 46px !important;
+
+    max-width: 46px !important;
+    max-height: 46px !important;
+  }
+}
