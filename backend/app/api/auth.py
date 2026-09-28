@@ -240,6 +240,12 @@ async def match_existing_enquiries_for_vendor(
 
         db.add(match)
 
+        # --------------------------------------------------------
+        # Existing APPROVED enquiry is now MATCHED
+        # --------------------------------------------------------
+        if enquiry.status == EnquiryStatus.APPROVED.value:
+            enquiry.status = EnquiryStatus.MATCHED.value
+
         matched_count += 1
 
         # Flush so the match exists before email processing
