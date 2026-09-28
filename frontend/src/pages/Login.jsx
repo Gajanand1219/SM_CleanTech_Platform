@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import './Login.css'
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
 
 function getErrorMessage(error) {
   const detail = error?.response?.data?.detail
@@ -29,20 +33,80 @@ function getErrorMessage(error) {
   return 'Login failed. Please try again.'
 }
 
+/* =========================================================
+   CAPTCHA GENERATOR — 6 chars
+   ========================================================= */
+
+function generateCaptcha() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+  let out = ''
+  for (let i = 0; i < 6; i++) {
+    out += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return out
+}
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  /* ================= CAPTCHA STATE ================= */
+
+  const [captchaText, setCaptchaText] = useState(() => generateCaptcha())
+  const [captchaInput, setCaptchaInput] = useState('')
+  const [captchaError, setCaptchaError] = useState('')
+
+  /* ================= REGISTER POPUP STATE ================= */
+
   const [showRegisterChoice, setShowRegisterChoice] = useState(false)
 
   const { login } = useAuth()
   const navigate = useNavigate()
 
+  /* ================= REFRESH CAPTCHA ================= */
+
+  const refreshCaptcha = () => {
+    setCaptchaText(generateCaptcha())
+    setCaptchaInput('')
+    setCaptchaError('')
+  }
+
+  /* ================= GO TO REGISTER ================= */
+
+  const goToRegister = (type) => {
+    setShowRegisterChoice(false)
+    navigate(`/register/${type}`)
+  }
+
+  /* ================= SUBMIT ================= */
+
   const submit = async (e) => {
     e.preventDefault()
     setError('')
+    setCaptchaError('')
+
+    /* ---- CAPTCHA VALIDATION ---- */
+
+    if (!captchaInput.trim()) {
+      setCaptchaError('Please enter the captcha code.')
+      return
+    }
+
+    if (captchaInput.trim().toUpperCase() !== captchaText.toUpperCase()) {
+      setCaptchaError('Incorrect captcha. Please try again.')
+      refreshCaptcha()
+      return
+    }
+
+    /* ---- LOGIN ---- */
+
     setLoading(true)
 
     try {
@@ -58,14 +122,10 @@ export default function Login() {
     } catch (err) {
       console.error('Login error:', err)
       setError(getErrorMessage(err))
+      refreshCaptcha()
     } finally {
       setLoading(false)
     }
-  }
-
-  const goToRegister = (type) => {
-    setShowRegisterChoice(false)
-    navigate(`/register/${type}`)
   }
 
   return (
@@ -73,11 +133,12 @@ export default function Login() {
       <div className="login-bg login-bg--one" />
       <div className="login-bg login-bg--two" />
 
-      {/* Top bar */}
+      {/* ================= TOP BAR ================= */}
+
       <div className="login-topbar">
         <div className="login-brand">
           <div className="login-brand-logo">
-            <img src="/logo.jpeg" alt="SM Clean Tech" />
+            <img src="/logo2.jpeg" alt="SM Clean Tech" />
           </div>
           <div>
             <strong>SM Clean Tech</strong>
@@ -95,9 +156,9 @@ export default function Login() {
         </button>
       </div>
 
-      {/* Main split */}
+      {/* ================= MAIN ================= */}
+
       <main className="login-main">
-        {/* LEFT — FORM CARD */}
         <section className="login-card">
           <div className="login-card-header">
             <div>
@@ -110,6 +171,8 @@ export default function Login() {
           </div>
 
           <form onSubmit={submit} className="modern-login-form" noValidate>
+            {/* EMAIL */}
+
             <div className="field-group">
               <label>
                 <span className="field-icon">✉️</span>
@@ -124,6 +187,8 @@ export default function Login() {
                 required
               />
             </div>
+
+            {/* PASSWORD */}
 
             <div className="field-group">
               <label>
@@ -150,12 +215,58 @@ export default function Login() {
               </div>
             </div>
 
+            {/* CAPTCHA */}
+
+            <div className="field-group captcha-group">
+              <label>
+                <span className="field-icon">🛡️</span>
+                Captcha Verification
+              </label>
+
+              <div className="captcha-row">
+                <div className="captcha-box">
+                  <span className="captcha-text">{captchaText}</span>
+                  <button
+                    type="button"
+                    className="captcha-refresh"
+                    onClick={refreshCaptcha}
+                    aria-label="Refresh captcha"
+                    title="Refresh captcha"
+                  >
+                    ↻
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  className="captcha-input"
+                  value={captchaInput}
+                  onChange={(e) => {
+                    setCaptchaInput(e.target.value.toUpperCase())
+                    setCaptchaError('')
+                  }}
+                  placeholder="Enter code"
+                  maxLength={6}
+                  autoComplete="off"
+                  spellCheck="false"
+                />
+              </div>
+
+              {captchaError && (
+                <div className="captcha-error">{captchaError}</div>
+              )}
+            </div>
+
+            {/* REMEMBER */}
+
             <div className="login-row">
               <label className="remember">
                 <input type="checkbox" />
                 <span>Remember me</span>
               </label>
             </div>
+
+            {/* ERROR */}
 
             {error && (
               <div className="login-message login-message--error">
@@ -166,6 +277,8 @@ export default function Login() {
                 </button>
               </div>
             )}
+
+            {/* SUBMIT */}
 
             <button
               type="submit"
@@ -185,6 +298,8 @@ export default function Login() {
               )}
             </button>
 
+            {/* FOOTER */}
+
             <div className="login-footer">
               <span>New to SM Clean Tech?</span>
               <button
@@ -200,7 +315,8 @@ export default function Login() {
             </div>
           </form>
 
-          {/* Demo box */}
+          {/* DEMO BOX */}
+
           <div className="demo-box">
             <span className="demo-dot" />
             <div>
@@ -209,59 +325,12 @@ export default function Login() {
             </div>
           </div>
         </section>
-
-        {/* RIGHT — INFO PANEL */}
-        <aside className="login-intro">
-          <div className="intro-badge">
-            <span className="intro-dot" />
-            Trusted CleanTech Network
-          </div>
-
-          <h1>
-            Access your <span>industrial dashboard.</span>
-          </h1>
-
-          <p>
-            Sign in to manage enquiries, quotations, vendor matches, and
-            five-year project history — all in one secure place.
-          </p>
-
-          <div className="intro-logo">
-            <div className="intro-logo__halo" />
-            <div className="intro-logo__frame">
-              <img src="/logo.jpeg" alt="SM Clean Tech" />
-            </div>
-          </div>
-
-          <div className="intro-features">
-            <div className="intro-feature">
-              <div className="feature-icon">✓</div>
-              <div>
-                <strong>Verified Access</strong>
-                <span>Only approved accounts</span>
-              </div>
-            </div>
-
-            <div className="intro-feature">
-              <div className="feature-icon">🔒</div>
-              <div>
-                <strong>Masked Contacts</strong>
-                <span>Privacy-first network</span>
-              </div>
-            </div>
-
-            <div className="intro-feature">
-              <div className="feature-icon">📊</div>
-              <div>
-                <strong>5-Year CRM</strong>
-                <span>Full project history</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </main>
 
-      {/* ================= REGISTER CHOICE MODAL ================= */}
+      {/* =========================================================
+         REGISTER CHOICE POPUP
+         ========================================================= */}
+
       {showRegisterChoice && (
         <div
           className="register-modal-overlay"
@@ -286,30 +355,36 @@ export default function Login() {
 
             <div className="register-modal__options">
               {/* BUYER */}
+
               <button
                 type="button"
                 className="register-option register-option--buyer"
                 onClick={() => goToRegister('buyer')}
               >
                 <div className="register-option__icon">🏢</div>
+
                 <div className="register-option__text">
                   <strong>Register as Buyer</strong>
                   <span>Post industrial requirements</span>
                 </div>
+
                 <div className="register-option__arrow">→</div>
               </button>
 
               {/* VENDOR */}
+
               <button
                 type="button"
                 className="register-option register-option--vendor"
                 onClick={() => goToRegister('vendor')}
               >
                 <div className="register-option__icon">⚙️</div>
+
                 <div className="register-option__text">
                   <strong>Register as Vendor</strong>
                   <span>Offer EPC & CleanTech solutions</span>
                 </div>
+
                 <div className="register-option__arrow">→</div>
               </button>
             </div>
