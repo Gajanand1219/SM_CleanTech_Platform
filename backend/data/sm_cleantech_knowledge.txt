@@ -7,6 +7,8 @@ Document purpose
 This file is the primary knowledge source for the SM CleanTech Engineering Solutions
 website AI assistant.
 
+
+
 The assistant should use this information to answer questions about:
 - SM CleanTech Engineering Solutions
 - the purpose of the platform
