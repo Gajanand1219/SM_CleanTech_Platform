@@ -3,11 +3,11 @@ import Navbar from '../components/Navbar'
 import '../styles/Home.css'
 import API from '../services/api'
 import { useEffect, useState, useRef } from 'react'
-
+import '../styles/ScrollAnimations.css'
 const solutionsList = [
   {
     name: 'Water & Wastewater',
-    icon: '💧',
+    // icon: '💧',
     image:
       'https://images.unsplash.com/photo-1538300342682-cf57afb97285?auto=format&fit=crop&w=900&q=80',
     desc:
@@ -56,26 +56,35 @@ const workflowSteps = [
 ]
 
 /* ================= SCROLL REVEAL HOOK ================= */
-
 function useScrollReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]')
+    const elements = document.querySelectorAll('[data-reveal]')
+
+    if (!elements.length) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
+          } else {
+            entry.target.classList.remove('is-visible')
           }
         })
       },
-      { threshold: 0.12 }
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px',
+      }
     )
 
-    els.forEach((el) => observer.observe(el))
+    elements.forEach((element) => {
+      observer.observe(element)
+    })
 
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+    }
   }, [])
 }
 
@@ -380,9 +389,9 @@ export default function Home() {
                     <span className="solution-card__number">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <span className="solution-card__icon">
+                    {/* <span className="solution-card__icon">
                       {solution.icon}
-                    </span>
+                    </span> */}
                     <div className="solution-card__overlay" />
                   </div>
 
