@@ -16,6 +16,7 @@ export default function BuyerDashboard() {
 
   return (
     <PanelLayout role="buyer" title="Buyer Dashboard">
+      {/* STATS */}
       <div className="stats">
         {Object.entries(data.stats).map(([k, v]) => (
           <StatCard
@@ -26,6 +27,7 @@ export default function BuyerDashboard() {
         ))}
       </div>
 
+      {/* ENQUIRIES LIST */}
       <div className="panel-card">
         <div className="card-head">
           <div>
@@ -50,17 +52,19 @@ export default function BuyerDashboard() {
                 className="table-row"
                 key={e.id}
               >
-                <span>
+                <span data-label="Enquiry">
                   #{e.id} · {e.title}
                 </span>
 
-                <span>{e.domain}</span>
+                <span data-label="Domain">
+                  {e.domain}
+                </span>
 
-                <span>
+                <span data-label="Status">
                   <span className="status">{e.status}</span>
                 </span>
 
-                <span>
+                <span data-label="Activity">
                   {e.matches} matches · {e.quotations} quotes
                 </span>
               </Link>
