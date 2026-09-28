@@ -5,38 +5,39 @@ import './RegistrationForm.css'
 
 /* =========================================================
    FIELD DEFINITIONS
+   Format: [key, label, type, required]
    ========================================================= */
 
 const buyerFields = [
-  ['full_name', 'Contact person', 'text'],
-  ['email', 'Email', 'email'],
-  ['phone', 'Phone', 'tel'],
-  ['password', 'Password', 'password'],
-  ['company_name', 'Company name', 'text'],
-  ['industry', 'Industry', 'text'],
-  ['registered_address', 'Registered address', 'text'],
-  ['plant_location', 'Plant location', 'text'],
-  ['gst_number', 'GST number', 'text'],
-  ['website', 'Website', 'url'],
-  ['head_office_contact', 'Head office contact', 'tel'],
-  ['ehs_contact', 'EHS/EHS head contact', 'tel']
+  ['full_name', 'Contact person', 'text', true],
+  ['email', 'Email', 'email', true],
+  ['phone', 'Phone', 'tel', true],
+  ['password', 'Password', 'password', true],
+  ['company_name', 'Company name', 'text', true],
+  ['industry', 'Industry', 'text', true],
+  ['registered_address', 'Registered address', 'text', true],
+  ['plant_location', 'Plant location', 'text', true],
+  ['gst_number', 'GST number', 'text', false],
+  ['website', 'Website', 'url', false],
+  ['head_office_contact', 'Head office contact', 'tel', false],
+  ['ehs_contact', 'EHS/EHS head contact', 'tel', false]
 ]
 
 const vendorFields = [
-  ['full_name', 'Contact person', 'text'],
-  ['email', 'Email', 'email'],
-  ['phone', 'Phone', 'tel'],
-  ['password', 'Password', 'password'],
-  ['company_name', 'Company name', 'text'],
-  ['industry_type', 'Industry type', 'text'],
-  ['address', 'Address', 'text'],
-  ['area_of_work', 'Area of work', 'text'],
-  ['experience_years', 'Experience (years)', 'number'],
-  ['capacity', 'Capacity', 'text'],
-  ['specialization', 'Specialization', 'text'],
-  ['gst_number', 'GST number', 'text'],
-  ['msme_number', 'MSME number', 'text'],
-  ['website', 'Website', 'url']
+  ['full_name', 'Contact person', 'text', true],
+  ['email', 'Email', 'email', true],
+  ['phone', 'Phone', 'tel', true],
+  ['password', 'Password', 'password', true],
+  ['company_name', 'Company name', 'text', true],
+  ['industry_type', 'Industry type', 'text', true],
+  ['address', 'Address', 'text', true],
+  ['area_of_work', 'Area of work', 'text', true],
+  ['experience_years', 'Experience (years)', 'number', true],
+  ['capacity', 'Capacity', 'text', false],
+  ['specialization', 'Specialization', 'text', true],
+  ['gst_number', 'GST number', 'text', false],
+  ['msme_number', 'MSME number', 'text', false],
+  ['website', 'Website', 'url', false]
 ]
 
 const domains = [
@@ -48,7 +49,7 @@ const domains = [
 ]
 
 /* =========================================================
-   ERROR MESSAGE HELPER
+   ERROR HELPER
    ========================================================= */
 
 function getErrorMessage(error) {
@@ -90,18 +91,17 @@ export default function RegistrationForm({ type }) {
   const [msg, setMsg] = useState('')
   const [msgType, setMsgType] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const nav = useNavigate()
 
-  /* ================= UPDATE FIELD ================= */
+  /* ================= UPDATE ================= */
 
   const updateField = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }))
     setMsg('')
     setMsgType('')
   }
-
-  /* ================= TOGGLE DOMAIN ================= */
 
   const toggleDomain = (domain) => {
     setSelected((prev) =>
@@ -116,13 +116,7 @@ export default function RegistrationForm({ type }) {
   /* ================= VALIDATION ================= */
 
   const validateForm = () => {
-    const requiredFields = [
-      'full_name',
-      'email',
-      'phone',
-      'password',
-      'company_name'
-    ]
+    const requiredFields = ['full_name', 'email', 'phone', 'password', 'company_name']
 
     if (!isBuyer) {
       requiredFields.push(
@@ -143,28 +137,22 @@ export default function RegistrationForm({ type }) {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(form.email.trim()))
-      return 'Please enter a valid email address.'
+    if (!emailRegex.test(form.email.trim())) return 'Please enter a valid email address.'
 
     const phoneRegex = /^[6-9]\d{9}$/
     if (!phoneRegex.test(form.phone.trim()))
       return 'Please enter a valid 10-digit Indian mobile number.'
 
-    if (form.password.length < 8)
-      return 'Password must contain at least 8 characters.'
-    if (!/[A-Z]/.test(form.password))
-      return 'Password must contain at least one uppercase letter.'
-    if (!/[a-z]/.test(form.password))
-      return 'Password must contain at least one lowercase letter.'
-    if (!/[0-9]/.test(form.password))
-      return 'Password must contain at least one number.'
+    if (form.password.length < 8) return 'Password must contain at least 8 characters.'
+    if (!/[A-Z]/.test(form.password)) return 'Password must contain at least one uppercase letter.'
+    if (!/[a-z]/.test(form.password)) return 'Password must contain at least one lowercase letter.'
+    if (!/[0-9]/.test(form.password)) return 'Password must contain at least one number.'
 
     if (!isBuyer) {
       const experience = Number(form.experience_years)
       if (!Number.isFinite(experience) || experience < 0 || experience > 100)
         return 'Experience must be between 0 and 100 years.'
-      if (selected.length === 0)
-        return 'Please select at least one CleanTech domain.'
+      if (selected.length === 0) return 'Please select at least one CleanTech domain.'
     }
 
     if (form.website?.trim()) {
@@ -204,15 +192,20 @@ export default function RegistrationForm({ type }) {
 
       const response = await API.post(`/auth/register/${type}`, payload)
 
-      setMsg(
+      const successMessage =
         response.data?.message ||
-          'Registration successful. Please verify your email.'
-      )
+        'Registration successful. Please verify your email.'
+
+      setMsg(successMessage)
       setMsgType('success')
 
+      /* SHOW SUCCESS POPUP */
+      setShowSuccess(true)
+
+      /* AUTO-REDIRECT AFTER 3 SEC */
       setTimeout(() => {
         nav(`/verify-email?email=${encodeURIComponent(form.email.trim())}`)
-      }, 1200)
+      }, 3000)
     } catch (error) {
       setMsg(getErrorMessage(error))
       setMsgType('error')
@@ -221,7 +214,7 @@ export default function RegistrationForm({ type }) {
     }
   }
 
-  /* ================= FIELD ICONS ================= */
+  /* ================= ICONS ================= */
 
   const getIcon = (key) => {
     const icons = {
@@ -250,12 +243,10 @@ export default function RegistrationForm({ type }) {
 
   /* ================= RENDER FIELD ================= */
 
-  const renderField = ([key, label, kind = 'text']) => (
+  const renderField = ([key, label, kind = 'text', required = false]) => (
     <div
       className={`field-group ${
-        key === 'registered_address' ||
-        key === 'plant_location' ||
-        key === 'address'
+        key === 'registered_address' || key === 'plant_location' || key === 'address'
           ? 'field-group--wide'
           : ''
       }`}
@@ -264,6 +255,7 @@ export default function RegistrationForm({ type }) {
       <label>
         <span className="field-icon">{getIcon(key)}</span>
         {label}
+        {required && <span className="required-star">*</span>}
       </label>
 
       <input
@@ -274,6 +266,7 @@ export default function RegistrationForm({ type }) {
         value={form[key] ?? ''}
         onChange={(e) => updateField(key, e.target.value)}
         placeholder={`Enter ${label.toLowerCase()}`}
+        required={required}
       />
     </div>
   )
@@ -294,7 +287,7 @@ export default function RegistrationForm({ type }) {
       <div className="registration-topbar">
         <div className="registration-brand">
           <div className="registration-brand-logo">
-            <img src="/logo.jpeg" alt="SM Clean Tech" />
+            <img src="/logo2.jpeg" alt="SM Clean Tech" />
           </div>
           <div>
             <strong>SM Clean Tech</strong>
@@ -302,22 +295,17 @@ export default function RegistrationForm({ type }) {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="back-home"
-          onClick={() => nav('/')}
-        >
+        <button type="button" className="back-home" onClick={() => nav('/')}>
           <span>←</span>
           Back
         </button>
       </div>
 
-      {/* ================= MAIN ================= */}
+      {/* ================= MAIN — CENTERED FORM ================= */}
 
-      <main className="registration-main">
-        {/* ================= LEFT: FORM CARD ================= */}
-
+      <main className="registration-main registration-main--centered">
         <section className="registration-card">
+          {/* HEADER */}
           <div className="registration-card-header">
             <div>
               <span className="form-kicker">
@@ -327,22 +315,13 @@ export default function RegistrationForm({ type }) {
               <p>Fill in your business information to get started.</p>
             </div>
 
-            <div
-              className={`role-icon ${
-                isBuyer ? 'role-icon--buyer' : 'role-icon--vendor'
-              }`}
-            >
+            <div className={`role-icon ${isBuyer ? 'role-icon--buyer' : 'role-icon--vendor'}`}>
               {isBuyer ? '🏢' : '🌱'}
             </div>
           </div>
 
-          <form
-            onSubmit={submit}
-            className="modern-registration-form"
-            noValidate
-          >
-            {/* SECTION 01 — ACCOUNT INFO */}
-
+          <form onSubmit={submit} className="modern-registration-form" noValidate>
+            {/* SECTION 01 */}
             <div className="form-section-title">
               <span>01</span>
               Account Information
@@ -352,8 +331,7 @@ export default function RegistrationForm({ type }) {
               {fields.slice(0, 4).map(renderField)}
             </div>
 
-            {/* SECTION 02 — BUSINESS INFO */}
-
+            {/* SECTION 02 */}
             <div className="form-section-title">
               <span>02</span>
               Business Information
@@ -361,15 +339,15 @@ export default function RegistrationForm({ type }) {
 
             <div className="registration-grid">
               {fields.slice(4).map(renderField)}
-            </div>
+            </div><br></br>
 
-            {/* SECTION 03 — DOMAINS (vendor only) */}
-
+            {/* SECTION 03 — Domains (vendor only) */}
             {!isBuyer && (
               <div className="domain-section">
                 <div className="form-section-title">
                   <span>03</span>
                   CleanTech Domains
+                  <span className="required-star">*</span>
                 </div>
 
                 <p className="domain-description">
@@ -383,14 +361,10 @@ export default function RegistrationForm({ type }) {
                       <button
                         type="button"
                         key={domain}
-                        className={`domain-card ${
-                          active ? 'domain-card--active' : ''
-                        }`}
+                        className={`domain-card ${active ? 'domain-card--active' : ''}`}
                         onClick={() => toggleDomain(domain)}
                       >
-                        <span className="domain-check">
-                          {active ? '✓' : '+'}
-                        </span>
+                        <span className="domain-check">{active ? '✓' : '+'}</span>
                         <span>{domain}</span>
                       </button>
                     )
@@ -399,8 +373,7 @@ export default function RegistrationForm({ type }) {
               </div>
             )}
 
-            {/* MESSAGE */}
-
+            {/* MESSAGES */}
             {msg && (
               <div
                 className={`registration-message ${
@@ -409,9 +382,7 @@ export default function RegistrationForm({ type }) {
                     : 'registration-message--error'
                 }`}
               >
-                <span className="message-icon">
-                  {msgType === 'success' ? '✓' : '!'}
-                </span>
+                <span className="message-icon">{msgType === 'success' ? '✓' : '!'}</span>
                 <span>{msg}</span>
                 <button
                   type="button"
@@ -426,13 +397,10 @@ export default function RegistrationForm({ type }) {
             )}
 
             {/* SUBMIT */}
-
             <button
               type="submit"
               className={`registration-submit ${
-                isBuyer
-                  ? 'registration-submit--buyer'
-                  : 'registration-submit--vendor'
+                isBuyer ? 'registration-submit--buyer' : 'registration-submit--vendor'
               }`}
               disabled={loading}
             >
@@ -450,7 +418,6 @@ export default function RegistrationForm({ type }) {
             </button>
 
             {/* FOOTER */}
-
             <div className="registration-footer">
               <span>Already have an account?</span>
               <button type="button" onClick={() => nav('/login')}>
@@ -463,73 +430,45 @@ export default function RegistrationForm({ type }) {
             </div>
           </form>
         </section>
-
-        {/* ================= RIGHT: INFO PANEL ================= */}
-
-        <aside className="registration-intro">
-          <div className="intro-badge">
-            <span className="intro-dot" />
-            {isBuyer ? 'Buyer Network' : 'Provider Network'}
-          </div>
-
-          <h1>
-            {isBuyer ? (
-              <>
-                Connect your <span>industrial needs</span> with trusted
-                solutions.
-              </>
-            ) : (
-              <>
-                Grow your <span>CleanTech business</span> with new
-                opportunities.
-              </>
-            )}
-          </h1>
-
-          <p>
-            {isBuyer
-              ? 'Create your buyer account and connect with qualified CleanTech solution providers.'
-              : 'Create your provider account and showcase your CleanTech capabilities.'}
-          </p>
-
-          {/* LOGO */}
-
-          <div className="intro-logo">
-            <div className="intro-logo__halo" />
-            <div className="intro-logo__frame">
-              <img src="/logo.jpeg" alt="SM Clean Tech" />
-            </div>
-          </div>
-
-          {/* FEATURES */}
-
-          <div className="intro-features">
-            <div className="intro-feature">
-              <div className="feature-icon">✓</div>
-              <div>
-                <strong>Verified Network</strong>
-                <span>Relevant businesses only</span>
-              </div>
-            </div>
-
-            <div className="intro-feature">
-              <div className="feature-icon">⚡</div>
-              <div>
-                <strong>Fast Connections</strong>
-                <span>Quick opportunity matching</span>
-              </div>
-            </div>
-
-            <div className="intro-feature">
-              <div className="feature-icon">🔒</div>
-              <div>
-                <strong>Secure Account</strong>
-                <span>Email verification</span>
-              </div>
-            </div>
-          </div>
-        </aside>
       </main>
+
+      {/* ================= SUCCESS POPUP ================= */}
+
+      {showSuccess && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="success-modal__icon">✓</div>
+
+            <span className="success-modal__label">REGISTRATION COMPLETE</span>
+            <h2>Account created successfully!</h2>
+
+            <p className="success-modal__text">
+              We've sent a verification email to
+              <br />
+              <strong>{form.email}</strong>
+            </p>
+
+            <p className="success-modal__hint">
+              Redirecting you to verify your email...
+            </p>
+
+            <div className="success-modal__progress">
+              <div className="success-modal__bar" />
+            </div>
+
+            <button
+              type="button"
+              className="success-modal__btn"
+              onClick={() =>
+                nav(`/verify-email?email=${encodeURIComponent(form.email.trim())}`)
+              }
+            >
+              Verify Email Now
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
