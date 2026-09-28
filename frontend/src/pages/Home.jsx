@@ -503,56 +503,69 @@ export default function Home() {
         </div>
 
 
+        {/* VENDORS - RIGHT TO LEFT */}
+
         <div className="partner-marquee">
 
-          <div className="partner-marquee-track">
+          {vendors.length > 0 ? (
 
-            {vendors.length > 0 ? (
-              [
-                ...vendors,
-                ...vendors
-              ].map((company, index) => (
+            <marquee
+              behavior="scroll"
+              direction="left"
+              scrollamount="5"
+              scrolldelay="0"
+              loop="-1"
+            >
 
-                <div
-                  className="partner-company"
-                  key={`${company.id}-${index}`}
-                >
+              <div className="partner-marquee-content">
 
-                  <div className="partner-company-logo">
+                {[...vendors, ...vendors].map((company, index) => (
 
-                    <img
-                      src={company.logo}
-                      alt={company.company_name}
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                        e.currentTarget.parentElement.classList.add(
-                          'partner-company-logo--fallback'
-                        )
-                      }}
-                    />
+                  <div
+                    className="partner-company"
+                    key={`${company.id}-${index}`}
+                  >
 
-                    <span>
-                      {company.company_name?.charAt(0)?.toUpperCase()}
+                    <div className="partner-company-logo">
+
+                      <img
+                        src={company.logo}
+                        alt={company.company_name}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                          e.currentTarget.parentElement.classList.add(
+                            'partner-company-logo--fallback'
+                          )
+                        }}
+                      />
+
+                      <span>
+                        {company.company_name
+                          ?.charAt(0)
+                          ?.toUpperCase()}
+                      </span>
+
+                    </div>
+
+                    <span className="partner-company-name">
+                      {company.company_name}
                     </span>
 
                   </div>
 
-                  <span className="partner-company-name">
-                    {company.company_name}
-                  </span>
+                ))}
 
-                </div>
-
-              ))
-            ) : (
-
-              <div className="partner-empty">
-                No approved vendors yet.
               </div>
 
-            )}
+            </marquee>
 
-          </div>
+          ) : (
+
+            <div className="partner-empty">
+              No approved vendors yet.
+            </div>
+
+          )}
 
         </div>
 
@@ -591,56 +604,69 @@ export default function Home() {
         </div>
 
 
+        {/* BUYERS - LEFT TO RIGHT */}
+
         <div className="partner-marquee">
 
-          <div className="partner-marquee-track partner-marquee-track--reverse">
+          {buyers.length > 0 ? (
 
-            {buyers.length > 0 ? (
-              [
-                ...buyers,
-                ...buyers
-              ].map((company, index) => (
+            <marquee
+              behavior="scroll"
+              direction="right"
+              scrollamount="5"
+              scrolldelay="0"
+              loop="-1"
+            >
 
-                <div
-                  className="partner-company"
-                  key={`${company.id}-${index}`}
-                >
+              <div className="partner-marquee-content">
 
-                  <div className="partner-company-logo">
+                {[...buyers, ...buyers].map((company, index) => (
 
-                    <img
-                      src={company.logo}
-                      alt={company.company_name}
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                        e.currentTarget.parentElement.classList.add(
-                          'partner-company-logo--fallback'
-                        )
-                      }}
-                    />
+                  <div
+                    className="partner-company"
+                    key={`${company.id}-${index}`}
+                  >
 
-                    <span>
-                      {company.company_name?.charAt(0)?.toUpperCase()}
+                    <div className="partner-company-logo">
+
+                      <img
+                        src={company.logo}
+                        alt={company.company_name}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                          e.currentTarget.parentElement.classList.add(
+                            'partner-company-logo--fallback'
+                          )
+                        }}
+                      />
+
+                      <span>
+                        {company.company_name
+                          ?.charAt(0)
+                          ?.toUpperCase()}
+                      </span>
+
+                    </div>
+
+                    <span className="partner-company-name">
+                      {company.company_name}
                     </span>
 
                   </div>
 
-                  <span className="partner-company-name">
-                    {company.company_name}
-                  </span>
+                ))}
 
-                </div>
-
-              ))
-            ) : (
-
-              <div className="partner-empty">
-                No verified buyers yet.
               </div>
 
-            )}
+            </marquee>
 
-          </div>
+          ) : (
+
+            <div className="partner-empty">
+              No verified buyers yet.
+            </div>
+
+          )}
 
         </div>
 
@@ -660,8 +686,7 @@ export default function Home() {
   </div>
 
 </section>
-
-        {/* ================= CONTACT ================= */}
+      {/* ================= CONTACT ================= */}
 
         <section className="contact" id="contact">
           <div className="section-container">
