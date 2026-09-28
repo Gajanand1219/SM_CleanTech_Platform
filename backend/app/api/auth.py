@@ -331,6 +331,7 @@ async def register_buyer(
             website=payload.website,
             head_office_contact=payload.head_office_contact,
             ehs_contact=payload.ehs_contact,
+            director_email=payload.director_email,
         )
     )
 
@@ -421,6 +422,8 @@ async def register_vendor(
             msme_number=payload.msme_number,
             website=payload.website,
             domains=payload.domains,
+            director_email=payload.director_email,
+            contact_2=payload.contact_2,
         )
     )
 
