@@ -1,0 +1,81 @@
+/* =========================================================
+   COMMON SCROLL ANIMATIONS
+   Used by Home.jsx + Static.jsx
+   ========================================================= */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(45px) scale(0.94);
+  transition:
+    opacity 0.75s ease,
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+/* =========================================================
+   OPTIONAL REVEAL VARIATIONS
+   ========================================================= */
+
+[data-reveal="zoom"] {
+  transform: scale(0.88);
+}
+
+[data-reveal="zoom"].is-visible {
+  transform: scale(1);
+}
+
+
+[data-reveal="up"] {
+  transform: translateY(55px);
+}
+
+[data-reveal="up"].is-visible {
+  transform: translateY(0);
+}
+
+
+[data-reveal="left"] {
+  transform: translateX(-55px) scale(0.96);
+}
+
+[data-reveal="left"].is-visible {
+  transform: translateX(0) scale(1);
+}
+
+
+[data-reveal="right"] {
+  transform: translateX(55px) scale(0.96);
+}
+
+[data-reveal="right"].is-visible {
+  transform: translateX(0) scale(1);
+}
+
+
+/* =========================================================
+   STAGGER SUPPORT
+   Existing transitionDelay values continue to work
+   ========================================================= */
+
+[data-reveal][style*="transition-delay"] {
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
