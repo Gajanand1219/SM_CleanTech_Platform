@@ -291,7 +291,7 @@ export function Solutions() {
 
         <PageHeader
           label="OUR DOMAINS"
-          title="CleanTech Engineering Solutions"
+          title="SM CleanTech Engineering Solutions"
           description="Explore the major industrial environmental, energy and sustainability domains supported through the SM CleanTech platform."
         />
 
