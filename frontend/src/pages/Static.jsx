@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import '../styles/Static.css'
 import '../styles/ScrollAnimations.css'
 import { useEffect } from 'react'
+
 /* =========================================================
    CLEAN TECH DOMAINS
    ========================================================= */
@@ -86,129 +87,53 @@ const workflowTimeline = [
 
 function Footer() {
   return (
-    <footer className="static-footer">
+    <footer className="footer">
+          <div className="section-container">
+            <div className="footer-main">
+              <div className="footer-brand">
+                <img
+                  src="/logo2.jpeg"
+                  alt="S&M CleanTech"
+                  className="footer__logo-image"
+                />
 
-      <div className="static-footer__container">
+                <p>SM CleanTech Engineering Solutions</p>
+                <span>Diagnose. Match. Solution.</span>
+              </div>
 
-        <div className="static-footer__main">
+              <div className="footer-column">
+                <h4>Platform</h4>
+                <Link to="/">Home</Link>
+                <Link to="/solutions">Domain</Link>
+                <Link to="/how-it-works">About Us</Link>
+                <a href="#contact">Contact</a>
+              </div>
 
-          {/* BRAND */}
+              <div className="footer-column">
+                <h4>Join Network</h4>
+                <Link to="/register/buyer">Register as Buyer</Link>
+                <Link to="/register/vendor">Register as Vendor</Link>
+                <Link to="/login">Login</Link>
+              </div>
 
-          <div className="static-footer__brand">
+              <div className="footer-column footer-contact">
+                <h4>Contact</h4>
+                <p >
+                  Industrial CleanTech
+                  <br />
+                  Engineering &amp; EPC Network
+                </p>
+                <p>Email: info@smcleantech.com</p>
+                <p>India</p>
+              </div>
+            </div>
 
-            <img
-              src="/logo2.jpeg"
-              alt="S&M CleanTech"
-            />
-
-            <h3>
-              SM CleanTech Engineering Solutions
-            </h3>
-
-            <p>
-              Diagnose. Match. Solution.
-            </p>
-
-            <span>
-              Connecting industrial requirements with relevant
-              engineering, EPC and CleanTech solution providers.
-            </span>
-
+            <div className="footer-bottom">
+              <span>© 2026 SM CleanTech Engineering Solutions</span>
+              <span>Water • Waste • Solar • ESG • SPCB</span>
+            </div>
           </div>
-
-
-          {/* PLATFORM */}
-
-          <div className="static-footer__column">
-
-            <h4>
-              Platform
-            </h4>
-
-            <Link to="/">
-              Home
-            </Link>
-
-            <Link to="/solutions">
-              Domain
-            </Link>
-
-            <Link to="/how-it-works">
-              About Us
-            </Link>
-
-            <a href="/#contact">
-              Contact
-            </a>
-
-          </div>
-
-
-          {/* NETWORK */}
-
-          <div className="static-footer__column">
-
-            <h4>
-              Join Network
-            </h4>
-
-            <Link to="/register/buyer">
-              Register as Buyer
-            </Link>
-
-            <Link to="/register/vendor">
-              Register as Vendor
-            </Link>
-
-            <Link to="/login">
-              Login
-            </Link>
-
-          </div>
-
-
-          {/* CONTACT */}
-
-          <div className="static-footer__column static-footer__contact">
-
-            <h4>
-              Contact
-            </h4>
-
-            <p>
-              Industrial CleanTech
-              <br />
-              Engineering & EPC Network
-            </p>
-
-            <p>
-              India
-            </p>
-
-            <a href="mailto:info@smcleantech.com">
-              info@smcleantech.com
-            </a>
-
-          </div>
-
-        </div>
-
-
-        <div className="static-footer__bottom">
-
-          <span>
-            © 2026 SM CleanTech Engineering Solutions
-          </span>
-
-          <span>
-            Water • Waste • Solar • ESG • SPCB
-          </span>
-
-        </div>
-
-      </div>
-
-    </footer>
+        </footer>
   )
 }
 
@@ -703,7 +628,7 @@ export function HowItWorks() {
         <footer className="footer">
           <div className="section-container">
             <div className="footer-main">
-             <div className="footer-brand">
+              <div className="footer-brand">
                 <img
                   src="/logo2.jpeg"
                   alt="S&M CleanTech"
