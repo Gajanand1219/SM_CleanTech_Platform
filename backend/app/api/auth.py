@@ -13,6 +13,7 @@ from app.models import (
     EmailVerification,
     EnquiryMatch,
     Enquiry,
+    LoginEvent,
     Role,
     AccountStatus,
     EnquiryStatus,
@@ -609,7 +610,6 @@ async def resend_verification(
 # ============================================================
 # LOGIN
 # ============================================================
-
 @router.post("/login")
 def login(
     payload: LoginRequest,
@@ -649,10 +649,22 @@ def login(
             "Please verify your email first.",
         )
 
+    # Create JWT token
     token = create_access_token(
         user.id,
         user.role,
     )
+
+    # -----------------------------------------
+    # LOGIN CRM - Record successful login
+    # -----------------------------------------
+    login_event = LoginEvent(
+        user_id=user.id,
+        role=user.role,
+    )
+
+    db.add(login_event)
+    db.commit()
 
     return {
         "access_token": token,
