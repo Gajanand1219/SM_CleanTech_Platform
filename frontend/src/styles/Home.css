@@ -545,7 +545,476 @@
   font-size: 13px;
   line-height: 1.65;
 }
+/* =========================================================
+   TRUSTED NETWORK
+========================================================= */
 
+.partners {
+  padding: 90px 0;
+  background: #f7faf8;
+  overflow: hidden;
+}
+
+.partners-heading {
+  max-width: 760px;
+  margin: 0 auto 45px;
+  text-align: center;
+}
+
+.partners-heading h2 {
+  margin: 10px 0 12px;
+  font-size: 38px;
+  line-height: 1.15;
+  color: #153d2c;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.partners-heading p {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #6b7c73;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   TWO NETWORK CARDS
+========================================================= */
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   NETWORK CARD
+========================================================= */
+
+.partner-network-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e2ebe5;
+  border-radius: 20px;
+
+  box-shadow:
+    0 12px 35px rgba(20, 65, 45, 0.07);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.partner-network-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 18px 45px rgba(20, 65, 45, 0.11);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.partner-network-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 24px 25px 20px;
+
+  border-bottom: 1px solid #edf2ef;
+}
+
+.partner-network-icon {
+  width: 44px;
+  height: 44px;
+
+  flex: 0 0 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #edf8f1;
+
+  font-size: 20px;
+}
+
+.partner-network-kicker {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #3c8d62;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.partner-network-header h3 {
+  margin: 0;
+
+  color: #183d2e;
+
+  font-size: 19px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.partner-marquee {
+  position: relative;
+
+  width: 100%;
+  overflow: hidden;
+
+  padding: 25px 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      transparent 10%,
+      transparent 90%,
+      #ffffff 100%
+    );
+}
+
+
+/* fade edges */
+
+.partner-marquee::before,
+.partner-marquee::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  width: 70px;
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+.partner-marquee::before {
+  left: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      transparent
+    );
+}
+
+.partner-marquee::after {
+  right: 0;
+
+  background:
+    linear-gradient(
+      270deg,
+      #ffffff,
+      transparent
+    );
+}
+
+
+/* moving track */
+
+.partner-marquee-track {
+  display: flex;
+  align-items: center;
+
+  width: max-content;
+
+  animation: partnerMarquee 28s linear infinite;
+}
+
+.partner-marquee-track--reverse {
+  animation-name: partnerMarqueeReverse;
+  animation-duration: 32s;
+}
+
+
+/* pause when mouse over */
+
+.partner-network-card:hover .partner-marquee-track {
+  animation-play-state: paused;
+}
+
+
+@keyframes partnerMarquee {
+
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+
+}
+
+
+@keyframes partnerMarqueeReverse {
+
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =========================================================
+   COMPANY ITEM
+========================================================= */
+
+.partner-company {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-width: 175px;
+
+  margin: 0 8px;
+  padding: 10px 14px;
+
+  border: 1px solid #e6eee9;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 14px rgba(25, 70, 50, 0.05);
+}
+
+
+/* =========================================================
+   SMALL LOGO
+========================================================= */
+
+.partner-company-logo {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background: #f4f8f5;
+  border: 1px solid #e4ebe6;
+}
+
+.partner-company-logo img {
+  width: 27px;
+  height: 27px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.partner-company-logo span {
+  display: none;
+
+  color: #347653;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.partner-company-logo--fallback span {
+  display: block;
+}
+
+
+/* =========================================================
+   COMPANY NAME
+========================================================= */
+
+.partner-company-name {
+  max-width: 115px;
+
+  overflow: hidden;
+
+  color: #294c3c;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.partner-network-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 14px 25px;
+
+  border-top: 1px solid #edf2ef;
+
+  color: #718178;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.network-status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #48a86b;
+
+  box-shadow:
+    0 0 0 4px rgba(72, 168, 107, 0.10);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.partner-empty {
+  width: 100%;
+
+  padding: 20px;
+
+  text-align: center;
+
+  color: #829087;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .partners {
+    padding: 70px 0;
+  }
+
+  .partners-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .partners-heading h2 {
+    font-size: 32px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .partners {
+    padding: 60px 0;
+  }
+
+  .partners-heading {
+    margin-bottom: 30px;
+    padding: 0 15px;
+  }
+
+  .partners-heading h2 {
+    font-size: 27px;
+  }
+
+  .partners-heading p {
+    font-size: 13px;
+  }
+
+  .partner-network-header {
+    padding: 20px;
+  }
+
+  .partner-network-header h3 {
+    font-size: 16px;
+  }
+
+  .partner-network-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .partner-company {
+    min-width: 155px;
+    padding: 9px 11px;
+  }
+
+  .partner-company-logo {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .partner-company-logo img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .partner-network-footer {
+    padding: 12px 20px;
+  }
+
+}
 /* =========================================================
    TRUSTED NETWORK / PARTNERS
    ========================================================= */
