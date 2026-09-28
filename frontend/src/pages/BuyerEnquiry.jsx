@@ -148,7 +148,6 @@ export default function BuyerEnquiry() {
           <div className="be-banner be-banner--waiting">
             <div className="be-banner__icon">⏳</div>
             <div>
-              <strong>Waiting for Admin approval</strong>
               <span>Your enquiry is private and vendors have not been notified yet.</span>
             </div>
           </div>
@@ -168,8 +167,10 @@ export default function BuyerEnquiry() {
           <div className="be-banner be-banner--approved">
             <div className="be-banner__icon">✅</div>
             <div>
-              <strong>Admin approved — matching is active</strong>
-              <span>Matched vendors can view the masked technical dossier.</span>
+             <strong>Matching is active</strong>
+              <span>
+                Your enquiry is automatically approved and matched with suitable vendors.
+              </span>
             </div>
           </div>
         )}
