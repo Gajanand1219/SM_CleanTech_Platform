@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import '../styles/Static.css'
-
-
+import '../styles/ScrollAnimations.css'
+import { useEffect } from 'react'
 /* =========================================================
    CLEAN TECH DOMAINS
    ========================================================= */
@@ -212,6 +212,41 @@ function Footer() {
   )
 }
 
+/* =========================================================
+   COMMON SCROLL REVEAL
+   ========================================================= */
+
+function useScrollReveal() {
+  useEffect(() => {
+    const elements = document.querySelectorAll('[data-reveal]')
+
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+          } else {
+            entry.target.classList.remove('is-visible')
+          }
+        })
+      },
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    )
+
+    elements.forEach((element) => {
+      observer.observe(element)
+    })
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+}
 
 /* =========================================================
    PAGE HEADER
@@ -221,7 +256,7 @@ function PageHeader({ label, title, description }) {
   return (
     <section className="static-page-header">
 
-      <div className="static-page-header__container">
+        <div className="static-page-header__container" data-reveal>
 
         <span className="static-page-header__label">
           {label}
@@ -247,6 +282,7 @@ function PageHeader({ label, title, description }) {
    ========================================================= */
 
 export function Solutions() {
+  useScrollReveal()
   return (
     <>
       <Navbar />
@@ -264,7 +300,7 @@ export function Solutions() {
 
           <div className="static-container">
 
-            <div className="domain-page-intro">
+              <div className="domain-page-intro" data-reveal>
 
               <span>
                 FIVE CORE VERTICALS
@@ -343,7 +379,7 @@ export function Solutions() {
 
           <div className="static-container">
 
-            <div className="static-cta__inner">
+              <div className="static-cta__inner" data-reveal>
 
               <div>
 
@@ -401,6 +437,7 @@ export function Solutions() {
    ========================================================= */
 
 export function HowItWorks() {
+   useScrollReveal()
   return (
     <>
       <Navbar />
@@ -420,7 +457,7 @@ export function HowItWorks() {
 
           <div className="static-container">
 
-            <div className="about-platform">
+              <div className="about-platform" data-reveal>
 
               <div className="about-platform__content">
 
@@ -515,10 +552,11 @@ export function HowItWorks() {
 
               {workflowTimeline.map((step, index) => (
 
-                <article
-                  className="workflow-card"
-                  key={step.num}
-                >
+               <article
+  className="workflow-card"
+  key={step.num}
+  data-reveal
+>
 
                   <div className="workflow-card__top">
 
@@ -565,7 +603,7 @@ export function HowItWorks() {
 
             <div className="security-grid">
 
-              <div className="security-box">
+                <div className="security-box" data-reveal>
 
                 <span className="security-box__icon">
                   🔒
@@ -584,7 +622,7 @@ export function HowItWorks() {
               </div>
 
 
-              <div className="security-box">
+                <div className="security-box" data-reveal>
 
                 <span className="security-box__icon">
                   ⚡
@@ -660,194 +698,50 @@ export function HowItWorks() {
 
         </section>
 
+ {/* ================= FOOTER ================= */}
 
-        <Footer />
-
-      </main>
-    </>
-  )
-}
-
-
-/* =========================================================
-   DEFAULT ABOUT PAGE
-   ========================================================= */
-
-export default function AboutUs() {
-  return (
-    <>
-      <Navbar />
-
-      <main className="static-page">
-
-        <PageHeader
-          label="ABOUT SM CLEANTECH"
-          title="Engineering connections for a cleaner future"
-          description="A structured B2B platform focused on industrial engineering, environmental solutions, renewable energy and sustainability requirements."
-        />
-
-
-        <section className="static-content-section">
-
-          <div className="static-container">
-
-            <div className="about-platform">
-
-              <div className="about-platform__content">
-
-                <span className="static-small-label">
-                  ABOUT US
-                </span>
-
-                <h2>
-                  Connecting genuine requirements
-                  with relevant technical expertise.
-                </h2>
-
-                <p>
-                  SM CleanTech Engineering Solutions is designed around
-                  industrial requirements where identifying the right
-                  technical solution provider can be complex.
-                </p>
-
-                <p>
-                  Our platform brings structure to requirement collection,
-                  technical information, matching, quotation and mutual
-                  acceptance.
-                </p>
-
+        <footer className="footer">
+          <div className="section-container">
+            <div className="footer-main">
+              <div className="footer-brand">
+                <img src="/logo2.jpeg" alt="S&M CleanTech" />
+                <p>SM CleanTech Engineering Solutions</p>
+                <span>Diagnose. Match. Solution.</span>
               </div>
 
-
-              <div className="about-platform__points">
-
-                <div>
-                  <strong>01</strong>
-                  <span>
-                    Water & Wastewater
-                  </span>
-                </div>
-
-                <div>
-                  <strong>02</strong>
-                  <span>
-                    Waste & Environmental Solutions
-                  </span>
-                </div>
-
-                <div>
-                  <strong>03</strong>
-                  <span>
-                    Solar & Renewable Energy
-                  </span>
-                </div>
-
-                <div>
-                  <strong>04</strong>
-                  <span>
-                    Carbon, ESG & Compliance
-                  </span>
-                </div>
-
+              <div className="footer-column">
+                <h4>Platform</h4>
+                <Link to="/">Home</Link>
+                <Link to="/solutions">Domain</Link>
+                <Link to="/how-it-works">About Us</Link>
+                <a href="#contact">Contact</a>
               </div>
 
+              <div className="footer-column">
+                <h4>Join Network</h4>
+                <Link to="/register/buyer">Register as Buyer</Link>
+                <Link to="/register/vendor">Register as Vendor</Link>
+                <Link to="/login">Login</Link>
+              </div>
+
+              <div className="footer-column footer-contact">
+                <h4>Contact</h4>
+                <p>
+                  Industrial CleanTech
+                  <br />
+                  Engineering &amp; EPC Network
+                </p>
+                <p>Email: info@smcleantech.com</p>
+                <p>India</p>
+              </div>
             </div>
 
-
-            <div className="about-values">
-
-              <div className="about-value">
-
-                <span>
-                  VISION
-                </span>
-
-                <h3>
-                  Build a trusted industrial ecosystem.
-                </h3>
-
-                <p>
-                  Connect genuine industrial requirements with qualified
-                  technical and CleanTech solution providers.
-                </p>
-
-              </div>
-
-
-              <div className="about-value">
-
-                <span>
-                  MISSION
-                </span>
-
-                <h3>
-                  Simplify industrial project connections.
-                </h3>
-
-                <p>
-                  Structure requirements, matching and quotation workflows
-                  so buyers and providers can work through a clear process.
-                </p>
-
-              </div>
-
+            <div className="footer-bottom">
+              <span>© 2026 SM CleanTech Engineering Solutions</span>
+              <span>Water • Waste • Solar • ESG • SPCB</span>
             </div>
-
           </div>
-
-        </section>
-
-
-        <section className="static-cta">
-
-          <div className="static-container">
-
-            <div className="static-cta__inner">
-
-              <div>
-
-                <span>
-                  JOIN THE PLATFORM
-                </span>
-
-                <h2>
-                  Start your CleanTech journey.
-                </h2>
-
-                <p>
-                  Choose your role and become part of the network.
-                </p>
-
-              </div>
-
-
-              <div className="static-cta__buttons">
-
-                <Link
-                  to="/register/buyer"
-                  className="static-btn static-btn--primary"
-                >
-                  Register as Buyer
-                </Link>
-
-                <Link
-                  to="/register/vendor"
-                  className="static-btn static-btn--outline"
-                >
-                  Register as Vendor
-                </Link>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <Footer />
-
+        </footer>
       </main>
     </>
   )
