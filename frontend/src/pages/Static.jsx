@@ -703,8 +703,13 @@ export function HowItWorks() {
         <footer className="footer">
           <div className="section-container">
             <div className="footer-main">
-              <div className="footer-brand">
-                <img src="/logo2.jpeg" alt="S&M CleanTech" />
+             <div className="footer-brand">
+                <img
+                  src="/logo2.jpeg"
+                  alt="S&M CleanTech"
+                  className="footer__logo-image"
+                />
+
                 <p>SM CleanTech Engineering Solutions</p>
                 <span>Diagnose. Match. Solution.</span>
               </div>
