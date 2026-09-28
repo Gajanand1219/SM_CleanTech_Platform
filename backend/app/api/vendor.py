@@ -284,7 +284,7 @@ async def quotation(
     ]:
         raise HTTPException(
             400,
-            "Quotation is available only for an admin-approved matched enquiry.",
+            "Quotation is available only for a matched enquiry."
         )
 
     deadline = _deadline(e)
