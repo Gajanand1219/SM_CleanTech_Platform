@@ -1278,12 +1278,17 @@ async def send_contact_form_email(
         </p>
     """
 
+   
     return await send_email(
-        to="satyapalmungal3112@gmail.com",
-        subject=subject,
-        html=email_template(
-            "New Website Enquiry",
-            body,
-            "NEW ENQUIRY",
-        ),
-    )
+    to=[
+        # "satyapalmungal3112@gmail.com",
+        "gajanand1902@gmail.com",
+    ],
+    subject=subject,
+    html=email_template(
+        "New Website Enquiry",
+        body,
+        "NEW ENQUIRY",
+    ),
+)
+        
