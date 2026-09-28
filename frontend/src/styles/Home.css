@@ -3019,3 +3019,121 @@
     min-width: 145px;
   }
 }
+/* =========================================================
+   NATIVE MARQUEE - ALL DEVICES
+   VENDORS  = RIGHT TO LEFT
+   BUYERS   = LEFT TO RIGHT
+   ========================================================= */
+
+.partner-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 25px 0;
+}
+
+/* Native marquee */
+.partner-marquee marquee {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Content inside marquee */
+.partner-marquee-content {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  white-space: nowrap;
+}
+
+/* Company card */
+.partner-marquee-content .partner-company {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 175px;
+  min-width: 175px;
+  margin: 0 8px;
+  padding: 10px 14px;
+  vertical-align: middle;
+}
+
+/* Remove old animation */
+.partner-marquee-track,
+.partner-marquee-track--reverse {
+  animation: none !important;
+}
+
+/* Disable old keyframe behaviour */
+.partner-network-card:hover .partner-marquee-track {
+  animation-play-state: running !important;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+  .partner-marquee {
+    width: 100%;
+    padding: 20px 0;
+    overflow: hidden;
+  }
+
+  .partner-marquee marquee {
+    width: 100%;
+    display: block;
+  }
+
+  .partner-marquee-content {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    white-space: nowrap;
+  }
+
+  .partner-marquee-content .partner-company {
+    width: 155px;
+    min-width: 155px;
+    margin: 0 6px;
+    padding: 9px 11px;
+  }
+
+  .partner-company-logo {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+  }
+
+  .partner-company-logo img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .partner-company-name {
+    max-width: 100px;
+    font-size: 11px;
+  }
+}
+
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 420px) {
+
+  .partner-marquee {
+    padding: 18px 0;
+  }
+
+  .partner-marquee-content .partner-company {
+    width: 145px;
+    min-width: 145px;
+    margin: 0 5px;
+    padding: 8px 10px;
+  }
+
+  .partner-company-name {
+    max-width: 92px;
+    font-size: 10.5px;
+  }
+}
