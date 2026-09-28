@@ -196,7 +196,7 @@ async def create_enquiry(
         domain_id=domain.id,
         problem_id=problem.id,
         title=payload.title,
-        status=EnquiryStatus.SUBMITTED.value,
+        status=EnquiryStatus.APPROVED.value,
         dossier=dossier,
     )
 
@@ -268,7 +268,7 @@ async def create_enquiry(
     if matched_vendors:
         e.status = EnquiryStatus.MATCHED.value
     else:
-        e.status = EnquiryStatus.SUBMITTED.value
+        e.status = EnquiryStatus.APPROVED.value
 
     # ========================================================
     # SAVE QUESTION ANSWERS
