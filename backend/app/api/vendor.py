@@ -279,6 +279,7 @@ async def quotation(
     e = match.enquiry
 
     if e.status not in [
+        EnquiryStatus.APPROVED.value,
         EnquiryStatus.MATCHED.value,
         EnquiryStatus.QUOTATION.value,
     ]:
