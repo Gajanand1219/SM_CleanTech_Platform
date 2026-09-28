@@ -13,8 +13,14 @@ class BuyerRegister(RegisterBase):
     plant_location: str = Field(min_length=2)
     gst_number: str = Field(min_length=5, max_length=50)
     website: str | None = None
+
+    # Existing
     head_office_contact: str | None = None
     ehs_contact: str | None = None
+
+    # NEW
+    director_email: EmailStr | None = None
+
 
 class VendorRegister(RegisterBase):
     company_name: str = Field(min_length=2, max_length=255)
@@ -29,6 +35,11 @@ class VendorRegister(RegisterBase):
     website: str | None = None
     domains: list[str] = Field(min_length=1)
 
+    # NEW
+    director_email: EmailStr | None = None
+    contact_2: str | None = None
+
+    
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
