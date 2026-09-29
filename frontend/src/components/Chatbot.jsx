@@ -1,43 +1,283 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import API from '../services/api'
+
+/* =========================================================
+   INITIAL SUGGESTIONS
+   ========================================================= */
+
 const INITIAL_SUGGESTIONS = [
-  {
-    icon: '🌱',
-    text: 'What is SM CleanTech?',
-  },
-  {
-    icon: '💧',
-    text: 'Water & Wastewater solutions',
-  },
-  {
-    icon: '☀️',
-    text: 'Solar & Renewable solutions',
-  },
-  {
-    icon: '🌍',
-    text: 'Carbon & ESG solutions',
-  },
-  {
-    icon: '🏭',
-    text: 'Pollution Control solutions',
-  },
-  {
-    icon: '🏢',
-    text: 'How to register as Buyer?',
-  },
-  {
-    icon: '⚙️',
-    text: 'How to register as Vendor?',
-  },
-  {
-    icon: '🤝',
-    text: 'How does matching work?',
-  },
+  { icon: '💧', text: 'Water & Wastewater Treatment' },
+  { icon: '♻️', text: 'Solid & Hazardous Waste' },
+  { icon: '☀️', text: 'Solar & Renewables' },
+  { icon: '🌱', text: 'Carbon & ESG' },
+  { icon: '🏭', text: 'SPCB Consents & Air Pollution' },
 ]
 
-export default function Chatbot() {
+/* =========================================================
+   FORMAT BOT ANSWER
+   - Converts markdown-ish text into structured blocks
+   - **Heading**  -> <h4>
+   - ## Heading   -> <h3>
+   - ### Heading  -> <h4>
+   - - item       -> <li>
+   - * item       -> <li>
+   - 1. item      -> <li>
+   - | a | b |    -> <table>
+   - Plain text   -> <p>
+   ========================================================= */
 
+function formatAnswer(raw) {
+  if (!raw || typeof raw !== 'string') return null
+
+  const text = raw
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .trim()
+
+  const lines = text.split('\n')
+
+  const blocks = []
+  let listBuffer = []
+  let tableBuffer = []
+
+  const flushList = () => {
+    if (listBuffer.length === 0) return
+    blocks.push({
+      type: 'list',
+      items: [...listBuffer],
+    })
+    listBuffer = []
+  }
+
+  const flushTable = () => {
+    if (tableBuffer.length === 0) return
+    blocks.push({
+      type: 'table',
+      rows: [...tableBuffer],
+    })
+    tableBuffer = []
+  }
+
+  const isTableRow = (line) =>
+    /^\s*\|.*\|\s*$/.test(line)
+
+  const parseTableRow = (line) =>
+    line
+      .trim()
+      .replace(/^\||\|$/g, '')
+      .split('|')
+      .map((c) => c.trim())
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim()
+
+    /* ------- EMPTY LINE ------- */
+    if (!line) {
+      flushList()
+      flushTable()
+      return
+    }
+
+    /* ------- TABLE ROW ------- */
+    if (isTableRow(line)) {
+      // Separator row |---|---|
+      if (/^\s*\|[\s\-:|]+\|\s*$/.test(line)) {
+        return
+      }
+      flushList()
+      tableBuffer.push(parseTableRow(line))
+      return
+    }
+
+    /* ------- LIST ITEM ------- */
+    const listMatch = line.match(/^[\-\*•]\s+(.+)$/)
+    const numListMatch = line.match(/^\d+[\.\)]\s+(.+)$/)
+
+    if (listMatch || numListMatch) {
+      flushTable()
+      listBuffer.push(
+        listMatch ? listMatch[1] : numListMatch[1]
+      )
+      return
+    }
+
+    /* ------- HEADINGS ------- */
+    if (/^###\s+/.test(line)) {
+      flushList()
+      flushTable()
+      blocks.push({
+        type: 'h4',
+        text: line.replace(/^###\s+/, ''),
+      })
+      return
+    }
+
+    if (/^##\s+/.test(line)) {
+      flushList()
+      flushTable()
+      blocks.push({
+        type: 'h3',
+        text: line.replace(/^##\s+/, ''),
+      })
+      return
+    }
+
+    if (/^#\s+/.test(line)) {
+      flushList()
+      flushTable()
+      blocks.push({
+        type: 'h3',
+        text: line.replace(/^#\s+/, ''),
+      })
+      return
+    }
+
+    /* ------- BOLD / BULLET-PREFIX HEADING ------- */
+    // **Heading**
+    const boldMatch = line.match(/^\*\*(.+?)\*\*$/)
+    if (boldMatch) {
+      flushList()
+      flushTable()
+      blocks.push({
+        type: 'h4',
+        text: boldMatch[1],
+      })
+      return
+    }
+
+    // Heading: "Something:" (end with colon, short line)
+    if (
+      line.length < 80 &&
+      /:$/.test(line) &&
+      !/\*\*/.test(line)
+    ) {
+      flushList()
+      flushTable()
+      blocks.push({
+        type: 'h4',
+        text: line.replace(/:$/, ''),
+      })
+      return
+    }
+
+    /* ------- PARAGRAPH ------- */
+    flushList()
+    flushTable()
+    blocks.push({
+      type: 'p',
+      text: line,
+    })
+  })
+
+  flushList()
+  flushTable()
+
+  return blocks
+}
+
+/* =========================================================
+   RENDER INLINE BOLD (**bold**) inside paragraphs / lists
+   ========================================================= */
+
+function renderInline(text) {
+  if (!text) return null
+
+  const parts = String(text).split(/(\*\*[^*]+\*\*)/g)
+
+  return parts.map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>
+    }
+    return <span key={i}>{part}</span>
+  })
+}
+
+/* =========================================================
+   ANSWER BLOCK RENDERER
+   ========================================================= */
+
+function AnswerBlock({ blocks }) {
+  if (!blocks || blocks.length === 0) return null
+
+  return (
+    <div className="ans">
+      {blocks.map((block, i) => {
+        /* ---------- HEADING (H3) ---------- */
+        if (block.type === 'h3') {
+          return (
+            <h3 key={i} className="ans__h3">
+              {renderInline(block.text)}
+            </h3>
+          )
+        }
+
+        /* ---------- HEADING (H4) ---------- */
+        if (block.type === 'h4') {
+          return (
+            <h4 key={i} className="ans__h4">
+              <span className="ans__h4-bar" />
+              {renderInline(block.text)}
+            </h4>
+          )
+        }
+
+        /* ---------- LIST ---------- */
+        if (block.type === 'list') {
+          return (
+            <ul key={i} className="ans__list">
+              {block.items.map((item, j) => (
+                <li key={j} className="ans__list-item">
+                  <span className="ans__list-dot" />
+                  <span>{renderInline(item)}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        /* ---------- TABLE ---------- */
+        if (block.type === 'table') {
+          const [head, ...rows] = block.rows
+          return (
+            <div key={i} className="ans__table-wrap">
+              <table className="ans__table">
+                <thead>
+                  <tr>
+                    {head.map((cell, j) => (
+                      <th key={j}>{renderInline(cell)}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, r) => (
+                    <tr key={r}>
+                      {row.map((cell, c) => (
+                        <td key={c}>{renderInline(cell)}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+        }
+
+        /* ---------- PARAGRAPH ---------- */
+        return (
+          <p key={i} className="ans__p">
+            {renderInline(block.text)}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
+/* =========================================================
+   CHATBOT COMPONENT
+   ========================================================= */
+
+export default function Chatbot() {
   const navigate = useNavigate()
 
   const [messages, setMessages] = useState([
@@ -45,1266 +285,875 @@ export default function Chatbot() {
       id: 'welcome',
       role: 'assistant',
       content:
-        'Namaskar! 👋 Welcome to SM CleanTech AI Assistant. You can ask about our CleanTech platform, solutions, buyer/vendor registration, matching and project workflow.',
-      suggestions: INITIAL_SUGGESTIONS.slice(0, 5),
+        'Hello 👋 Welcome to SM CleanTech Assistant.\n\nAsk about our CleanTech solutions, buyer/vendor registration, vendor matching, or the project workflow.',
+      suggestions: INITIAL_SUGGESTIONS,
     },
   ])
 
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-
   const messagesEndRef = useRef(null)
-
+  const textareaRef = useRef(null)
 
   /* =====================================================
      AUTO SCROLL
-  ===================================================== */
-
+     ===================================================== */
   useEffect(() => {
-
     messagesEndRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'end',
     })
-
   }, [messages, loading])
 
+  /* =====================================================
+     AUTO-RESIZE TEXTAREA
+     ===================================================== */
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px'
+  }, [input])
 
   /* =====================================================
      SEND MESSAGE
-
-     BACKEND WILL BE CONNECTED HERE LATER
-  ===================================================== */
-
-async function sendMessage(customText = '') {
-  const question = (customText || input).trim()
-
-  if (!question || loading) {
-    return
-  }
-
-  // USER MESSAGE
-  const userMessage = {
-    id: `user-${Date.now()}`,
-    role: 'user',
-    content: question,
-  }
-
-  setMessages((prev) => [
-    ...prev,
-    userMessage,
-  ])
-
-  setInput('')
-  setLoading(true)
-
-  try {
-    const response = await fetch(
-      'https://sm-cleantech-platform.onrender.com/api/chat',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          question: question,
-        }),
-      }
-    )
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(
-        data?.detail ||
-        'Unable to get response from AI.'
-      )
-    }
-
-    const botMessage = {
-      id: `bot-${Date.now()}`,
-      role: 'assistant',
-      content:
-        data?.answer ||
-        'Sorry, I could not generate an answer.',
-      suggestions: [],
-    }
+     ===================================================== */
+  async function sendMessage(customText = '') {
+    const question = (customText || input).trim()
+    if (!question || loading) return
 
     setMessages((prev) => [
       ...prev,
-      botMessage,
-    ])
-
-  } catch (error) {
-
-    console.error(
-      'SM CleanTech chatbot error:',
-      error
-    )
-
-    const errorMessage = {
-      id: `error-${Date.now()}`,
-      role: 'assistant',
-      content:
-        '⚠️ Sorry, I am unable to connect to the AI service right now. Please make sure the SM CleanTech backend is running.',
-      suggestions: [],
-    }
-
-    setMessages((prev) => [
-      ...prev,
-      errorMessage,
-    ])
-
-  } finally {
-    setLoading(false)
-  }
-}
-
-  /* =====================================================
-     CLEAR CHAT
-  ===================================================== */
-
-  function clearChat() {
-
-    setMessages([
       {
-        id: `welcome-${Date.now()}`,
-
-        role: 'assistant',
-
-        content:
-          'Namaskar! 👋 Welcome to SM CleanTech AI Assistant. How can I help you?',
-
-        suggestions:
-          INITIAL_SUGGESTIONS.slice(0, 5),
+        id: `user-${Date.now()}`,
+        role: 'user',
+        content: question,
       },
     ])
 
     setInput('')
+    setLoading(true)
+
+    try {
+      const response = await fetch(
+        'https://sm-cleantech-platform.onrender.com/api/chat',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+        }
+      )
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(
+          data?.detail || 'Unable to get response from AI.'
+        )
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}`,
+          role: 'assistant',
+          content:
+            data?.answer ||
+            'Sorry, I could not generate an answer.',
+          suggestions: [],
+        },
+      ])
+    } catch (error) {
+      console.error('SM CleanTech chatbot error:', error)
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `error-${Date.now()}`,
+          role: 'assistant',
+          content:
+            '⚠️ Sorry, I am unable to connect to the AI service right now. Please make sure the SM CleanTech backend is running.',
+          suggestions: [],
+          isError: true,
+        },
+      ])
+    } finally {
+      setLoading(false)
+    }
   }
 
+  /* =====================================================
+     CLEAR CHAT
+     ===================================================== */
+  function clearChat() {
+    setMessages([
+      {
+        id: `welcome-${Date.now()}`,
+        role: 'assistant',
+        content:
+          'Chat cleared. How can I help you with SM CleanTech?',
+        suggestions: INITIAL_SUGGESTIONS,
+      },
+    ])
+    setInput('')
+  }
 
   /* =====================================================
      ENTER KEY
-  ===================================================== */
-
+     ===================================================== */
   function handleKeyDown(e) {
-
-    if (
-      e.key === 'Enter' &&
-      !e.shiftKey
-    ) {
-
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-
       sendMessage()
     }
   }
 
-
   /* =====================================================
      RENDER
-  ===================================================== */
-
+     ===================================================== */
   return (
-
-    <div className="sm-chat-page">
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
-      <header className="sm-chat-header">
-
-        <div className="sm-chat-header-inner">
-
+    <div className="cb-page">
+      {/* ================= HEADER ================= */}
+      <header className="cb-header">
+        <div className="cb-header__inner">
           <button
             type="button"
-            className="sm-chat-back"
+            className="cb-back"
             onClick={() => navigate(-1)}
             title="Back"
           >
             ←
           </button>
 
+          <div className="cb-header__icon">🤖</div>
 
-          <div className="sm-chat-header-icon">
-            🤖
+          <div className="cb-header__info">
+            <h1>SM CleanTech Assistant</h1>
+            <p>CleanTech Solutions · Platform Support</p>
           </div>
 
-
-          <div className="sm-chat-header-info">
-
-            <h1>
-              SM CleanTech AI Assistant
-            </h1>
-
-            <p>
-              CleanTech Solutions · Platform Support
-            </p>
-
-          </div>
-
-
-          <div className="sm-chat-header-right">
-
-            <span className="sm-chat-status">
-
-              <span />
-
-              AI Assistant
-
+          <div className="cb-header__right">
+            <span className="cb-status">
+              <span className="cb-status__dot" />
+              Online
             </span>
-
 
             <button
               type="button"
-              className="sm-chat-clear"
+              className="cb-clear"
               onClick={clearChat}
               title="Clear chat"
             >
-              🗑️
+              🗑
             </button>
-
           </div>
-
         </div>
-
       </header>
 
-
-      {/* =================================================
-          MAIN CHAT
-      ================================================= */}
-
-      <main className="sm-chat-main">
-
-        {/* MESSAGE AREA */}
-
-        <div className="sm-chat-messages">
-
-          <div className="sm-chat-message-container">
-
+      {/* ================= MAIN ================= */}
+      <main className="cb-main">
+        <div className="cb-messages">
+          <div className="cb-messages__container">
             {messages.map((message) => {
-
-              const isUser =
-                message.role === 'user'
+              const isUser = message.role === 'user'
+              const blocks =
+                !isUser && !message.isError
+                  ? formatAnswer(message.content)
+                  : null
 
               return (
-
                 <div
                   key={message.id}
-                  className={`sm-chat-message-row ${
-                    isUser
-                      ? 'sm-chat-user-row'
-                      : ''
+                  className={`cb-row ${
+                    isUser ? 'cb-row--user' : ''
                   }`}
                 >
-
-                  {/* BOT ICON */}
-
                   {!isUser && (
-
-                    <div className="sm-chat-avatar">
-                      🤖
-                    </div>
-
+                    <div className="cb-avatar">🤖</div>
                   )}
 
-
-                  {/* MESSAGE */}
-
-                  <div className="sm-chat-message-content">
-
-                    <div className="sm-chat-message-label">
-
-                      {isUser
-                        ? '👤 You'
-                        : '🤖 SM CleanTech AI'}
-
+                  <div className="cb-bubble-wrap">
+                    <div className="cb-bubble-label">
+                      {isUser ? 'You' : 'Assistant'}
                     </div>
-
 
                     <div
-                      className={`sm-chat-bubble ${
+                      className={`cb-bubble ${
                         isUser
-                          ? 'sm-chat-user-bubble'
-                          : 'sm-chat-bot-bubble'
+                          ? 'cb-bubble--user'
+                          : message.isError
+                          ? 'cb-bubble--error'
+                          : 'cb-bubble--bot'
                       }`}
                     >
-
-                      {message.content}
-
+                      {isUser || message.isError ? (
+                        <p className="ans__p">
+                          {message.content}
+                        </p>
+                      ) : (
+                        <AnswerBlock blocks={blocks} />
+                      )}
                     </div>
 
-
-                    {/* SUGGESTIONS */}
-
+                    {/* Suggestions */}
                     {!isUser &&
                       message.suggestions?.length > 0 && (
-
-                        <div className="sm-chat-suggestions">
-
+                        <div className="cb-suggestions">
                           {message.suggestions.map(
-                            (suggestion, index) => (
-
+                            (s, i) => (
                               <button
-                                key={index}
+                                key={i}
                                 type="button"
                                 onClick={() =>
-                                  sendMessage(
-                                    suggestion.text
-                                  )
+                                  sendMessage(s.text)
                                 }
                               >
-
-                                <span>
-                                  {suggestion.icon}
+                                <span className="cb-suggestions__icon">
+                                  {s.icon}
                                 </span>
-
-                                {suggestion.text}
-
+                                {s.text}
                               </button>
-
                             )
                           )}
-
                         </div>
-
                       )}
-
                   </div>
-
                 </div>
-
               )
-
             })}
 
-
-            {/* LOADING */}
-
+            {/* Loading */}
             {loading && (
-
-              <div className="sm-chat-message-row">
-
-                <div className="sm-chat-avatar">
-                  🤖
-                </div>
-
-                <div className="sm-chat-message-content">
-
-                  <div className="sm-chat-message-label">
-                    🤖 SM CleanTech AI
+              <div className="cb-row">
+                <div className="cb-avatar">🤖</div>
+                <div className="cb-bubble-wrap">
+                  <div className="cb-bubble-label">
+                    Assistant
                   </div>
-
-                  <div className="sm-chat-loading">
-
-                    <span />
-                    <span />
-                    <span />
-
+                  <div className="cb-bubble cb-bubble--bot">
+                    <div className="cb-typing">
+                      <span />
+                      <span />
+                      <span />
+                    </div>
                   </div>
-
                 </div>
-
               </div>
-
             )}
 
-
             <div ref={messagesEndRef} />
-
           </div>
-
         </div>
 
-
-        {/* =================================================
-            INPUT
-        ================================================= */}
-
-        <div className="sm-chat-input-area">
-
-          <div className="sm-chat-input-box">
-
+        {/* ================= INPUT ================= */}
+        <div className="cb-input-area">
+          <div className="cb-input-box">
             <textarea
+              ref={textareaRef}
               value={input}
-              onChange={(e) =>
-                setInput(e.target.value)
-              }
+              onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about CleanTech solutions, registration, matching..."
+              placeholder="Ask about CleanTech solutions, registration, matching…"
               rows={1}
             />
 
-
             <button
               type="button"
-              onClick={() =>
-                sendMessage()
-              }
-              disabled={
-                loading ||
-                !input.trim()
-              }
-              className="sm-chat-send"
+              onClick={() => sendMessage()}
+              disabled={loading || !input.trim()}
+              className="cb-send"
               title="Send message"
             >
               ➤
             </button>
-
           </div>
 
-
-          <div className="sm-chat-input-hint">
-            Press Enter to send
+          <div className="cb-input-hint">
+            Press Enter to send · Shift + Enter for new line
           </div>
-
         </div>
-
       </main>
 
-
-      {/* =================================================
-          STYLES
-      ================================================= */}
-
+      {/* ================= STYLES ================= */}
       <style>{`
-
-        * {
-          box-sizing: border-box;
-        }
-
-
-        /* ================= PAGE ================= */
-
-        .sm-chat-page {
-
+        /* -------------------------------------------------
+           PAGE
+        ------------------------------------------------- */
+        .cb-page {
           width: 100%;
-
           height: 100vh;
           height: 100dvh;
-
           display: flex;
           flex-direction: column;
-
           overflow: hidden;
-
           background: #f6faf8;
-
           color: #17201c;
-
-          font-family:
-            Arial,
-            Helvetica,
-            sans-serif;
+          font-family: Arial, Helvetica, sans-serif;
         }
 
+        .cb-page * { box-sizing: border-box; }
 
-        /* ================= HEADER ================= */
-
-        .sm-chat-header {
-
+        /* -------------------------------------------------
+           HEADER
+        ------------------------------------------------- */
+        .cb-header {
           flex-shrink: 0;
-
-          background:
-            linear-gradient(
-              135deg,
-              #087f45,
-              #0b8f50,
-              #15965a
-            );
-
+          background: #087f45;
           color: #ffffff;
-
-          box-shadow:
-            0 5px 20px rgba(20,70,45,0.15);
+          box-shadow: 0 4px 16px rgba(20,70,45,0.12);
         }
 
-
-        .sm-chat-header-inner {
-
+        .cb-header__inner {
           width: min(1100px, 94%);
-
-          min-height: 74px;
-
+          min-height: 68px;
           margin: 0 auto;
-
           display: flex;
           align-items: center;
-
           gap: 12px;
         }
 
-
-        /* BACK */
-
-        .sm-chat-back {
-
+        .cb-back {
           width: 38px;
           height: 38px;
-
           flex-shrink: 0;
-
-          border:
-            1px solid
-            rgba(255,255,255,0.25);
-
-          border-radius: 10px;
-
-          background:
-            rgba(255,255,255,0.12);
-
+          border: 1px solid rgba(255,255,255,0.25);
+          border-radius: 9px;
+          background: rgba(255,255,255,0.12);
           color: #ffffff;
-
-          font-size: 20px;
-
+          font-size: 19px;
           cursor: pointer;
-
-          transition: 0.2s ease;
+          transition: background 0.2s ease;
         }
 
-        .sm-chat-back:hover {
-
-          background:
-            rgba(255,255,255,0.2);
+        .cb-back:hover {
+          background: rgba(255,255,255,0.22);
         }
 
-
-        /* HEADER ICON */
-
-        .sm-chat-header-icon {
-
-          width: 45px;
-          height: 45px;
-
+        .cb-header__icon {
+          width: 42px;
+          height: 42px;
           flex-shrink: 0;
-
           display: flex;
-
           align-items: center;
           justify-content: center;
-
-          border-radius: 13px;
-
-          background:
-            rgba(255,255,255,0.15);
-
-          font-size: 23px;
+          border-radius: 11px;
+          background: rgba(255,255,255,0.15);
+          font-size: 22px;
         }
 
-
-        /* HEADER INFO */
-
-        .sm-chat-header-info {
-
+        .cb-header__info {
           min-width: 0;
-
           flex: 1;
         }
 
-        .sm-chat-header-info h1 {
-
-          margin: 0 0 3px;
-
-          font-size: 18px;
-          line-height: 1.2;
-
+        .cb-header__info h1 {
+          margin: 0 0 2px;
+          font-size: 15px;
           font-weight: 800;
+          line-height: 1.2;
         }
 
-        .sm-chat-header-info p {
-
+        .cb-header__info p {
           margin: 0;
-
-          color:
-            rgba(255,255,255,0.78);
-
-          font-size: 11px;
+          color: rgba(255,255,255,0.78);
+          font-size: 10.5px;
         }
 
-
-        /* HEADER RIGHT */
-
-        .sm-chat-header-right {
-
+        .cb-header__right {
           display: flex;
           align-items: center;
-
-          gap: 9px;
+          gap: 8px;
         }
 
-
-        .sm-chat-status {
-
+        .cb-status {
           display: flex;
           align-items: center;
-
           gap: 6px;
-
-          padding: 7px 10px;
-
-          background:
-            rgba(255,255,255,0.12);
-
+          padding: 6px 11px;
+          background: rgba(255,255,255,0.14);
           border-radius: 999px;
-
           font-size: 10px;
-
           font-weight: 700;
         }
 
-        .sm-chat-status span {
-
-          width: 7px;
-          height: 7px;
-
+        .cb-status__dot {
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
-
-          background: #70e394;
+          background: #7ef0a3;
+          box-shadow: 0 0 0 3px rgba(126,240,163,0.25);
+          animation: cbPulse 2s ease-in-out infinite;
         }
 
+        @keyframes cbPulse {
+          0%, 100% { box-shadow: 0 0 0 3px rgba(126,240,163,0.25); }
+          50%      { box-shadow: 0 0 0 6px rgba(126,240,163,0.08); }
+        }
 
-        .sm-chat-clear {
-
+        .cb-clear {
           width: 36px;
           height: 36px;
-
-          border:
-            1px solid
-            rgba(255,255,255,0.2);
-
+          border: 1px solid rgba(255,255,255,0.22);
           border-radius: 9px;
-
-          background:
-            rgba(255,255,255,0.1);
-
+          background: rgba(255,255,255,0.1);
           color: #ffffff;
-
+          font-size: 15px;
           cursor: pointer;
+          transition: background 0.2s ease;
         }
 
+        .cb-clear:hover {
+          background: rgba(255,255,255,0.2);
+        }
 
-        /* ================= MAIN ================= */
-
-        .sm-chat-main {
-
+        /* -------------------------------------------------
+           MAIN
+        ------------------------------------------------- */
+        .cb-main {
           width: min(1100px, 100%);
-
           flex: 1;
-
           min-height: 0;
-
           margin: 0 auto;
-
           display: flex;
           flex-direction: column;
-
           overflow: hidden;
         }
 
-
-        /* ================= MESSAGES ================= */
-
-        .sm-chat-messages {
-
+        /* -------------------------------------------------
+           MESSAGES
+        ------------------------------------------------- */
+        .cb-messages {
           flex: 1;
-
           min-height: 0;
-
           overflow-y: auto;
           overflow-x: hidden;
-
-          padding: 28px 18px;
+          padding: 24px 16px;
         }
 
-
-        .sm-chat-message-container {
-
-          width: min(820px, 100%);
-
+        .cb-messages__container {
+          width: min(840px, 100%);
           margin: 0 auto;
         }
 
-
-        .sm-chat-message-row {
-
+        .cb-row {
           display: flex;
-
           align-items: flex-start;
-
           gap: 10px;
-
-          margin-bottom: 22px;
+          margin-bottom: 20px;
         }
 
-
-        .sm-chat-user-row {
-
+        .cb-row--user {
           justify-content: flex-end;
         }
 
-
-        /* BOT AVATAR */
-
-        .sm-chat-avatar {
-
-          width: 35px;
-          height: 35px;
-
-          flex: 0 0 35px;
-
+        .cb-avatar {
+          width: 34px;
+          height: 34px;
+          flex: 0 0 34px;
           display: flex;
-
           align-items: center;
           justify-content: center;
-
           background: #eaf7f0;
-
-          border:
-            1px solid
-            #d1e8db;
-
-          border-radius: 11px;
-
-          font-size: 17px;
+          border: 1px solid #d1e8db;
+          border-radius: 10px;
+          font-size: 16px;
         }
 
-
-        /* CONTENT */
-
-        .sm-chat-message-content {
-
-          max-width: 78%;
-
+        .cb-bubble-wrap {
+          max-width: 82%;
           min-width: 0;
         }
 
-
-        .sm-chat-message-label {
-
-          margin: 0 0 5px;
-
+        .cb-bubble-label {
+          margin-bottom: 4px;
           padding: 0 3px;
-
           color: #87948e;
-
-          font-size: 9px;
-
+          font-size: 9.5px;
           font-weight: 700;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
         }
 
+        .cb-row--user .cb-bubble-label {
+          text-align: right;
+        }
 
-        /* BUBBLE */
-
-        .sm-chat-bubble {
-
+        /* -------------------------------------------------
+           BUBBLE
+        ------------------------------------------------- */
+        .cb-bubble {
           padding: 12px 15px;
-
-          border-radius: 16px;
-
+          border-radius: 14px;
           font-size: 13px;
-
           line-height: 1.65;
-
-          white-space: pre-wrap;
-
           overflow-wrap: anywhere;
         }
 
-
-        .sm-chat-bot-bubble {
-
+        .cb-bubble--bot {
           background: #ffffff;
-
-          border:
-            1px solid
-            #dce7e1;
-
-          border-bottom-left-radius: 5px;
-
+          border: 1px solid #dce7e1;
+          border-bottom-left-radius: 4px;
           color: #26372f;
-
-          box-shadow:
-            0 4px 14px
-            rgba(20,70,45,0.05);
+          box-shadow: 0 2px 10px rgba(20,70,45,0.04);
         }
 
-
-        .sm-chat-user-bubble {
-
-          background:
-            linear-gradient(
-              135deg,
-              #087f45,
-              #15965a
-            );
-
+        .cb-bubble--user {
+          background: #087f45;
           color: #ffffff;
-
-          border-bottom-right-radius: 5px;
-
-          box-shadow:
-            0 5px 18px
-            rgba(8,127,69,0.18);
+          border-bottom-right-radius: 4px;
         }
 
+        .cb-bubble--error {
+          background: #fdeaea;
+          border: 1px solid #f5c2c2;
+          color: #c0392b;
+          border-bottom-left-radius: 4px;
+        }
 
-        /* ================= SUGGESTIONS ================= */
+        /* -------------------------------------------------
+           ANSWER FORMATTING
+        ------------------------------------------------- */
+        .ans__h3 {
+          margin: 0 0 10px;
+          color: #087f45;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 1.3;
+        }
 
-        .sm-chat-suggestions {
-
+        .ans__h4 {
           display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 14px 0 8px;
+          color: #126b40;
+          font-size: 12.5px;
+          font-weight: 800;
+          letter-spacing: 0.2px;
+        }
 
+        .ans__h4:first-child { margin-top: 0; }
+
+        .ans__h4-bar {
+          display: inline-block;
+          width: 3px;
+          height: 14px;
+          background: #087f45;
+          border-radius: 2px;
+        }
+
+        .ans__p {
+          margin: 0 0 8px;
+          color: #2b3d33;
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .ans__p:last-child { margin-bottom: 0; }
+
+        .ans__p strong {
+          color: #087f45;
+          font-weight: 800;
+        }
+
+        /* LIST */
+        .ans__list {
+          margin: 6px 0 10px;
+          padding: 0;
+          list-style: none;
+        }
+
+        .ans__list-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 9px;
+          margin-bottom: 6px;
+          color: #2b3d33;
+          font-size: 12.5px;
+          line-height: 1.6;
+        }
+
+        .ans__list-dot {
+          flex-shrink: 0;
+          width: 5px;
+          height: 5px;
+          margin-top: 7px;
+          background: #087f45;
+          border-radius: 50%;
+        }
+
+        /* TABLE */
+        .ans__table-wrap {
+          margin: 10px 0;
+          overflow-x: auto;
+          border-radius: 10px;
+          border: 1px solid #dce7e1;
+        }
+
+        .ans__table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 12px;
+          background: #ffffff;
+          min-width: 380px;
+        }
+
+        .ans__table thead {
+          background: #eaf7f0;
+        }
+
+        .ans__table th {
+          padding: 10px 12px;
+          color: #087f45;
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
+          text-align: left;
+          border-bottom: 1px solid #dce7e1;
+        }
+
+        .ans__table td {
+          padding: 10px 12px;
+          color: #2b3d33;
+          border-bottom: 1px solid #eff5f1;
+          line-height: 1.55;
+        }
+
+        .ans__table tbody tr:nth-child(even) {
+          background: #fafdfb;
+        }
+
+        .ans__table tbody tr:hover {
+          background: #f0faf4;
+        }
+
+        .ans__table tbody tr:last-child td {
+          border-bottom: none;
+        }
+
+        /* -------------------------------------------------
+           SUGGESTIONS
+        ------------------------------------------------- */
+        .cb-suggestions {
+          display: flex;
           flex-wrap: wrap;
-
           gap: 7px;
-
           margin-top: 9px;
         }
 
-
-        .sm-chat-suggestions button {
-
-          display: flex;
-
+        .cb-suggestions button {
+          display: inline-flex;
           align-items: center;
-
           gap: 6px;
-
-          padding: 7px 10px;
-
+          padding: 7px 12px;
           background: #ffffff;
-
-          border:
-            1px solid
-            #d7e5dd;
-
+          border: 1px solid #d7e5dd;
           border-radius: 999px;
-
           color: #315442;
-
-          font-size: 10px;
-
+          font-family: inherit;
+          font-size: 11px;
           font-weight: 700;
-
           cursor: pointer;
-
-          transition:
-            background 0.2s ease,
-            border-color 0.2s ease,
-            transform 0.2s ease;
+          transition: all 0.2s ease;
         }
 
-
-        .sm-chat-suggestions button:hover {
-
+        .cb-suggestions button:hover {
           background: #edf8f2;
-
           border-color: #a9d3ba;
-
-          transform:
-            translateY(-1px);
+          transform: translateY(-1px);
         }
 
+        .cb-suggestions__icon {
+          font-size: 13px;
+        }
 
-        /* ================= LOADING ================= */
-
-        .sm-chat-loading {
-
+        /* -------------------------------------------------
+           TYPING
+        ------------------------------------------------- */
+        .cb-typing {
           display: flex;
-
           align-items: center;
-
           gap: 5px;
-
           width: fit-content;
-
-          padding: 13px 16px;
-
-          background: #ffffff;
-
-          border:
-            1px solid
-            #dce7e1;
-
-          border-radius: 15px;
+          padding: 4px 0;
         }
 
-
-        .sm-chat-loading span {
-
+        .cb-typing span {
           width: 6px;
           height: 6px;
-
           border-radius: 50%;
-
           background: #087f45;
-
-          animation:
-            smChatTyping 1.2s infinite;
+          animation: cbTyping 1.2s infinite;
         }
 
+        .cb-typing span:nth-child(2) { animation-delay: 0.15s; }
+        .cb-typing span:nth-child(3) { animation-delay: 0.3s; }
 
-        .sm-chat-loading span:nth-child(2) {
-
-          animation-delay:
-            0.15s;
-        }
-
-
-        .sm-chat-loading span:nth-child(3) {
-
-          animation-delay:
-            0.3s;
-        }
-
-
-        @keyframes smChatTyping {
-
-          0%,
-          60%,
-          100% {
-
+        @keyframes cbTyping {
+          0%, 60%, 100% {
             opacity: 0.25;
-
-            transform:
-              translateY(0);
+            transform: translateY(0);
           }
-
           30% {
-
             opacity: 1;
-
-            transform:
-              translateY(-3px);
+            transform: translateY(-3px);
           }
-
         }
 
-
-        /* ================= INPUT ================= */
-
-        .sm-chat-input-area {
-
+        /* -------------------------------------------------
+           INPUT
+        ------------------------------------------------- */
+        .cb-input-area {
           flex-shrink: 0;
-
-          padding:
-            13px
-            18px
-            15px;
-
+          padding: 12px 16px 14px;
           background: #ffffff;
-
-          border-top:
-            1px solid
-            #dce7e1;
+          border-top: 1px solid #dce7e1;
         }
 
-
-        .sm-chat-input-box {
-
-          width:
-            min(820px, 100%);
-
+        .cb-input-box {
+          width: min(840px, 100%);
           margin: 0 auto;
-
           display: flex;
-
           align-items: flex-end;
-
           gap: 8px;
-
-          padding: 7px;
-
+          padding: 6px;
           background: #f7fbf9;
-
-          border:
-            1px solid
-            #cfded5;
-
-          border-radius: 14px;
-
-          transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+          border: 1px solid #cfded5;
+          border-radius: 13px;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-
-        .sm-chat-input-box:focus-within {
-
-          border-color:
-            #087f45;
-
-          box-shadow:
-            0 0 0 3px
-            rgba(8,127,69,0.08);
+        .cb-input-box:focus-within {
+          border-color: #087f45;
+          box-shadow: 0 0 0 3px rgba(8,127,69,0.08);
         }
 
-
-        .sm-chat-input-box textarea {
-
+        .cb-input-box textarea {
           flex: 1;
-
           min-width: 0;
-
           min-height: 40px;
-
-          max-height: 100px;
-
-          padding:
-            10px 9px;
-
+          max-height: 120px;
+          padding: 10px 10px;
           border: none;
-
           outline: none;
-
           resize: none;
-
           background: transparent;
-
           color: #26372f;
-
           font-family: inherit;
-
           font-size: 13px;
-
           line-height: 1.5;
         }
 
-
-        .sm-chat-input-box textarea::placeholder {
-
+        .cb-input-box textarea::placeholder {
           color: #89968f;
         }
 
-
-        .sm-chat-send {
-
+        .cb-send {
           width: 42px;
           height: 42px;
-
-          flex:
-            0 0 42px;
-
+          flex: 0 0 42px;
           border: none;
-
-          border-radius: 11px;
-
-          background:
-            linear-gradient(
-              135deg,
-              #087f45,
-              #15965a
-            );
-
+          border-radius: 10px;
+          background: #087f45;
           color: #ffffff;
-
-          font-size: 18px;
-
+          font-size: 17px;
           cursor: pointer;
-
-          transition:
-            transform 0.2s ease,
-            opacity 0.2s ease;
+          transition: all 0.2s ease;
         }
 
-
-        .sm-chat-send:hover:not(:disabled) {
-
-          transform:
-            scale(1.05);
+        .cb-send:hover:not(:disabled) {
+          background: #056b3a;
+          transform: scale(1.04);
         }
 
-
-        .sm-chat-send:disabled {
-
+        .cb-send:disabled {
           opacity: 0.4;
-
-          cursor:
-            not-allowed;
+          cursor: not-allowed;
         }
 
-
-        .sm-chat-input-hint {
-
-          width:
-            min(820px, 100%);
-
-          margin:
-            5px auto 0;
-
+        .cb-input-hint {
+          width: min(840px, 100%);
+          margin: 5px auto 0;
           color: #9aa59f;
-
           text-align: center;
-
-          font-size: 8px;
+          font-size: 9.5px;
         }
 
-
-        /* ================= MOBILE ================= */
-
+        /* -------------------------------------------------
+           MOBILE
+        ------------------------------------------------- */
         @media (max-width: 700px) {
-
-          .sm-chat-header-inner {
-
+          .cb-header__inner {
             width: 100%;
-
-            min-height: 62px;
-
-            padding:
-              8px 12px;
-
+            min-height: 60px;
+            padding: 8px 12px;
             gap: 8px;
           }
 
+          .cb-back { width: 34px; height: 34px; font-size: 17px; }
 
-          .sm-chat-back {
-
-            width: 34px;
-            height: 34px;
+          .cb-header__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            font-size: 18px;
           }
 
+          .cb-header__info h1 { font-size: 13px; }
+          .cb-header__info p { font-size: 9px; }
 
-          .sm-chat-header-icon {
-
-            width: 38px;
-            height: 38px;
-
-            border-radius: 10px;
-
-            font-size: 19px;
+          .cb-status {
+            padding: 5px 9px;
+            font-size: 9px;
           }
 
+          .cb-clear { width: 32px; height: 32px; }
 
-          .sm-chat-header-info h1 {
+          .cb-messages { padding: 16px 10px; }
 
+          .cb-bubble-wrap { max-width: 88%; }
+
+          .cb-bubble {
+            padding: 11px 13px;
+            font-size: 12.5px;
+          }
+
+          .cb-avatar {
+            width: 30px;
+            height: 30px;
+            flex-basis: 30px;
             font-size: 14px;
           }
 
-
-          .sm-chat-header-info p {
-
-            font-size: 8px;
+          .cb-suggestions button {
+            font-size: 10.5px;
+            padding: 6px 10px;
           }
 
+          .cb-input-area { padding: 10px 10px 12px; }
 
-          .sm-chat-status {
+          .cb-input-box textarea { font-size: 16px; }
 
-            padding:
-              6px 8px;
-
-            font-size: 8px;
-          }
-
-
-          .sm-chat-clear {
-
-            width: 33px;
-            height: 33px;
-          }
-
-
-          .sm-chat-messages {
-
-            padding:
-              18px 10px;
-          }
-
-
-          .sm-chat-message-content {
-
-            max-width: 84%;
-          }
-
-
-          .sm-chat-bubble {
-
-            padding:
-              10px 12px;
-
-            font-size: 12px;
-
-            line-height: 1.6;
-          }
-
-
-          .sm-chat-avatar {
-
-            width: 31px;
-            height: 31px;
-
-            flex-basis: 31px;
-
-            font-size: 15px;
-          }
-
-
-          .sm-chat-suggestions {
-
-            gap: 6px;
-          }
-
-
-          .sm-chat-suggestions button {
-
-            font-size: 9px;
-
-            padding:
-              6px 9px;
-          }
-
-
-          .sm-chat-input-area {
-
-            padding:
-              9px
-              9px
-              10px;
-          }
-
-
-          .sm-chat-input-box {
-
-            border-radius: 12px;
-          }
-
-
-          .sm-chat-input-box textarea {
-
-            font-size: 16px;
-          }
-
-
-          .sm-chat-send {
-
+          .cb-send {
             width: 40px;
             height: 40px;
-
             flex-basis: 40px;
           }
 
+          .cb-input-hint { display: none; }
 
-          .sm-chat-input-hint {
-
-            display: none;
-          }
-
+          .ans__table { font-size: 11.5px; }
+          .ans__table th,
+          .ans__table td { padding: 8px 10px; }
         }
-
 
         @media (prefers-reduced-motion: reduce) {
-
-          .sm-chat-loading span {
-
+          .cb-typing span,
+          .cb-status__dot {
             animation: none;
           }
-
         }
-
       `}</style>
-
     </div>
   )
 }
