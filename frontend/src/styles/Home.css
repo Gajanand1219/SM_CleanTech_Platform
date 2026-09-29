@@ -2573,3 +2573,115 @@
     max-height: 46px !important;
   }
 }
+
+
+
+/* =========================================================
+   MOBILE COMPANY LOGO MARQUEE FIX
+   ========================================================= */
+
+.partner-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.partner-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  min-width: max-content;
+  flex-wrap: nowrap;
+  animation: partnerMarquee 18s linear infinite;
+  will-change: transform;
+}
+
+.partner-marquee-track--reverse {
+  animation-name: partnerMarqueeReverse;
+  animation-duration: 20s;
+}
+
+.partner-company {
+  flex: 0 0 auto;
+  width: 175px;
+  min-width: 175px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .partner-marquee {
+    width: 100%;
+    overflow: hidden;
+    padding: 18px 0;
+  }
+
+  .partner-marquee-track {
+    width: max-content;
+    min-width: max-content;
+    animation-duration: 12s;
+  }
+
+  .partner-marquee-track--reverse {
+    animation-duration: 14s;
+  }
+
+  .partner-company {
+    width: 155px;
+    min-width: 155px;
+    margin: 0 6px;
+    padding: 9px 11px;
+  }
+
+  .partner-company-logo {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+  }
+
+  .partner-company-logo img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .partner-company-name {
+    max-width: 100px;
+    font-size: 11px;
+  }
+}
+
+/* Very small mobile */
+@media (max-width: 420px) {
+
+  .partner-marquee-track {
+    animation-duration: 10s;
+  }
+
+  .partner-marquee-track--reverse {
+    animation-duration: 12s;
+  }
+
+  .partner-company {
+    width: 145px;
+    min-width: 145px;
+    margin: 0 5px;
+  }
+
+  .partner-company-logo {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .partner-company-logo img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .partner-company-name {
+    max-width: 92px;
+    font-size: 10px;
+  }
+}
