@@ -3,47 +3,73 @@ import Navbar from '../components/Navbar'
 import '../styles/Home.css'
 import API from '../services/api'
 import { useEffect, useState, useRef } from 'react'
-// import '../styles/ScrollAnimations.css'
+import '../styles/ScrollAnimations.css'
+
 const solutionsList = [
   {
-    name: 'Water & Wastewater',
-    // icon: '💧',
+    name: 'Water & Wastewater Treatment',
+    icon: '💧',
     image:
       'https://images.unsplash.com/photo-1538300342682-cf57afb97285?auto=format&fit=crop&w=900&q=80',
-    desc:
-      'ETP, STP, ZLD, CETP, MEE, MBR, MBBR, RO, UF, MF, Membranes, Electrochemical methods, MVR, ASP, SBR, DM / Ion Exchange and Crystallizer.'
+    points: [
+      'Primary Effluent & Sewage Treatment',
+      'High Recovery Advanced Water Engineering',
+      'Biological & Advanced Membrane Solutions',
+      'Fine Filtration & Pre-treatment Nodes',
+      'Specialized Electrochemical & Recovery Systems'
+    ]
   },
   {
     name: 'Solid & Hazardous Waste',
     icon: '♻️',
     image:
       'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=80',
-    desc:
-      'Industrial waste handling, incineration, landfill management, recycling and hazardous material processing solutions.'
+    points: [
+      'Collection & Pre-processing',
+      'Thermal & Advanced Recovery (Waste to Energy)',
+      'Biological Treatment (Organic Waste)',
+      'Chemical & Stabilization Treatments',
+      'Specialized Recycling & Compliance'
+    ]
   },
   {
     name: 'Solar & Renewables',
     icon: '☀️',
     image:
       'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=900&q=80',
-    desc:
-      'Industrial solar rooftop, open-access renewable energy and green power integration solutions.'
+    points: [
+      'Capital Efficiency & Grid Integration',
+      'Thermal Utility De-carbonization',
+      'Power Quality & Micro-grid Resilience',
+      'Agro Industrial Logistics & Supply Chains',
+      'Asset Optimization & Digital Intelligence'
+    ]
   },
   {
     name: 'Carbon & ESG',
     icon: '🌱',
     image:
       'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80',
-    desc:
-      'Carbon footprint tracking, ESG auditing, sustainability compliance and environmental reporting.'
+    points: [
+      'Scope 1 & Direct Operational Carbon Footprint',
+      'Scope 2 & Indirect Energy Tracking',
+      'Scope 3 & Supply Chain Vulnerabilities',
+      'Global Trade & Cross-Border Compliance',
+      'ESG Disclosures & Global Frameworks'
+    ]
   },
   {
-    name: 'SPCB Consents & Air Pollution',
+    name: 'Air Pollution & Environmental Legal Services',
     icon: '🏭',
     image:
       'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=900&q=80',
-    desc:
-      'Environmental legal services, air pollution control equipment, SPCB consents and environmental clearances.'
+    points: [
+      'Industrial Air Pollution Engineering (Physical Solutions)',
+      'Statutory SPCB Consents & Approvals',
+      'SPCB Enforcement & Litigation Defense (Legal Services)',
+      'Factory Infrastructure & Safety Audits (Site Compliance)',
+      'Legacy & Supply Chain Risk Scoping'
+    ]
   }
 ]
 
@@ -371,33 +397,51 @@ export default function Home() {
                 organized.
               </p>
             </div>
-
+                        
             <div className="solutions-grid">
+
               {solutionsList.map((solution, index) => (
+
                 <article
                   key={solution.name}
                   className="solution-card"
                   data-reveal
-                  style={{ transitionDelay: `${index * 0.08}s` }}
+                  style={{ transitionDelay: `${index * 0.06}s` }}
                 >
+
+                  {/* IMAGE */}
                   <div className="solution-card__image">
+
                     <img
                       src={solution.image}
                       alt={solution.name}
                       loading="lazy"
                     />
+
                     <span className="solution-card__number">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    {/* <span className="solution-card__icon">
-                      {solution.icon}
-                    </span> */}
-                    <div className="solution-card__overlay" />
+
                   </div>
 
+                  {/* BODY */}
                   <div className="solution-card__body">
+
                     <h2>{solution.name}</h2>
-                    <p>{solution.desc}</p>
+
+                    <ul className="solution-card__points">
+                      {solution.points.map((point, i) => (
+                        <li key={i}>
+                          <span className="solution-card__point-num">
+                            {i + 1}
+                          </span>
+                          <span className="solution-card__point-text">
+                            {point}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
                     <Link
                       to="/register/buyer"
                       className="solution-card__link"
@@ -405,11 +449,15 @@ export default function Home() {
                       Start Requirement
                       <span className="solution-card__arrow">→</span>
                     </Link>
+
                   </div>
+
                 </article>
+
               ))}
+
             </div>
-          </div>
+           </div>
         </section>
 
         {/* ================= VISION / MISSION ================= */}
@@ -456,237 +504,139 @@ export default function Home() {
         </section>
 
         {/* ================= TRUSTED NETWORK ================= */}
-{/* ================= TRUSTED NETWORK ================= */}
 
-<section className="partners">
-
-  <div className="section-container">
-
-    <div className="partners-heading">
-      <span className="section-label">
-        OUR NETWORK
-      </span>
-
-      <h2>
-        Trusted Industrial Network
-      </h2>
-
-      <p>
-        Connecting verified industrial buyers with approved
-        CleanTech engineering and EPC solution providers.
-      </p>
-    </div>
-
-
-    <div className="partners-grid">
-
-      {/* ================= VENDORS ================= */}
-
-      <div className="partner-network-card partner-network-card--vendor">
-
-        <div className="partner-network-header">
-
-          <div className="partner-network-icon">
-            ⚙️
-          </div>
-
-          <div>
-            <span className="partner-network-kicker">
-              TECHNICAL NETWORK
-            </span>
-
-            <h3>
-              Approved EPC Providers
-            </h3>
-          </div>
-
-        </div>
-
-
-        {/* VENDORS - RIGHT TO LEFT */}
-
-        <div className="partner-marquee">
-
-          {vendors.length > 0 ? (
-
-            <marquee
-              behavior="scroll"
-              direction="left"
-              scrollamount="5"
-              scrolldelay="0"
-              loop="-1"
-            >
-
-              <div className="partner-marquee-content">
-
-                {[...vendors, ...vendors].map((company, index) => (
-
-                  <div
-                    className="partner-company"
-                    key={`${company.id}-${index}`}
-                  >
-
-                    <div className="partner-company-logo">
-
-                      <img
-                        src={company.logo}
-                        alt={company.company_name}
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                          e.currentTarget.parentElement.classList.add(
-                            'partner-company-logo--fallback'
-                          )
-                        }}
-                      />
-
-                      <span>
-                        {company.company_name
-                          ?.charAt(0)
-                          ?.toUpperCase()}
-                      </span>
-
-                    </div>
-
-                    <span className="partner-company-name">
-                      {company.company_name}
-                    </span>
-
-                  </div>
-
-                ))}
-
-              </div>
-
-            </marquee>
-
-          ) : (
-
-            <div className="partner-empty">
-              No approved vendors yet.
+        <section className="partners">
+          <div className="section-container">
+            <div className="partners-heading" data-reveal>
+              <span className="section-label">OUR NETWORK</span>
+              <h2>Trusted Industrial Network</h2>
+              <p>
+                Connecting verified industrial buyers with approved CleanTech
+                engineering and EPC solution providers.
+              </p>
             </div>
 
-          )}
-
-        </div>
-
-
-        <div className="partner-network-footer">
-
-          <span className="network-status-dot" />
-
-          Verified CleanTech Solution Providers
-
-        </div>
-
-      </div>
-
-
-      {/* ================= BUYERS ================= */}
-
-      <div className="partner-network-card partner-network-card--buyer">
-
-        <div className="partner-network-header">
-
-          <div className="partner-network-icon">
-            🏢
-          </div>
-
-          <div>
-            <span className="partner-network-kicker">
-              TRUSTED NETWORK
-            </span>
-
-            <h3>
-              Verified Industrial Buyers
-            </h3>
-          </div>
-
-        </div>
-
-
-        {/* BUYERS - LEFT TO RIGHT */}
-
-        <div className="partner-marquee">
-
-          {buyers.length > 0 ? (
-
-            <marquee
-              behavior="scroll"
-              direction="right"
-              scrollamount="5"
-              scrolldelay="0"
-              loop="-1"
-            >
-
-              <div className="partner-marquee-content">
-
-                {[...buyers, ...buyers].map((company, index) => (
-
-                  <div
-                    className="partner-company"
-                    key={`${company.id}-${index}`}
-                  >
-
-                    <div className="partner-company-logo">
-
-                      <img
-                        src={company.logo}
-                        alt={company.company_name}
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                          e.currentTarget.parentElement.classList.add(
-                            'partner-company-logo--fallback'
-                          )
-                        }}
-                      />
-
-                      <span>
-                        {company.company_name
-                          ?.charAt(0)
-                          ?.toUpperCase()}
-                      </span>
-
-                    </div>
-
-                    <span className="partner-company-name">
-                      {company.company_name}
+            <div className="partners-grid">
+              {/* VENDORS */}
+              <div className="partner-network-card" data-reveal>
+                <div className="partner-network-header">
+                  <div className="partner-network-icon">⚙️</div>
+                  <div>
+                    <span className="partner-network-kicker">
+                      TECHNICAL NETWORK
                     </span>
-
+                    <h3>Approved EPC Providers</h3>
                   </div>
+                </div>
 
-                ))}
+                <div className="partner-marquee">
+                  <div className="partner-marquee-track">
+                    {vendors.length > 0 ? (
+                      [...vendors, ...vendors].map((company, index) => (
+                        <div
+                          className="partner-company"
+                          key={`${company.id}-${index}`}
+                        >
+                          <div className="partner-company-logo">
+                            <img
+                              src={company.logo}
+                              alt={company.company_name}
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                                e.currentTarget.parentElement.classList.add(
+                                  'partner-company-logo--fallback'
+                                )
+                              }}
+                            />
+                            <span>
+                              {company.company_name
+                                ?.charAt(0)
+                                ?.toUpperCase()}
+                            </span>
+                          </div>
+                          <span className="partner-company-name">
+                            {company.company_name}
+                          </span>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="partner-empty">
+                        No approved vendors yet.
+                      </div>
+                    )}
+                  </div>
+                </div>
 
+                <div className="partner-network-footer">
+                  <span className="network-status-dot" />
+                  Verified CleanTech Solution Providers
+                </div>
               </div>
 
-            </marquee>
+              {/* BUYERS */}
+              <div
+                className="partner-network-card"
+                data-reveal
+                style={{ transitionDelay: '0.1s' }}
+              >
+                <div className="partner-network-header">
+                  <div className="partner-network-icon">🏢</div>
+                  <div>
+                    <span className="partner-network-kicker">
+                      TRUSTED NETWORK
+                    </span>
+                    <h3>Verified Industrial Buyers</h3>
+                  </div>
+                </div>
 
-          ) : (
+                <div className="partner-marquee">
+                  <div className="partner-marquee-track partner-marquee-track--reverse">
+                    {buyers.length > 0 ? (
+                      [...buyers, ...buyers].map((company, index) => (
+                        <div
+                          className="partner-company"
+                          key={`${company.id}-${index}`}
+                        >
+                          <div className="partner-company-logo">
+                            <img
+                              src={company.logo}
+                              alt={company.company_name}
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none'
+                                e.currentTarget.parentElement.classList.add(
+                                  'partner-company-logo--fallback'
+                                )
+                              }}
+                            />
+                            <span>
+                              {company.company_name
+                                ?.charAt(0)
+                                ?.toUpperCase()}
+                            </span>
+                          </div>
+                          <span className="partner-company-name">
+                            {company.company_name}
+                          </span>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="partner-empty">
+                        No verified buyers yet.
+                      </div>
+                    )}
+                  </div>
+                </div>
 
-            <div className="partner-empty">
-              No verified buyers yet.
+                <div className="partner-network-footer">
+                  <span className="network-status-dot" />
+                  Verified Industrial Businesses
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
 
-          )}
-
-        </div>
-
-
-        <div className="partner-network-footer">
-
-          <span className="network-status-dot" />
-
-          Verified Industrial Businesses
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-      {/* ================= CONTACT ================= */}
+        {/* ================= CONTACT ================= */}
 
         <section className="contact" id="contact">
           <div className="section-container">
@@ -712,7 +662,7 @@ export default function Home() {
                   </div>
 
                   <a
-                    href="mailto:satyapalmungal3112@gmail.com"
+                    href="mailto:smcleantech2910@gmail.com"
                     className="contact-direct-link"
                   >
                     <div className="contact-direct-icon contact-email-icon">
@@ -720,7 +670,7 @@ export default function Home() {
                     </div>
                     <div className="contact-direct-content">
                       <span>Email</span>
-                      <strong>satyapalmungal3112@gmail.com</strong>
+                      <strong>smcleantech2910@gmail.com</strong>
                     </div>
                     <span className="contact-direct-arrow">→</span>
                   </a>
@@ -866,7 +816,15 @@ export default function Home() {
                   <br />
                   Engineering &amp; EPC Network
                 </p>
-                <p>Email: info@smcleantech.com</p>
+                <p>
+                  Email:{" "}
+                  <a
+                    href="mailto:smcleantech2910@gmail.com"
+                    style={{ color: "#007bff", textDecoration: "underline" }}
+                  >
+                    smcleantech2910@gmail.com
+                  </a>
+                </p>
                 <p>India</p>
               </div>
             </div>
