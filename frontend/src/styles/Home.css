@@ -1,6 +1,6 @@
 /* =========================================================
-   SM CLEANTECH - HOME PAGE (FULLY RESPONSIVE)
-   Clean / Professional / Mobile-First
+   SM CLEANTECH - HOME PAGE
+   Clean / Professional / Fully Responsive
    ========================================================= */
 
 :root {
@@ -16,7 +16,7 @@
   --home-white: #ffffff;
   --home-bg: #f7fbf9;
   --home-shadow: 0 5px 18px rgba(20, 70, 45, 0.08);
-  --home-shadow-hover: 0 10px 28px rgba(20, 70, 45, 0.13);
+  --home-shadow-lg: 0 12px 32px rgba(20, 70, 45, 0.12);
 }
 
 /* =========================================================
@@ -44,14 +44,16 @@
 }
 
 /* =========================================================
-   HERO SECTION
+   HERO
    ========================================================= */
 
 .hero {
+  position: relative;
   width: 100%;
-  background: linear-gradient(180deg, #f0faf6 0%, #f7fcfa 55%, #ffffff 100%);
   padding: 80px 0 65px;
+  background: linear-gradient(180deg, #f0faf6 0%, #f7fcfa 55%, #ffffff 100%);
   border-bottom: 1px solid #e5eee9;
+  overflow: hidden;
 }
 
 .hero__container {
@@ -84,16 +86,16 @@
 .hero__title {
   margin: 0;
   color: #126b40;
-  font-size: clamp(32px, 4vw, 54px);
-  line-height: 1.08;
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.8px;
 }
 
 .hero__tagline {
   margin: 15px 0 20px;
   color: #1c2722;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -102,7 +104,7 @@
   max-width: 610px;
   margin: 0 0 28px;
   color: var(--home-muted);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
@@ -118,12 +120,12 @@
 }
 
 .home-btn {
-  min-width: 125px;
+  min-width: 130px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 12px 22px;
-  border-radius: 7px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -135,64 +137,133 @@
 }
 
 .home-btn--primary {
-  background: #087f45;
-  color: #fff;
-  border: 1px solid #087f45;
+  background: var(--home-green);
+  color: #ffffff;
+  border: 1px solid var(--home-green);
 }
 
 .home-btn--primary:hover {
-  background: #056b3a;
+  background: var(--home-green-dark);
 }
 
 .home-btn--outline {
-  background: #fff;
-  color: #087f45;
-  border: 1px solid #087f45;
+  background: #ffffff;
+  color: var(--home-green);
+  border: 1px solid var(--home-green);
 }
 
 .home-btn--outline:hover {
-  background: #eaf7f0;
+  background: var(--home-green-light);
 }
 
 .home-btn--login {
   background: #edf7f2;
-  color: #087f45;
+  color: var(--home-green);
   border: 1px solid #cde6d8;
 }
 
+.home-btn--login:hover {
+  background: #dff0e7;
+}
+
 /* =========================================================
-   HERO MINI INFO
+   HERO MINI CARDS
    ========================================================= */
 
 .hero__mini-info {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: min(650px, 100%);
+  margin-top: 24px;
+}
+
+.hero-mini-card {
+  position: relative;
+  min-width: 0;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 28px;
+  gap: 10px;
+  padding: 12px 14px;
+
+  background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(239,250,244,0.94));
+  border: 1px solid rgba(28, 122, 78, 0.13);
+  border-radius: 13px;
+  box-shadow: 0 8px 22px rgba(20, 70, 45, 0.07);
+
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.hero__mini-info div {
+.hero-mini-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14px;
+  right: 14px;
+  height: 2px;
+  background: linear-gradient(90deg, #087f45, #46b978, transparent);
+  border-radius: 0 0 4px 4px;
+  opacity: 0.65;
+}
+
+.hero-mini-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(8, 127, 69, 0.28);
+  box-shadow: 0 14px 30px rgba(20, 70, 45, 0.12);
+}
+
+.hero-mini-icon {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eaf7f0;
+  border: 1px solid #d3ebdc;
+  font-size: 15px;
+}
+
+.hero-mini-content {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  align-items: flex-start;
 }
 
-.hero__mini-info strong {
+.hero-mini-content strong {
+  display: flex;
+  align-items: baseline;
   color: var(--home-green);
-  font-size: 23px;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.hero-mini-content > span {
+  margin-top: 4px;
+  color: #708078;
+  font-size: 8px;
+  line-height: 1.25;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+  white-space: nowrap;
+}
+
+.counter-plus,
+.counter-unit {
+  margin-left: 1px;
+  color: #15965a;
+  font-size: 12px;
   font-weight: 800;
 }
 
-.hero__mini-info span {
-  color: var(--home-muted);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 /* =========================================================
-   HERO RIGHT / PLATFORM CARD
+   HERO RIGHT — PLATFORM CARD
    ========================================================= */
 
 .hero__right {
@@ -204,7 +275,7 @@
 .platform-card {
   width: 100%;
   padding: 22px;
-  background: white;
+  background: #ffffff;
   border: 1px solid var(--home-border);
   border-radius: 16px;
   box-shadow: var(--home-shadow);
@@ -237,13 +308,12 @@
 }
 
 .platform-dots span:first-child {
-  background: #087f45;
+  background: var(--home-green);
 }
 
 .platform-flow {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 .platform-flow__item {
@@ -305,7 +375,7 @@
   align-items: center;
   gap: 10px;
   padding: 13px;
-  background: white;
+  background: #ffffff;
   border: 1px solid var(--home-border);
   border-radius: 11px;
   box-shadow: 0 3px 12px rgba(20, 70, 45, 0.06);
@@ -377,40 +447,41 @@
 
 .about {
   padding: 85px 0;
-  background: white;
+  background: #ffffff;
 }
 
 /* =========================================================
-   SOLUTIONS GRID
+   SOLUTIONS GRID — 5 CARDS IN ROW
    ========================================================= */
 
 .solutions-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
   margin-top: 25px;
 }
 
 .solution-card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #dce7e1;
   border-radius: 14px;
   box-shadow: 0 5px 18px rgba(20, 70, 45, 0.07);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .solution-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(20, 70, 45, 0.12);
+  border-color: #b8dcc6;
 }
 
 .solution-card__image {
   position: relative;
   width: 100%;
-  height: 165px;
+  height: 150px;
   overflow: hidden;
   background: #eaf7f0;
 }
@@ -420,63 +491,78 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
 .solution-card:hover .solution-card__image img {
-  transform: scale(1.03);
+  transform: scale(1.06);
 }
 
 .solution-card__number {
   position: absolute;
   top: 10px;
   left: 10px;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.94);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
   color: #087f45;
   font-size: 11px;
   font-weight: 800;
+  box-shadow: 0 2px 8px rgba(20, 70, 45, 0.1);
 }
 
 .solution-card__body {
-  padding: 18px 16px 20px;
-  flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 16px 16px 18px;
+  flex: 1;
 }
 
 .solution-card__body h2 {
-  margin: 0 0 9px;
-  color: #1d3027;
-  font-size: 15px;
+  margin: 0 0 10px;
+  color: #126b40;
+  font-size: 14.5px;
   line-height: 1.3;
-  font-weight: 750;
+  font-weight: 800;
 }
 
 .solution-card__body p {
   margin: 0 0 14px;
   color: #68766f;
-  font-size: 11px;
+  font-size: 11.5px;
   line-height: 1.6;
   flex: 1;
 }
 
 .solution-card__link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   color: #087f45;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, gap 0.2s ease;
+  padding-top: 12px;
+  border-top: 1px solid #eef4f0;
+  margin-top: auto;
 }
 
 .solution-card__link:hover {
   color: #056b3a;
+  gap: 8px;
+}
+
+.solution-card__arrow {
+  transition: transform 0.2s ease;
+}
+
+.solution-card__link:hover .solution-card__arrow {
+  transform: translateX(2px);
 }
 
 /* =========================================================
@@ -503,10 +589,16 @@
   gap: 18px;
   align-items: flex-start;
   padding: 25px;
-  background: white;
+  background: #ffffff;
   border: 1px solid var(--home-border);
   border-radius: 14px;
   box-shadow: var(--home-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.vm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--home-shadow-lg);
 }
 
 .vm-icon {
@@ -545,476 +637,7 @@
   font-size: 13px;
   line-height: 1.65;
 }
-/* =========================================================
-   TRUSTED NETWORK
-========================================================= */
 
-.partners {
-  padding: 90px 0;
-  background: #f7faf8;
-  overflow: hidden;
-}
-
-.partners-heading {
-  max-width: 760px;
-  margin: 0 auto 45px;
-  text-align: center;
-}
-
-.partners-heading h2 {
-  margin: 10px 0 12px;
-  font-size: 38px;
-  line-height: 1.15;
-  color: #153d2c;
-  font-weight: 800;
-  letter-spacing: -0.8px;
-}
-
-.partners-heading p {
-  max-width: 650px;
-  margin: 0 auto;
-  color: #6b7c73;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-
-/* =========================================================
-   TWO NETWORK CARDS
-========================================================= */
-
-.partners-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
-  align-items: stretch;
-}
-
-
-/* =========================================================
-   NETWORK CARD
-========================================================= */
-
-.partner-network-card {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-
-  background: #ffffff;
-
-  border: 1px solid #e2ebe5;
-  border-radius: 20px;
-
-  box-shadow:
-    0 12px 35px rgba(20, 65, 45, 0.07);
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.partner-network-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 18px 45px rgba(20, 65, 45, 0.11);
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.partner-network-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-
-  padding: 24px 25px 20px;
-
-  border-bottom: 1px solid #edf2ef;
-}
-
-.partner-network-icon {
-  width: 44px;
-  height: 44px;
-
-  flex: 0 0 44px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: #edf8f1;
-
-  font-size: 20px;
-}
-
-.partner-network-kicker {
-  display: block;
-
-  margin-bottom: 4px;
-
-  color: #3c8d62;
-
-  font-size: 10px;
-  font-weight: 800;
-
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-}
-
-.partner-network-header h3 {
-  margin: 0;
-
-  color: #183d2e;
-
-  font-size: 19px;
-  font-weight: 750;
-}
-
-
-/* =========================================================
-   MARQUEE
-========================================================= */
-
-.partner-marquee {
-  position: relative;
-
-  width: 100%;
-  overflow: hidden;
-
-  padding: 25px 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      #ffffff 0%,
-      transparent 10%,
-      transparent 90%,
-      #ffffff 100%
-    );
-}
-
-
-/* fade edges */
-
-.partner-marquee::before,
-.partner-marquee::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  bottom: 0;
-
-  width: 70px;
-
-  z-index: 2;
-
-  pointer-events: none;
-}
-
-.partner-marquee::before {
-  left: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      #ffffff,
-      transparent
-    );
-}
-
-.partner-marquee::after {
-  right: 0;
-
-  background:
-    linear-gradient(
-      270deg,
-      #ffffff,
-      transparent
-    );
-}
-
-
-/* moving track */
-
-.partner-marquee-track {
-  display: flex;
-  align-items: center;
-
-  width: max-content;
-
-  animation: partnerMarquee 28s linear infinite;
-}
-
-.partner-marquee-track--reverse {
-  animation-name: partnerMarqueeReverse;
-  animation-duration: 32s;
-}
-
-
-/* pause when mouse over */
-
-.partner-network-card:hover .partner-marquee-track {
-  animation-play-state: paused;
-}
-
-
-@keyframes partnerMarquee {
-
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-
-}
-
-
-@keyframes partnerMarqueeReverse {
-
-  from {
-    transform: translateX(-50%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-
-}
-
-
-/* =========================================================
-   COMPANY ITEM
-========================================================= */
-
-.partner-company {
-  flex: 0 0 auto;
-
-  display: flex;
-  align-items: center;
-  gap: 11px;
-
-  min-width: 175px;
-
-  margin: 0 8px;
-  padding: 10px 14px;
-
-  border: 1px solid #e6eee9;
-  border-radius: 12px;
-
-  background: #ffffff;
-
-  box-shadow:
-    0 4px 14px rgba(25, 70, 50, 0.05);
-}
-
-
-/* =========================================================
-   SMALL LOGO
-========================================================= */
-
-.partner-company-logo {
-  position: relative;
-
-  width: 38px;
-  height: 38px;
-
-  flex: 0 0 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  border-radius: 9px;
-
-  background: #f4f8f5;
-  border: 1px solid #e4ebe6;
-}
-
-.partner-company-logo img {
-  width: 27px;
-  height: 27px;
-
-  object-fit: contain;
-
-  display: block;
-}
-
-.partner-company-logo span {
-  display: none;
-
-  color: #347653;
-
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.partner-company-logo--fallback span {
-  display: block;
-}
-
-
-/* =========================================================
-   COMPANY NAME
-========================================================= */
-
-.partner-company-name {
-  max-width: 115px;
-
-  overflow: hidden;
-
-  color: #294c3c;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  line-height: 1.3;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.partner-network-footer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 14px 25px;
-
-  border-top: 1px solid #edf2ef;
-
-  color: #718178;
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.network-status-dot {
-  width: 7px;
-  height: 7px;
-
-  flex: 0 0 7px;
-
-  border-radius: 50%;
-
-  background: #48a86b;
-
-  box-shadow:
-    0 0 0 4px rgba(72, 168, 107, 0.10);
-}
-
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.partner-empty {
-  width: 100%;
-
-  padding: 20px;
-
-  text-align: center;
-
-  color: #829087;
-
-  font-size: 13px;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 900px) {
-
-  .partners {
-    padding: 70px 0;
-  }
-
-  .partners-grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .partners-heading h2 {
-    font-size: 32px;
-  }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-  .partners {
-    padding: 60px 0;
-  }
-
-  .partners-heading {
-    margin-bottom: 30px;
-    padding: 0 15px;
-  }
-
-  .partners-heading h2 {
-    font-size: 27px;
-  }
-
-  .partners-heading p {
-    font-size: 13px;
-  }
-
-  .partner-network-header {
-    padding: 20px;
-  }
-
-  .partner-network-header h3 {
-    font-size: 16px;
-  }
-
-  .partner-network-icon {
-    width: 40px;
-    height: 40px;
-    flex-basis: 40px;
-  }
-
-  .partner-company {
-    min-width: 155px;
-    padding: 9px 11px;
-  }
-
-  .partner-company-logo {
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-  }
-
-  .partner-company-logo img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .partner-network-footer {
-    padding: 12px 20px;
-  }
-
-}
 /* =========================================================
    TRUSTED NETWORK / PARTNERS
    ========================================================= */
@@ -1033,7 +656,7 @@
 
 .partners-heading h2 {
   margin: 10px 0 12px;
-  font-size: 38px;
+  font-size: clamp(26px, 3.2vw, 38px);
   line-height: 1.15;
   color: #153d2c;
   font-weight: 800;
@@ -1133,12 +756,12 @@
 
 @keyframes partnerMarquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }
 }
 
 @keyframes partnerMarqueeReverse {
   from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
+  to   { transform: translateX(0); }
 }
 
 .partner-company {
@@ -1215,7 +838,7 @@
   flex: 0 0 7px;
   border-radius: 50%;
   background: #48a86b;
-  box-shadow: 0 0 0 4px rgba(72, 168, 107, 0.10);
+  box-shadow: 0 0 0 4px rgba(72, 168, 107, 0.1);
 }
 
 .partner-empty {
@@ -1227,7 +850,7 @@
 }
 
 /* =========================================================
-   CONTACT SECTION
+   CONTACT
    ========================================================= */
 
 .contact {
@@ -1258,9 +881,7 @@
   line-height: 1.7;
 }
 
-/* =========================================================
-   DIRECT CONTACT CARD
-   ========================================================= */
+/* ============ DIRECT CONTACT CARD ============ */
 
 .contact-person-card {
   width: 100%;
@@ -1292,7 +913,6 @@
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
-  box-shadow: 0 6px 15px rgba(8, 127, 69, 0.18);
 }
 
 .contact-person-label {
@@ -1397,10 +1017,6 @@
   color: #ffffff;
 }
 
-/* =========================================================
-   CONTACT POINTS
-   ========================================================= */
-
 .contact-points {
   display: flex;
   flex-direction: column;
@@ -1433,14 +1049,12 @@
   font-weight: 600;
 }
 
-/* =========================================================
-   CONTACT FORM CARD
-   ========================================================= */
+/* ============ CONTACT FORM ============ */
 
 .contact-card {
   width: 100%;
   padding: 30px;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #dce7e1;
   border-radius: 15px;
   box-shadow: 0 7px 25px rgba(20, 70, 45, 0.08);
@@ -1473,7 +1087,7 @@
   width: 100%;
   margin-bottom: 12px;
   padding: 12px 14px;
-  background: white;
+  background: #ffffff;
   border: 1px solid #cfdcd5;
   border-radius: 7px;
   outline: none;
@@ -1511,7 +1125,7 @@
   border: none;
   border-radius: 7px;
   background: var(--home-green);
-  color: white;
+  color: #ffffff;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -1557,20 +1171,9 @@
 .footer {
   padding: 55px 0 20px;
   background: #12382a;
-  color: #fff;
-  border-top: none;
-}
-/* =========================================================
-   FOOTER — SIDE BY SIDE ON ALL DEVICES
-   ========================================================= */
-
-.footer {
-  padding: 55px 0 20px;
-  background: #12382a;
-  color: #fff;
+  color: #ffffff;
 }
 
-/* 4 columns on desktop */
 .footer-main {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
@@ -1583,14 +1186,14 @@
   width: 105px;
   height: 50px;
   object-fit: contain;
-  background: #fff;
+  background: #ffffff;
   border-radius: 6px;
   padding: 2px;
 }
 
 .footer-brand p {
   margin: 15px 0 5px;
-  color: #fff;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 700;
 }
@@ -1609,7 +1212,7 @@
 
 .footer-column h4 {
   margin: 0 0 8px;
-  color: #fff;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 800;
 }
@@ -1622,7 +1225,7 @@
 }
 
 .footer-column a:hover {
-  color: #fff;
+  color: #ffffff;
   transform: translateX(3px);
 }
 
@@ -1643,219 +1246,165 @@
   font-size: 10px;
 }
 
+/* Footer logo override */
+.footer .footer__logo-image {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  max-width: 58px !important;
+  max-height: 58px !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 50% !important;
+  border: 2px solid #087f45 !important;
+  background: #ffffff !important;
+  padding: 2px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 3px 10px rgba(8, 127, 69, 0.18) !important;
+  margin: 0 !important;
+}
+
+.footer .footer__logo-image:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 5px 16px rgba(8, 127, 69, 0.28) !important;
+}
+
 /* =========================================================
-   TABLET — 2 columns side by side
+   RESPONSIVE — TABLET (≤1050px)
+   ========================================================= */
+/* =========================================================
+   CONTACT SECTION — SIDE BY SIDE ON DESKTOP ONLY
+   Stacks on mobile/tablet
    ========================================================= */
 
+/* Default: side-by-side on all widths above 900px */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 55px;
+  align-items: center;
+}
+
+.contact-intro {
+  text-align: left;
+  max-width: 500px;
+}
+
+.contact-intro h2,
+.contact-intro > p {
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+
+.contact-points {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.contact-person-card {
+  width: 100%;
+  max-width: 500px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* ---- TABLET + MOBILE: stack up-down centered ---- */
 @media (max-width: 900px) {
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 25px;
-  }
-
-  /* Brand takes full width on top */
-  .footer-brand {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .footer-brand img {
-    margin: 0 auto;
-  }
-
-  /* Platform | Join Network sit side by side */
-  .footer-column {
-    align-items: flex-start;
-  }
-
-  /* Contact full width at bottom */
-  .footer-contact {
-    grid-column: 1 / -1;
-    padding-top: 22px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    align-items: flex-start;
-  }
-}
-
-/* =========================================================
-   MOBILE — STILL 2 columns side by side
-   ========================================================= */
-
-@media (max-width: 700px) {
-  .footer {
-    padding: 45px 0 18px;
-  }
-
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
-    gap: 26px 20px;
-    padding-bottom: 26px;
-  }
-
-  /* BRAND — centered on top, full width */
-  .footer-brand {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-
-  .footer-brand img {
-    width: 95px;
-    height: 46px;
-    margin: 0 auto;
-  }
-
-  .footer-brand p {
-    margin: 12px 0 4px;
-    font-size: 13px;
-  }
-
-  .footer-brand span {
-    font-size: 10px;
-  }
-
-  /* PLATFORM + JOIN NETWORK — side by side */
-  .footer-column {
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .footer-column h4 {
-    font-size: 13px;
-    margin-bottom: 6px;
-  }
-
-  .footer-column a {
-    font-size: 11.5px;
-  }
-
-  /* CONTACT — full width at bottom */
-  .footer-contact {
-    grid-column: 1 / -1;
-    padding-top: 20px;
-    margin-top: 2px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .footer-contact h4 {
-    margin-bottom: 6px;
-  }
-
-  .footer-contact p {
-    font-size: 11px;
-    line-height: 1.6;
-  }
-
-  /* BOTTOM BAR — side by side */
-  .footer-bottom {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 16px;
-    font-size: 9.5px;
-    text-align: left;
-  }
-
-  .footer-bottom span {
-    flex: 1 1 auto;
-  }
-}
-
-/* =========================================================
-   VERY SMALL MOBILE — keep 2 columns
-   ========================================================= */
-
-@media (max-width: 380px) {
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
-    gap: 22px 15px;
-  }
-
-  .footer-column h4 {
-    font-size: 12px;
-  }
-
-  .footer-column a {
-    font-size: 11px;
-  }
-
-  .footer-contact p {
-    font-size: 10.5px;
-  }
-
-  .footer-bottom {
-    font-size: 9px;
-  }
-}
-
-/* =========================================================
-   RESPONSIVE — TABLET (max-width: 1050px)
-   ========================================================= */
-
-@media (max-width: 1050px) {
-  .hero__container {
-    grid-template-columns: 1fr;
-    gap: 45px;
-  }
-
-  .hero__content {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .hero__description {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .hero__buttons,
-  .hero__mini-info {
-    justify-content: center;
-  }
-
-  .hero__right {
-    max-width: 650px;
-  }
-
- 
-
   .contact-layout {
     grid-template-columns: 1fr;
-    gap: 35px;
+    gap: 32px;
   }
 
   .contact-intro {
     text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .contact-intro h2,
   .contact-intro > p {
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+  }
+
+  .contact-person-card {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .contact-points {
     align-items: center;
+    justify-content: center;
   }
 
-  .footer-main {
-    grid-template-columns: 1fr 1fr;
+  .contact-points div {
+    justify-content: center;
+  }
+
+  .contact-card {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
   }
 }
 
+/* ---- SMALL MOBILE: full-width, tighter padding ---- */
+@media (max-width: 640px) {
+  .contact {
+    padding: 45px 0;
+  }
+
+  .contact-layout {
+    gap: 26px;
+  }
+
+  .contact-intro h2 {
+    font-size: 24px;
+  }
+
+  .contact-intro > p {
+    font-size: 12.5px;
+  }
+
+  .contact-person-card {
+    padding: 14px;
+  }
+
+  .contact-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .contact-card h3 {
+    font-size: 20px;
+  }
+
+  .contact-card > p {
+    font-size: 11.5px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    margin-bottom: 11px;
+  }
+
+  .contact-submit {
+    width: 100%;
+    height: 44px;
+  }
+}
 /* =========================================================
-   RESPONSIVE — SMALL TABLET (max-width: 800px)
+   RESPONSIVE — SMALL TABLET (≤800px)
    ========================================================= */
 
 @media (max-width: 800px) {
@@ -1868,6 +1417,10 @@
   .partners,
   .contact {
     padding: 65px 0;
+  }
+
+  .solutions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .vm-grid {
@@ -1884,24 +1437,33 @@
   }
 
   .footer-main {
-    align-items: flex-start;
-    flex-direction: column;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 25px;
   }
 
-  .footer-bottom {
+  .footer-brand {
+    grid-column: 1 / -1;
+    text-align: center;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .footer-contact {
+    grid-column: 1 / -1;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
 /* =========================================================
-   RESPONSIVE — MOBILE (max-width: 700px)
+   RESPONSIVE — MOBILE (≤700px)
    ========================================================= */
 
 @media (max-width: 700px) {
   .section-container,
   .hero__container {
-    width: min(94%, 500px);
+    width: min(94%, 520px);
   }
 
   .hero {
@@ -1914,20 +1476,19 @@
   }
 
   .hero__title {
-    font-size: 18px;
-    letter-spacing: -0.8px;
+    font-size: 26px;
+    letter-spacing: -0.5px;
   }
 
   .hero__tagline {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .hero__description {
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.65;
   }
 
-  /* BUTTONS STACK ONE BY ONE */
   .hero__buttons {
     flex-direction: column;
     width: 100%;
@@ -1938,21 +1499,52 @@
     width: 100%;
   }
 
+  /* Mini cards — 3 columns */
   .hero__mini-info {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 8px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .hero-mini-card {
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
+    gap: 6px;
+    padding: 10px 5px;
+    border-radius: 11px;
   }
 
-  .hero__mini-info strong {
-    font-size: 20px;
+  .hero-mini-icon {
+    width: 28px;
+    height: 28px;
+    flex-basis: 28px;
+    border-radius: 8px;
+    font-size: 13px;
   }
 
-  .hero__mini-info span {
-    font-size: 9px;
+  .hero-mini-content {
+    align-items: center;
   }
 
+  .hero-mini-content strong {
+    font-size: 17px;
+  }
+
+  .hero-mini-content > span {
+    font-size: 6.5px;
+    letter-spacing: 0.2px;
+    white-space: normal;
+  }
+
+  .counter-plus,
+  .counter-unit {
+    font-size: 10px;
+  }
+
+  /* Platform card */
   .platform-card {
     padding: 16px;
   }
@@ -1972,94 +1564,18 @@
   }
 
   .section-heading h2 {
-    font-size: 27px;
+    font-size: 26px;
   }
 
   .section-heading p {
     font-size: 13px;
   }
 
-/* =========================================================
-   SOLUTIONS GRID — FINAL FIX (overrides everything)
-   ========================================================= */
-
-/* Desktop — 5 in a row */
-.solutions-grid {
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr) !important;
-  gap: 18px !important;
-  margin-top: 25px;
-}
-
-/* Tablet — 3 in a row */
-@media (max-width: 1050px) {
+  /* Solutions — 1 per row on mobile */
   .solutions-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
-}
-
-/* Small tablet — 2 in a row */
-@media (max-width: 800px) {
-  .solutions-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-}
-
-/* MOBILE — ONE PER ROW (image on top, text below) */
-@media (max-width: 700px) {
-  .solutions-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-  }
-
-  .solution-card {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100% !important;
-  }
-
-  .solution-card__image {
-    width: 100% !important;
-    height: 210px !important;
-  }
-
-  .solution-card__image img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  .solution-card__body {
-    padding: 20px 18px !important;
-    width: 100% !important;
-  }
-
-  .solution-card__body h2 {
-    font-size: 18px !important;
-    line-height: 1.3 !important;
-  }
-
-  .solution-card__body p {
-    font-size: 13px !important;
-    line-height: 1.65 !important;
-  }
-
-  .solution-card__link {
-    font-size: 13px !important;
-  }
-}
-
-/* VERY SMALL MOBILE — still 1 per row */
-@media (max-width: 420px) {
-  .solutions-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
-  }
-
-  .solution-card__image {
-    height: 190px !important;
-  }
-}
 
   .solution-card__image {
     height: 200px;
@@ -2070,14 +1586,11 @@
   }
 
   .solution-card__body p {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
   }
 
-  .solution-card__link {
-    font-size: 13px;
-  }
-
+  /* VM */
   .vm-card {
     padding: 18px;
     gap: 12px;
@@ -2097,196 +1610,7 @@
     font-size: 12px;
   }
 
-  .partner-section h2 {
-    font-size: 17px;
-  }
-
-  .partner-box {
-    width: 105px;
-    height: 55px;
-  }
-
-  /* ================= CONTACT FORM MOBILE ================= */
-
-  .contact {
-    padding: 45px 0;
-    overflow-x: hidden;
-  }
-
-  .contact .section-container {
-    width: 92%;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .contact-layout {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    align-items: stretch;
-  }
-
-  .contact-intro {
-    width: 100%;
-    text-align: center;
-  }
-
-  .contact-intro h2 {
-    width: 100%;
-    max-width: 100%;
-    margin: 8px auto 12px;
-    font-size: 27px;
-    line-height: 1.2;
-  }
-
-  .contact-intro > p {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    font-size: 12px;
-    line-height: 1.65;
-  }
-
-  .contact-person-card {
-    width: 100%;
-    max-width: 100%;
-    margin: 22px auto 0;
-    padding: 14px;
-    text-align: left;
-    box-sizing: border-box;
-  }
-
-  .contact-person-top {
-    margin-bottom: 11px;
-  }
-
-  .contact-direct-link {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .contact-points {
-    width: 100%;
-    margin-top: 20px;
-    align-items: stretch;
-    gap: 9px;
-  }
-
-  .contact-points div {
-    width: 100%;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  /* FORM CARD */
-  .contact-card {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 20px 15px;
-    margin: 0;
-    border-radius: 14px;
-  }
-
-  .contact-card h3 {
-    font-size: 21px;
-    margin-bottom: 6px;
-  }
-
-  .contact-card > p {
-    font-size: 11px;
-    line-height: 1.5;
-    margin-bottom: 18px;
-  }
-
-  /* FORM FIELDS — STACK ONE BY ONE */
-  .contact-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .form-row {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 0;
-  }
-
-  .form-row input {
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0 0 11px 0;
-  }
-
-  .contact-form > input {
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0 0 11px 0;
-  }
-
-  .contact-form textarea {
-    width: 100%;
-    min-height: 120px;
-    box-sizing: border-box;
-    margin: 0 0 13px 0;
-    resize: vertical;
-  }
-
-  .contact-form input {
-    height: 45px;
-    padding: 11px 12px;
-    font-size: 12px;
-    border-radius: 7px;
-  }
-
-  .contact-form textarea {
-    padding: 11px 12px;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 7px;
-  }
-
-  .contact-form input::placeholder,
-  .contact-form textarea::placeholder {
-    font-size: 11px;
-  }
-
-  .contact-success,
-  .contact-error {
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 11px;
-    font-size: 11px;
-    line-height: 1.5;
-    padding: 9px 10px;
-    border-radius: 7px;
-    text-align: left;
-  }
-
-  .contact-submit {
-    width: 100%;
-    max-width: 100%;
-    height: 44px;
-    margin: 0;
-    font-size: 12px;
-    border-radius: 7px;
-  }
-
-  /* FOOTER */
-  .footer-main {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
+  /* Partners */
   .partner-company {
     min-width: 155px;
     padding: 9px 11px;
@@ -2320,28 +1644,152 @@
   .partner-network-footer {
     padding: 12px 20px;
   }
+
+  /* Contact */
+  .contact {
+    padding: 45px 0;
+  }
+
+  .contact-layout {
+    gap: 28px;
+  }
+
+  .contact-intro h2 {
+    font-size: 26px;
+  }
+
+  .contact-intro > p {
+    font-size: 12px;
+  }
+
+  .contact-person-card {
+    padding: 14px;
+  }
+
+  .contact-points {
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+
+  /* Contact form — stack */
+  .contact-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .contact-card h3 {
+    font-size: 20px;
+  }
+
+  .contact-card > p {
+    font-size: 11.5px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    margin-bottom: 11px;
+  }
+
+  .contact-submit {
+    width: 100%;
+    height: 44px;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 45px 0 18px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 26px 20px;
+    padding-bottom: 26px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-brand img,
+  .footer .footer__logo-image {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+    margin: 0 auto !important;
+  }
+
+  .footer-column {
+    gap: 8px;
+  }
+
+  .footer-column h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .footer-column a {
+    font-size: 11.5px;
+  }
+
+  .footer-contact {
+    grid-column: 1 / -1;
+  }
+
+  .footer-contact p {
+    font-size: 11px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-top: 16px;
+    font-size: 9.5px;
+  }
 }
 
 /* =========================================================
-   RESPONSIVE — SMALL MOBILE (max-width: 420px)
+   RESPONSIVE — SMALL MOBILE (≤420px)
    ========================================================= */
 
 @media (max-width: 420px) {
   .hero__title {
-    font-size: 18px;
+    font-size: 22px;
+  }
+
+  .hero__tagline {
+    font-size: 13px;
   }
 
   .hero__mini-info {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 6px;
   }
 
-  .hero__mini-info strong {
-    font-size: 17px;
+  .hero-mini-card {
+    padding: 8px 4px;
   }
 
-  .hero__mini-info span {
-    font-size: 8px;
+  .hero-mini-icon {
+    width: 25px;
+    height: 25px;
+    flex-basis: 25px;
+    font-size: 12px;
+  }
+
+  .hero-mini-content strong {
+    font-size: 15px;
+  }
+
+  .hero-mini-content > span {
+    font-size: 6px;
   }
 
   .section-container {
@@ -2352,67 +1800,29 @@
     height: 180px;
   }
 
-  .contact {
-    padding: 38px 0;
-  }
-
-  .contact .section-container {
-    width: 91%;
-  }
-
-  .contact-layout {
-    gap: 24px;
-  }
-
-  .contact-intro h2 {
-    font-size: 24px;
-  }
-
-  .contact-intro > p {
-    font-size: 11px;
-  }
-
-  .contact-person-card {
-    padding: 12px;
-  }
-
-  .contact-direct-link {
-    min-height: 52px;
-    padding: 8px;
-  }
-
-  .contact-direct-content strong {
-    font-size: 10px;
-  }
-
   .contact-card {
-    padding: 18px 12px;
+    padding: 18px 14px;
   }
 
   .contact-card h3 {
-    font-size: 19px;
-  }
-
-  .contact-card > p {
-    font-size: 10.5px;
-  }
-
-  .contact-form input {
-    height: 43px;
-  }
-
-  .contact-form textarea {
-    min-height: 110px;
+    font-size: 18px;
   }
 
   .footer-main {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 15px;
   }
 
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
+  .footer-column h4 {
+    font-size: 12px;
+  }
+
+  .footer-column a {
+    font-size: 11px;
+  }
+
+  .footer-contact p {
+    font-size: 10.5px;
   }
 }
 
@@ -2431,811 +1841,249 @@
 }
 
 
-
-
 /* =========================================================
-   HERO LIVE COUNTER CARDS
+   SOLUTIONS — 5 CARDS WITH NUMBERED POINTS
    ========================================================= */
 
-.hero__mini-info {
+.solutions-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  width: min(650px, 100%);
-  margin-top: 24px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 25px;
+  align-items: stretch;
 }
 
-.hero-mini-card {
-  position: relative;
-  min-width: 0;
+.solution-card {
   display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 12px 14px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.96),
-      rgba(239, 250, 244, 0.94)
-    );
-
-  border: 1px solid rgba(28, 122, 78, 0.13);
-  border-radius: 13px;
-
-  box-shadow:
-    0 8px 22px rgba(20, 70, 45, 0.07);
-
+  flex-direction: column;
   overflow: hidden;
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-
-  animation: heroMiniCardIn 0.7s ease both;
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(20, 70, 45, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.hero-mini-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.hero-mini-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.hero-mini-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-
-/* subtle shine */
-
-.hero-mini-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 70%;
-  height: 100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.65),
-      transparent
-    );
-
-  transform: skewX(-20deg);
-  animation: heroMiniShine 4s ease-in-out infinite;
-}
-
-
-/* top green line */
-
-.hero-mini-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 14px;
-  right: 14px;
-  height: 2px;
-
-  background: linear-gradient(
-    90deg,
-    #087f45,
-    #46b978,
-    transparent
-  );
-
-  border-radius: 0 0 4px 4px;
-
-  opacity: 0.65;
-}
-
-
-.hero-mini-card:hover {
+.solution-card:hover {
   transform: translateY(-4px);
-
-  border-color: rgba(8, 127, 69, 0.28);
-
-  box-shadow:
-    0 14px 30px rgba(20, 70, 45, 0.12);
+  box-shadow: 0 12px 28px rgba(20, 70, 45, 0.12);
+  border-color: #b8dcc6;
 }
 
+/* ============ IMAGE ============ */
 
-/* ICON */
-
-.hero-mini-icon {
+.solution-card__image {
   position: relative;
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  background: #eaf7f0;
+}
 
-  width: 34px;
-  height: 34px;
+.solution-card__image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
 
-  flex: 0 0 34px;
+.solution-card:hover .solution-card__image img {
+  transform: scale(1.06);
+}
 
+.solution-card__number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 10px;
-
-  background: #eaf7f0;
-
-  border: 1px solid #d3ebdc;
-
-  font-size: 15px;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.6);
-
-  animation: heroIconPulse 2.8s ease-in-out infinite;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #087f45;
+  font-size: 10.5px;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(20, 70, 45, 0.1);
 }
 
+/* ============ BODY ============ */
 
-/* CONTENT */
-
-.hero-mini-content {
-  position: relative;
-  z-index: 2;
-
-  min-width: 0;
-
+.solution-card__body {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  padding: 14px 14px 16px;
+  flex: 1;
 }
 
-
-.hero-mini-content strong {
-  display: flex;
-  align-items: baseline;
-
-  color: #087f45;
-
-  font-size: 20px;
-  line-height: 1;
-
-  font-weight: 850;
-  letter-spacing: -0.5px;
-}
-
-
-.hero-mini-content > span {
-  display: block;
-
-  margin-top: 4px;
-
-  color: #708078;
-
-  font-size: 8px;
-  line-height: 1.25;
-
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.35px;
-
-  white-space: nowrap;
-}
-
-
-.counter-plus,
-.counter-unit {
-  margin-left: 1px;
-
-  color: #15965a;
-
-  font-size: 12px;
+.solution-card__body h2 {
+  margin: 0 0 10px;
+  color: #126b40;
+  font-size: 13px;
+  line-height: 1.3;
   font-weight: 800;
+  letter-spacing: -0.1px;
+  min-height: 34px;
 }
 
-/* =========================================================
-   FINAL MOBILE FOOTER FIX
-   Compact + Side-by-Side Layout
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  .footer {
-    width: 100%;
-    padding: 30px 0 14px;
-    overflow: hidden;
-  }
-
-  .footer .section-container {
-    width: 92%;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  /* -----------------------------------------
-     MAIN FOOTER
-     ----------------------------------------- */
-
-  .footer-main {
-    width: 100%;
-
-    display: grid !important;
-
-    /* 2 columns */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-
-    column-gap: 24px;
-    row-gap: 22px;
-
-    padding-bottom: 22px;
-  }
-
-
-  /* -----------------------------------------
-     BRAND
-     ----------------------------------------- */
-
-  .footer-brand {
-    grid-column: 1 / -1 !important;
-
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: flex-start;
-    text-align: left;
-
-    margin: 0 0 2px;
-  }
-
-  .footer-brand img {
-    width: 82px;
-    height: 40px;
-
-    margin: 0;
-
-    object-fit: contain;
-    border-radius: 5px;
-  }
-
-  .footer-brand p {
-    margin: 8px 0 3px;
-
-    font-size: 11px;
-    line-height: 1.3;
-  }
-
-  .footer-brand span {
-    font-size: 8.5px;
-    line-height: 1.4;
-  }
-
-
-  /* -----------------------------------------
-     PLATFORM + JOIN NETWORK
-     SIDE BY SIDE
-     ----------------------------------------- */
-
-  .footer-column {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 6px;
-
-    min-width: 0;
-  }
-
-  .footer-column h4 {
-    margin: 0 0 5px;
-
-    font-size: 11px;
-    line-height: 1.2;
-
-    font-weight: 800;
-  }
-
-  .footer-column a {
-    display: block;
-
-    max-width: 100%;
-
-    color: #b8cec3;
-
-    font-size: 9.5px;
-    line-height: 1.35;
-
-    white-space: nowrap;
-  }
-
-
-  /* -----------------------------------------
-     CONTACT
-     FULL WIDTH BUT COMPACT
-     ----------------------------------------- */
-
-  .footer-contact {
-    grid-column: 1 / -1 !important;
-
-    width: 100%;
-
-    padding-top: 16px;
-
-    margin-top: 0;
-
-    border-top:
-      1px solid rgba(255, 255, 255, 0.1);
-
-    align-items: flex-start;
-
-    text-align: left;
-  }
-
-  .footer-contact h4 {
-    margin-bottom: 5px;
-  }
-
-  .footer-contact p {
-    margin: 0;
-
-    font-size: 9px;
-    line-height: 1.45;
-
-    max-width: 100%;
-  }
-
-  .footer-contact p + p {
-    margin-top: 3px;
-  }
-
-
-  /* -----------------------------------------
-     BOTTOM BAR
-     SIDE BY SIDE
-     ----------------------------------------- */
-
-  .footer-bottom {
-    width: 100%;
-
-    display: flex !important;
-
-    flex-direction: row !important;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 8px;
-
-    padding-top: 13px;
-
-    font-size: 7.5px;
-
-    line-height: 1.3;
-
-    text-align: left;
-  }
-
-  .footer-bottom span {
-    flex: 1 1 0;
-
-    min-width: 0;
-
-    white-space: normal;
-  }
-
-  .footer-bottom span:last-child {
-    text-align: right;
-  }
-
+/* ============ POINTS LIST ============ */
+
+.solution-card__points {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
 }
 
-
-/* =========================================================
-   EXTRA SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-  .footer {
-    padding: 26px 0 12px;
-  }
-
-  .footer .section-container {
-    width: 91%;
-  }
-
-  .footer-main {
-    column-gap: 18px;
-    row-gap: 18px;
-  }
-
-  .footer-brand img {
-    width: 76px;
-    height: 37px;
-  }
-
-  .footer-brand p {
-    font-size: 10px;
-  }
-
-  .footer-brand span {
-    font-size: 8px;
-  }
-
-  .footer-column h4 {
-    font-size: 10px;
-  }
-
-  .footer-column a {
-    font-size: 8.5px;
-  }
-
-  .footer-contact p {
-    font-size: 8.5px;
-  }
-
-  .footer-bottom {
-    font-size: 7px;
-  }
-
+.solution-card__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
 }
 
-
-
-/* =========================================================
-   PARTNER MARQUEE - MOBILE FIX
-   ========================================================= */
-
-.partner-marquee {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 20px 0;
-}
-
-.partner-marquee-track {
+.solution-card__point-num {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
-  width: max-content;
-  min-width: max-content;
-  flex-wrap: nowrap;
-
-  animation: partnerMarquee 28s linear infinite;
-  will-change: transform;
+  justify-content: center;
+  border-radius: 5px;
+  background: #eaf7f0;
+  border: 1px solid #c9e7d7;
+  color: #087f45;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 1px;
 }
 
-.partner-marquee-track--reverse {
-  animation: partnerMarqueeReverse 32s linear infinite;
-  will-change: transform;
+.solution-card__point-text {
+  color: #4a5b52;
+  font-size: 10.5px;
+  line-height: 1.4;
+  font-weight: 600;
 }
 
-.partner-company {
-  flex: 0 0 auto;
-  width: 175px;
-  min-width: 175px;
-}
+/* ============ LINK ============ */
 
-/* Desktop */
-@keyframes partnerMarquee {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-@keyframes partnerMarqueeReverse {
-  0% {
-    transform: translate3d(-50%, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-
-/* =========================================================
-   MOBILE MARQUEE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-  .partner-marquee {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-    padding: 18px 0;
-  }
-
-  .partner-marquee-track,
-  .partner-marquee-track--reverse {
-    display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    min-width: max-content;
-
-    animation-duration: 18s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-play-state: running;
-
-    will-change: transform;
-  }
-
-  .partner-marquee-track--reverse {
-    animation-duration: 20s;
-  }
-
-  .partner-company {
-    flex: 0 0 155px;
-    width: 155px;
-    min-width: 155px;
-
-    margin: 0 6px;
-    padding: 9px 11px;
-  }
-
-  .partner-company-logo {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-  }
-
-  .partner-company-logo img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .partner-company-name {
-    max-width: 100px;
-    font-size: 11px;
-  }
-}
-
-
-/* =========================================================
-   VERY SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-  .partner-marquee-track {
-    animation-duration: 16s;
-  }
-
-  .partner-marquee-track--reverse {
-    animation-duration: 18s;
-  }
-
-  .partner-company {
-    flex: 0 0 145px;
-    width: 145px;
-    min-width: 145px;
-  }
-}
-/* =========================================================
-   NATIVE MARQUEE - ALL DEVICES
-   VENDORS  = RIGHT TO LEFT
-   BUYERS   = LEFT TO RIGHT
-   ========================================================= */
-
-.partner-marquee {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 25px 0;
-}
-
-/* Native marquee */
-.partner-marquee marquee {
-  display: block;
-  width: 100%;
-  overflow: hidden;
-}
-
-/* Content inside marquee */
-.partner-marquee-content {
+.solution-card__link {
   display: inline-flex;
   align-items: center;
-  width: max-content;
-  white-space: nowrap;
+  gap: 5px;
+  padding-top: 10px;
+  margin-top: auto;
+  border-top: 1px solid #eef4f0;
+  color: #087f45;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s ease, gap 0.2s ease;
 }
 
-/* Company card */
-.partner-marquee-content .partner-company {
-  display: inline-flex;
-  flex: 0 0 auto;
-  width: 175px;
-  min-width: 175px;
-  margin: 0 8px;
-  padding: 10px 14px;
-  vertical-align: middle;
+.solution-card__link:hover {
+  color: #056b3a;
+  gap: 8px;
 }
 
-/* Remove old animation */
-.partner-marquee-track,
-.partner-marquee-track--reverse {
-  animation: none !important;
+.solution-card__arrow {
+  transition: transform 0.2s ease;
 }
 
-/* Disable old keyframe behaviour */
-.partner-network-card:hover .partner-marquee-track {
-  animation-play-state: running !important;
+.solution-card__link:hover .solution-card__arrow {
+  transform: translateX(2px);
 }
-
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 600px) {
-
-  .partner-marquee {
-    width: 100%;
-    padding: 20px 0;
-    overflow: hidden;
-  }
-
-  .partner-marquee marquee {
-    width: 100%;
-    display: block;
-  }
-
-  .partner-marquee-content {
-    display: inline-flex;
-    align-items: center;
-    width: max-content;
-    white-space: nowrap;
-  }
-
-  .partner-marquee-content .partner-company {
-    width: 155px;
-    min-width: 155px;
-    margin: 0 6px;
-    padding: 9px 11px;
-  }
-
-  .partner-company-logo {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-  }
-
-  .partner-company-logo img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .partner-company-name {
-    max-width: 100px;
-    font-size: 11px;
-  }
-}
-
-
-/* ================= SMALL MOBILE ================= */
-
-@media (max-width: 420px) {
-
-  .partner-marquee {
-    padding: 18px 0;
-  }
-
-  .partner-marquee-content .partner-company {
-    width: 145px;
-    min-width: 145px;
-    margin: 0 5px;
-    padding: 8px 10px;
-  }
-
-  .partner-company-name {
-    max-width: 92px;
-    font-size: 10.5px;
-  }
-}
-
 
 /* =========================================================
-   FOOTER LOGO - FINAL OVERRIDE
+   RESPONSIVE
    ========================================================= */
 
-.footer .footer__logo-image {
-  width: 58px !important;
-  height: 58px !important;
+@media (max-width: 1200px) {
+  .solutions-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
 
-  min-width: 58px !important;
-  min-height: 58px !important;
+  .solution-card__body h2 {
+    font-size: 14px;
+    min-height: auto;
+  }
 
-  max-width: 58px !important;
-  max-height: 58px !important;
+  .solution-card__point-text {
+    font-size: 11.5px;
+  }
 
-  display: block !important;
-
-  object-fit: cover !important;
-  object-position: center !important;
-
-  border-radius: 50% !important;
-  border: 2px solid #087f45 !important;
-
-  background: #ffffff !important;
-  padding: 2px !important;
-
-  box-sizing: border-box !important;
-
-  box-shadow: 0 3px 10px rgba(8, 127, 69, 0.18) !important;
-
-  margin: 0 !important;
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease !important;
+  .solution-card__link {
+    font-size: 12px;
+  }
 }
-
-.footer .footer__logo-image:hover {
-  transform: scale(1.08) !important;
-  box-shadow: 0 5px 16px rgba(8, 127, 69, 0.28) !important;
-}
-
-
-/* =========================
-   TABLET
-   ========================= */
 
 @media (max-width: 900px) {
-  .footer .footer__logo-image {
-    width: 58px !important;
-    height: 58px !important;
+  .solutions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
 
-    min-width: 58px !important;
-    min-height: 58px !important;
-
-    max-width: 58px !important;
-    max-height: 58px !important;
-
-    margin: 0 auto !important;
+  .solution-card__image {
+    height: 150px;
   }
 }
 
+@media (max-width: 640px) {
+  .solutions-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 
-/* =========================
-   MOBILE
-   ========================= */
+  .solution-card__image {
+    height: 180px;
+  }
 
-@media (max-width: 700px) {
-  .footer .footer__logo-image {
-    width: 50px !important;
-    height: 50px !important;
+  .solution-card__body {
+    padding: 16px 16px 18px;
+  }
 
-    min-width: 50px !important;
-    min-height: 50px !important;
+  .solution-card__body h2 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
 
-    max-width: 50px !important;
-    max-height: 50px !important;
+  .solution-card__points {
+    gap: 8px;
+  }
 
-    margin: 0 auto !important;
+  .solution-card__point-num {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
 
-    border-radius: 50% !important;
+  .solution-card__point-text {
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .solution-card__link {
+    font-size: 12.5px;
+    padding-top: 12px;
   }
 }
 
+@media (max-width: 400px) {
+  .solution-card__image {
+    height: 160px;
+  }
 
-/* =========================
-   VERY SMALL MOBILE
-   ========================= */
+  .solution-card__body h2 {
+    font-size: 14px;
+  }
 
-@media (max-width: 380px) {
-  .footer .footer__logo-image {
-    width: 46px !important;
-    height: 46px !important;
-
-    min-width: 46px !important;
-    min-height: 46px !important;
-
-    max-width: 46px !important;
-    max-height: 46px !important;
+  .solution-card__point-text {
+    font-size: 12px;
   }
 }
