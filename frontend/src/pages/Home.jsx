@@ -530,42 +530,52 @@ export default function Home() {
                 </div>
 
                 <div className="partner-marquee">
-                  <div className="partner-marquee-track">
-                    {vendors.length > 0 ? (
-                      [...vendors, ...vendors].map((company, index) => (
-                        <div
-                          className="partner-company"
-                          key={`${company.id}-${index}`}
-                        >
-                          <div className="partner-company-logo">
-                            <img
-                              src={company.logo}
-                              alt={company.company_name}
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                                e.currentTarget.parentElement.classList.add(
-                                  'partner-company-logo--fallback'
-                                )
-                              }}
-                            />
-                            <span>
-                              {company.company_name
-                                ?.charAt(0)
-                                ?.toUpperCase()}
-                            </span>
-                          </div>
-                          <span className="partner-company-name">
-                            {company.company_name}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="partner-empty">
-                        No approved vendors yet.
-                      </div>
-                    )}
-                  </div>
-                </div>
+  <marquee
+    behavior="scroll"
+    direction="left"
+    scrollamount="5"
+    scrolldelay="0"
+    loop="-1"
+  >
+    <div className="partner-marquee-content">
+      {vendors.length > 0 ? (
+        vendors.map((company) => (
+          <div
+            className="partner-company"
+            key={company.id}
+          >
+            <div className="partner-company-logo">
+              <img
+                src={company.logo}
+                alt={company.company_name}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                  e.currentTarget.parentElement.classList.add(
+                    'partner-company-logo--fallback'
+                  )
+                }}
+              />
+
+              <span>
+                {company.company_name
+                  ?.charAt(0)
+                  ?.toUpperCase()}
+              </span>
+            </div>
+
+            <span className="partner-company-name">
+              {company.company_name}
+            </span>
+          </div>
+        ))
+      ) : (
+        <div className="partner-empty">
+          No approved vendors yet.
+        </div>
+      )}
+    </div>
+  </marquee>
+</div>
 
                 <div className="partner-network-footer">
                   <span className="network-status-dot" />
@@ -590,42 +600,52 @@ export default function Home() {
                 </div>
 
                 <div className="partner-marquee">
-                  <div className="partner-marquee-track partner-marquee-track--reverse">
-                    {buyers.length > 0 ? (
-                      [...buyers, ...buyers].map((company, index) => (
-                        <div
-                          className="partner-company"
-                          key={`${company.id}-${index}`}
-                        >
-                          <div className="partner-company-logo">
-                            <img
-                              src={company.logo}
-                              alt={company.company_name}
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                                e.currentTarget.parentElement.classList.add(
-                                  'partner-company-logo--fallback'
-                                )
-                              }}
-                            />
-                            <span>
-                              {company.company_name
-                                ?.charAt(0)
-                                ?.toUpperCase()}
-                            </span>
-                          </div>
-                          <span className="partner-company-name">
-                            {company.company_name}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="partner-empty">
-                        No verified buyers yet.
-                      </div>
-                    )}
-                  </div>
-                </div>
+  <marquee
+    behavior="scroll"
+    direction="right"
+    scrollamount="5"
+    scrolldelay="0"
+    loop="-1"
+  >
+    <div className="partner-marquee-content">
+      {buyers.length > 0 ? (
+        buyers.map((company) => (
+          <div
+            className="partner-company"
+            key={company.id}
+          >
+            <div className="partner-company-logo">
+              <img
+                src={company.logo}
+                alt={company.company_name}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                  e.currentTarget.parentElement.classList.add(
+                    'partner-company-logo--fallback'
+                  )
+                }}
+              />
+
+              <span>
+                {company.company_name
+                  ?.charAt(0)
+                  ?.toUpperCase()}
+              </span>
+            </div>
+
+            <span className="partner-company-name">
+              {company.company_name}
+            </span>
+          </div>
+        ))
+      ) : (
+        <div className="partner-empty">
+          No verified buyers yet.
+        </div>
+      )}
+    </div>
+  </marquee>
+</div>
 
                 <div className="partner-network-footer">
                   <span className="network-status-dot" />
