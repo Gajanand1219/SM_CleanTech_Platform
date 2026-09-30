@@ -2576,112 +2576,144 @@
 
 
 
-/* =========================================================
-   MOBILE COMPANY LOGO MARQUEE FIX
-   ========================================================= */
+/* ================================
+   COMPANY MARQUEE
+================================ */
 
 .partner-marquee {
-  position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 20px 0;
+  padding: 15px 0;
 }
 
-.partner-marquee-track {
-  display: flex;
+.partner-marquee marquee {
+  width: 100%;
+}
+
+.partner-marquee-content {
+  display: inline-flex;
   align-items: center;
-  width: max-content;
-  min-width: max-content;
-  flex-wrap: nowrap;
-  animation: partnerMarquee 18s linear infinite;
-  will-change: transform;
-}
-
-.partner-marquee-track--reverse {
-  animation-name: partnerMarqueeReverse;
-  animation-duration: 20s;
+  gap: 14px;
+  white-space: nowrap;
 }
 
 .partner-company {
-  flex: 0 0 auto;
-  width: 175px;
-  min-width: 175px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 180px;
+  min-width: 180px;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+  background: #fff;
+
+  box-sizing: border-box;
 }
 
-/* Mobile */
+.partner-company-logo {
+  width: 40px;
+  height: 40px;
+
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.partner-company-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.partner-company-logo span {
+  display: none;
+}
+
+.partner-company-name {
+  display: block;
+
+  max-width: 110px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   TABLET
+================================ */
+
 @media (max-width: 768px) {
 
   .partner-marquee {
-    width: 100%;
-    overflow: hidden;
-    padding: 18px 0;
-  }
-
-  .partner-marquee-track {
-    width: max-content;
-    min-width: max-content;
-    animation-duration: 12s;
-  }
-
-  .partner-marquee-track--reverse {
-    animation-duration: 14s;
+    padding: 12px 0;
   }
 
   .partner-company {
-    width: 155px;
-    min-width: 155px;
-    margin: 0 6px;
+    width: 160px;
+    min-width: 160px;
+
     padding: 9px 11px;
   }
 
   .partner-company-logo {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-  }
-
-  .partner-company-logo img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
   }
 
   .partner-company-name {
     max-width: 100px;
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 
-/* Very small mobile */
-@media (max-width: 420px) {
 
-  .partner-marquee-track {
-    animation-duration: 10s;
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 480px) {
+
+  .partner-marquee {
+    width: 100%;
+    padding: 10px 0;
   }
 
-  .partner-marquee-track--reverse {
-    animation-duration: 12s;
+  .partner-marquee-content {
+    gap: 8px;
   }
 
   .partner-company {
     width: 145px;
     min-width: 145px;
-    margin: 0 5px;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
   }
 
   .partner-company-logo {
     width: 32px;
     height: 32px;
-    flex-basis: 32px;
-  }
-
-  .partner-company-logo img {
-    width: 22px;
-    height: 22px;
+    min-width: 32px;
   }
 
   .partner-company-name {
-    max-width: 92px;
-    font-size: 10px;
+    max-width: 90px;
+    font-size: 11px;
   }
 }
