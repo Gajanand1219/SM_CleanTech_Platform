@@ -16,31 +16,35 @@ const buyerFields = [
   ['company_name', 'Company name', 'text', true],
   ['director_email', 'Director Email', 'email', true],
   ['industry', 'Industry', 'text', true],
-  ['registered_address', 'Registered address', 'text', true],
-  ['plant_location', 'Plant location', 'text', true],
   ['gst_number', 'GST number', 'text', false],
   ['website', 'Website', 'url', true],
   ['head_office_contact', 'Head office contact', 'tel', false],
-  ['ehs_contact', 'EHS/EHS head contact', 'tel', false]
+  ['ehs_contact', 'EHS/EHS head contact', 'tel', false],
+  ['registered_address', 'Registered address', 'text', true],
+  ['plant_location', 'Plant location', 'text', true],
 ]
 
 const vendorFields = [
-  ['full_name', 'Full name', 'text', true],
-  ['email', 'Business Email', 'email', true],
-  ['phone', 'Mobile Number', 'tel', true],
-  ['password', 'Password', 'password', true],
-  ['contact_2', 'Contact NO', 'tel', true],
-  ['director_email', 'Director Email', 'email', true],
+  // BUSINESS INFORMATION FIRST
   ['company_name', 'Company name', 'text', true],
   ['industry_type', 'Industry type', 'text', true],
-  ['address', 'Address', 'text', true],
-  ['area_of_work', 'Area of work', 'text', true],
+  ['area_of_work', 'Geographical Territories', 'text', true],
   ['experience_years', 'Experience (years)', 'number', true],
   ['capacity', 'Capacity', 'text', false],
   ['specialization', 'Specialization', 'text', true],
   ['gst_number', 'GST number', 'text', false],
   ['msme_number', 'MSME number', 'text', false],
-  ['website', 'Website', 'url', true]
+  ['website', 'Website', 'url', true],
+  ['contact_2', 'Contact NO', 'tel', true],
+  ['director_email', 'Director Email', 'email', true],
+  ['address', 'Address', 'text', true],
+
+
+  // ACCOUNT INFORMATION SECOND
+  ['full_name', 'Full name', 'text', true],
+  ['email', 'Business Email', 'email', true],
+  ['phone', 'Mobile Number', 'tel', true],
+  ['password', 'Password', 'password', true],
 ]
 
 const domains = [
@@ -331,57 +335,151 @@ export default function RegistrationForm({ type }) {
           </div>
 
           <form onSubmit={submit} className="modern-registration-form" noValidate>
-            {/* SECTION 01 */}
-            <div className="form-section-title">
-              <span>01</span>
-              Account Information
-            </div>
+            {/* =====================================================
+                  BUYER REGISTRATION
+                  01 Account Information
+                  02 Business Information
+              ===================================================== */}
 
-            <div className="registration-grid">
-              {fields.slice(0, 4).map(renderField)}
-            </div>
+              {isBuyer ? (
+                <>
+                  {/* SECTION 01 — ACCOUNT INFORMATION */}
+                  <div className="form-section-title">
+                    <span>01</span>
+                    Account Information
+                  </div>
 
-            {/* SECTION 02 */}
-            <div className="form-section-title">
-              <span>02</span>
-              Business Information
-            </div>
+                  <div className="registration-grid">
+                    {buyerFields
+                      .filter(([key]) =>
+                        [
+                          'full_name',
+                          'email',
+                          'phone',
+                          'password'
+                        ].includes(key)
+                      )
+                      .map(renderField)}
+                  </div>
 
-            <div className="registration-grid">
-              {fields.slice(4).map(renderField)}
-            </div><br></br>
+                  {/* SECTION 02 — BUSINESS INFORMATION */}
+                  <div className="form-section-title">
+                    <span>02</span>
+                    Business Information
+                  </div>
 
-            {/* SECTION 03 — Domains (vendor only) */}
-            {!isBuyer && (
-              <div className="domain-section">
-                <div className="form-section-title">
-                  <span>03</span>
-                  CleanTech Domains
-                  <span className="required-star">*</span>
-                </div>
+                  <div className="registration-grid">
+                    {buyerFields
+                      .filter(([key]) =>
+                        [
+                          'company_name',
+                          'director_email',
+                          'industry',
+                          'registered_address',
+                          'plant_location',
+                          'gst_number',
+                          'website',
+                          'head_office_contact',
+                          'ehs_contact'
+                        ].includes(key)
+                      )
+                      .map(renderField)}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* =================================================
+                      VENDOR REGISTRATION
+                      01 Business Information
+                      02 Account Information
+                      03 CleanTech Domains
+                  ================================================= */}
 
-                <p className="domain-description">
-                  Select the areas in which your company provides solutions.
-                </p>
+                  {/* SECTION 01 — BUSINESS INFORMATION */}
+                  <div className="form-section-title">
+                    <span>01</span>
+                    Business Information
+                  </div>
 
-                <div className="domain-grid">
-                  {domains.map((domain) => {
-                    const active = selected.includes(domain)
-                    return (
-                      <button
-                        type="button"
-                        key={domain}
-                        className={`domain-card ${active ? 'domain-card--active' : ''}`}
-                        onClick={() => toggleDomain(domain)}
-                      >
-                        <span className="domain-check">{active ? '✓' : '+'}</span>
-                        <span>{domain}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
+                  <div className="registration-grid">
+                    {vendorFields
+                      .filter(([key]) =>
+                        [
+                          'company_name',
+                          'industry_type',
+                          'address',
+                          'area_of_work',
+                          'experience_years',
+                          'capacity',
+                          'specialization',
+                          'gst_number',
+                          'msme_number',
+                          'website',
+                          'contact_2',
+                          'director_email'
+                        ].includes(key)
+                      )
+                      .map(renderField)}
+                  </div>
+
+                  {/* SECTION 02 — ACCOUNT INFORMATION */}
+                  <div className="form-section-title">
+                    <span>02</span>
+                    Account Information
+                  </div>
+
+                  <div className="registration-grid">
+                    {vendorFields
+                      .filter(([key]) =>
+                        [
+                          'full_name',
+                          'email',
+                          'phone',
+                          'password'
+                        ].includes(key)
+                      )
+                      .map(renderField)}
+                  </div><br></br>
+
+                  {/* SECTION 03 — CLEANTECH DOMAINS */}
+                  <div className="domain-section">
+                    <div className="form-section-title">
+                      <span>03</span>
+                      CleanTech Domains
+                      <span className="required-star">*</span>
+                    </div>
+
+                    <p className="domain-description">
+                      Select the areas in which your company provides solutions.
+                    </p>
+
+                    <div className="domain-grid">
+                      {domains.map((domain) => {
+                        const active = selected.includes(domain)
+
+                        return (
+                          <button
+                            type="button"
+                            key={domain}
+                            className={`domain-card ${
+                              active ? 'domain-card--active' : ''
+                            }`}
+                            onClick={() => toggleDomain(domain)}
+                          >
+                            <span className="domain-check">
+                              {active ? '✓' : '+'}
+                            </span>
+
+                            <span>{domain}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <br />
 
             {/* MESSAGES */}
             {msg && (
