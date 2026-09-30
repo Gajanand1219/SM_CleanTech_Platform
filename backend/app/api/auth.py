@@ -698,7 +698,7 @@ async def forgot_password(
     token = create_password_reset_token(user.id)
 
     reset_url = (
-        "http://localhost:5173/reset-password"
+        "https://sm-tech-platform.vercel.app/reset-password"
         f"?token={token}"
     )
 
