@@ -11,6 +11,8 @@ export default function ProfilePage() {
   const [form, setForm] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [success, setSuccess] = useState('')
 
   const role = profile?.role || user?.role || 'buyer'
 
@@ -32,8 +34,12 @@ export default function ProfilePage() {
       const data = response.data
 
       setProfile(data)
-      setForm(data)
-
+      setForm({
+        ...data,
+        domains: Array.isArray(data.domains)
+          ? data.domains
+          : [],
+      })
     } catch (err) {
       console.error('Profile load error:', err)
 
@@ -47,6 +53,56 @@ export default function ProfilePage() {
   }
 
   // ============================================================
+  // UPDATE PROFILE
+  // ============================================================
+
+  const handleUpdate = async () => {
+    try {
+      setSaving(true)
+      setError('')
+      setSuccess('')
+
+      const payload = { ...form }
+
+      // Fields that must not be updated
+      delete payload.id
+      delete payload.role
+      delete payload.email
+      delete payload.admin
+
+      // Make sure domains is always an array
+      if (role === 'vendor') {
+        payload.domains = Array.isArray(payload.domains)
+          ? payload.domains
+          : []
+      }
+
+      // Convert experience to number
+      if (payload.experience_years !== undefined) {
+        payload.experience_years =
+          payload.experience_years === ''
+            ? null
+            : Number(payload.experience_years)
+      }
+
+      await API.put('/auth/profile', payload)
+
+      setSuccess('Profile updated successfully!')
+
+      await loadProfile()
+    } catch (err) {
+      console.error('Profile update error:', err)
+
+      setError(
+        err?.response?.data?.detail ||
+        'Failed to update profile.'
+      )
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // ============================================================
   // UPDATE FIELD
   // ============================================================
 
@@ -55,6 +111,65 @@ export default function ProfilePage() {
       ...prev,
       [key]: value,
     }))
+  }
+
+  // ============================================================
+  // ADD SERVICE DOMAIN
+  // ============================================================
+
+  const addServiceDomain = () => {
+    const input = document.getElementById('new-service-domain')
+
+    if (!input) return
+
+    const value = input.value.trim()
+
+    if (!value) return
+
+    const currentDomains = Array.isArray(form.domains)
+      ? form.domains
+      : []
+
+    const alreadyExists = currentDomains.some(
+      (domain) =>
+        String(domain).toLowerCase() === value.toLowerCase()
+    )
+
+    if (!alreadyExists) {
+      updateField('domains', [
+        ...currentDomains,
+        value,
+      ])
+    }
+
+    input.value = ''
+  }
+
+  // ============================================================
+  // REMOVE SERVICE DOMAIN
+  // ============================================================
+
+  const removeServiceDomain = (index) => {
+    const currentDomains = Array.isArray(form.domains)
+      ? form.domains
+      : []
+
+    const updatedDomains = currentDomains.filter(
+      (_, i) => i !== index
+    )
+
+    updateField('domains', updatedDomains)
+  }
+
+  // ============================================================
+  // SERVICE DOMAIN ENTER KEY
+  // ============================================================
+
+  const handleDomainKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      addServiceDomain()
+    }
   }
 
   // ============================================================
@@ -82,7 +197,7 @@ export default function ProfilePage() {
   // ERROR
   // ============================================================
 
-  if (error) {
+  if (error && !profile) {
     return (
       <PanelLayout
         role={user?.role || 'buyer'}
@@ -161,13 +276,11 @@ export default function ProfilePage() {
 
         </div>
 
-
         {/* =====================================================
             PROFILE CARD
         ====================================================== */}
 
         <div className="profile-card">
-
 
           {/* ===================================================
               ACCOUNT INFORMATION
@@ -177,7 +290,6 @@ export default function ProfilePage() {
             <span>01</span>
             Account Information
           </div>
-
 
           <div className="profile-grid">
 
@@ -204,7 +316,6 @@ export default function ProfilePage() {
 
             </div>
 
-
             {/* BUSINESS EMAIL */}
 
             <div className="profile-field">
@@ -226,7 +337,6 @@ export default function ProfilePage() {
               </small>
 
             </div>
-
 
             {/* MOBILE NUMBER */}
 
@@ -253,7 +363,6 @@ export default function ProfilePage() {
 
           </div>
 
-
           {/* ===================================================
               BUYER INFORMATION
           ==================================================== */}
@@ -270,6 +379,7 @@ export default function ProfilePage() {
                 {/* COMPANY NAME */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🏢</span>
                     Company Name
@@ -286,12 +396,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter company name"
                   />
-                </div>
 
+                </div>
 
                 {/* DIRECTOR EMAIL */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>✉️</span>
                     Director Email
@@ -308,12 +419,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter director email"
                   />
-                </div>
 
+                </div>
 
                 {/* INDUSTRY */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🏭</span>
                     Industry
@@ -330,12 +442,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter industry"
                   />
-                </div>
 
+                </div>
 
                 {/* GST */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📄</span>
                     GST Number
@@ -352,12 +465,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter GST number"
                   />
-                </div>
 
+                </div>
 
                 {/* WEBSITE */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🌐</span>
                     Website
@@ -374,12 +488,13 @@ export default function ProfilePage() {
                     }
                     placeholder="https://example.com"
                   />
-                </div>
 
+                </div>
 
                 {/* HEAD OFFICE CONTACT */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>☎️</span>
                     Head Office Contact
@@ -398,12 +513,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter contact number"
                   />
-                </div>
 
+                </div>
 
                 {/* EHS CONTACT */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🦺</span>
                     EHS Contact
@@ -420,12 +536,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter EHS contact"
                   />
-                </div>
 
+                </div>
 
                 {/* REGISTERED ADDRESS */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📍</span>
                     Registered Address
@@ -444,12 +561,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter registered address"
                   />
-                </div>
 
+                </div>
 
                 {/* PLANT LOCATION */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🏭</span>
                     Plant Location
@@ -468,12 +586,12 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter plant location"
                   />
+
                 </div>
 
               </div>
             </>
           )}
-
 
           {/* ===================================================
               VENDOR INFORMATION
@@ -491,6 +609,7 @@ export default function ProfilePage() {
                 {/* COMPANY NAME */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🏢</span>
                     Company Name
@@ -507,12 +626,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter company name"
                   />
-                </div>
 
+                </div>
 
                 {/* INDUSTRY TYPE */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🏭</span>
                     Industry Type
@@ -529,36 +649,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter industry type"
                   />
+
                 </div>
-
-
-                {/* INDUSTRY VERTICALS */}
-
-                <div className="profile-field">
-                  <label>
-                    <span>📌</span>
-                    Industry Verticals
-                  </label>
-
-                  <input
-                    type="text"
-                    value={
-                      form.industry_verticals || ''
-                    }
-                    onChange={(e) =>
-                      updateField(
-                        'industry_verticals',
-                        e.target.value
-                      )
-                    }
-                    placeholder="Enter industry verticals"
-                  />
-                </div>
-
 
                 {/* ADDRESS */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📍</span>
                     Address
@@ -575,12 +672,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter address"
                   />
-                </div>
 
+                </div>
 
                 {/* GEOGRAPHICAL TERRITORIES */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🗺️</span>
                     Geographical Territories
@@ -588,9 +686,7 @@ export default function ProfilePage() {
 
                   <input
                     type="text"
-                    value={
-                      form.area_of_work || ''
-                    }
+                    value={form.area_of_work || ''}
                     onChange={(e) =>
                       updateField(
                         'area_of_work',
@@ -599,12 +695,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter geographical territories"
                   />
-                </div>
 
+                </div>
 
                 {/* EXPERIENCE */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📅</span>
                     Experience (years)
@@ -624,12 +721,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter experience"
                   />
-                </div>
 
+                </div>
 
                 {/* CAPACITY */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>⚙️</span>
                     Capacity
@@ -646,12 +744,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter capacity"
                   />
-                </div>
 
+                </div>
 
                 {/* SPECIALIZATION */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🎯</span>
                     Specialization
@@ -670,12 +769,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter specialization"
                   />
-                </div>
 
+                </div>
 
                 {/* GST */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📄</span>
                     GST Number
@@ -692,12 +792,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter GST number"
                   />
-                </div>
 
+                </div>
 
                 {/* MSME */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📑</span>
                     MSME Number
@@ -714,12 +815,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter MSME number"
                   />
-                </div>
 
+                </div>
 
                 {/* WEBSITE */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>🌐</span>
                     Website
@@ -736,12 +838,13 @@ export default function ProfilePage() {
                     }
                     placeholder="https://example.com"
                   />
-                </div>
 
+                </div>
 
                 {/* CONTACT 2 */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>📱</span>
                     Contact No
@@ -758,12 +861,13 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter contact number"
                   />
-                </div>
 
+                </div>
 
                 {/* DIRECTOR EMAIL */}
 
                 <div className="profile-field">
+
                   <label>
                     <span>✉️</span>
                     Director Email
@@ -782,10 +886,10 @@ export default function ProfilePage() {
                     }
                     placeholder="Enter director email"
                   />
+
                 </div>
 
               </div>
-
 
               {/* =================================================
                   SERVICE DOMAINS
@@ -796,49 +900,94 @@ export default function ProfilePage() {
                 Service Domains
               </div>
 
-              <div className="domain-list">
+              <div className="domain-editor">
 
-                {Array.isArray(form.domains) &&
-                form.domains.length > 0 ? (
-                  form.domains.map(
-                    (domain, index) => (
-                      <span
-                        key={index}
-                        className="domain-tag"
-                      >
-                        {domain}
-                      </span>
+                {/* CURRENT DOMAINS */}
+
+                <div className="domain-list">
+
+                  {Array.isArray(form.domains) &&
+                  form.domains.length > 0 ? (
+                    form.domains.map(
+                      (domain, index) => (
+                        <span
+                          key={`${domain}-${index}`}
+                          className="domain-tag"
+                        >
+                          {domain}
+
+                          <button
+                            type="button"
+                            className="domain-remove-btn"
+                            onClick={() =>
+                              removeServiceDomain(
+                                index
+                              )
+                            }
+                            title="Remove domain"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      )
                     )
-                  )
-                ) : (
-                  <span>
-                    No domains selected
-                  </span>
-                )}
+                  ) : (
+                    <span className="no-domains">
+                      No service domains selected
+                    </span>
+                  )}
+
+                </div>
+
+                {/* ADD DOMAIN */}
+
+                <div className="domain-add-row">
+
+                  <input
+                    type="text"
+                    id="new-service-domain"
+                    placeholder="Enter service domain"
+                    onKeyDown={
+                      handleDomainKeyDown
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    className="domain-add-btn"
+                    onClick={
+                      addServiceDomain
+                    }
+                  >
+                    + Add Domain
+                  </button>
+
+                </div>
 
               </div>
-
             </>
           )}
-
 
           {/* ===================================================
               SECURITY
           ==================================================== */}
 
           <div className="profile-section-title">
+
             <span>
               {role === 'vendor' ? '04' : '03'}
             </span>
-            Security
-          </div>
 
+            Security
+
+          </div>
 
           <div className="profile-security-note">
 
             <span>🔐</span>
 
             <div>
+
               <strong>Password</strong>
 
               <p>
@@ -846,10 +995,10 @@ export default function ProfilePage() {
                 reasons. Password changes can be
                 handled separately.
               </p>
+
             </div>
 
           </div>
-
 
           {/* ===================================================
               UPDATE BUTTON
@@ -857,17 +1006,35 @@ export default function ProfilePage() {
 
           <div className="profile-actions">
 
+            {success && (
+              <p className="profile-success">
+                {success}
+              </p>
+            )}
+
+            {error && (
+              <p className="profile-error-message">
+                {error}
+              </p>
+            )}
+
             <button
               type="button"
               className="profile-update-btn"
+              onClick={handleUpdate}
+              disabled={saving}
             >
-              Update Profile
+              {saving
+                ? 'Saving...'
+                : 'Update Profile'}
+
               <span>→</span>
             </button>
 
           </div>
 
         </div>
+
       </div>
     </PanelLayout>
   )
