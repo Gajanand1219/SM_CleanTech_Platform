@@ -1204,3 +1204,17 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.password-match {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.password-match--success {
+  color: #16a34a;
+}
+
+.password-match--error {
+  color: #dc2626;
+}
