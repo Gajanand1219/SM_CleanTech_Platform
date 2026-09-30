@@ -4,9 +4,11 @@ import './styles.css'
 
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import ScrollToTop from './components/ScrollToTop'
+
 import Chatbot from './components/Chatbot'
 import FloatingChatButton from './components/FloatingChatButton'
+import ScrollToTop from './components/ScrollToTop'
+
 
 // Public pages
 import Home from './pages/Home'
@@ -29,6 +31,8 @@ import AdminDashboard from './pages/AdminDashboard'
 import AdminRegistrations from './pages/AdminRegistrations'
 import AdminEnquiries from './pages/AdminEnquiries'
 
+import ProfilePage from './pages/ProfilePage'
+
 // Shared
 import CRM from './pages/CRM'
 
@@ -36,7 +40,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <ScrollToTop />
+      <ScrollToTop />
         <Routes>
           {/* ============ PUBLIC ROUTES ============ */}
           <Route path="/" element={<Home />} />
@@ -46,7 +50,7 @@ export default function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/register/buyer" element={<RegistrationForm type="buyer" />} />
           <Route path="/register/vendor" element={<RegistrationForm type="vendor" />} />
-
+          <Route path="/profile" element={<ProfilePage />} />
           {/* ============ BUYER ROUTES ============ */}
           <Route
             path="/buyer"
