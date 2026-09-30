@@ -3,7 +3,7 @@ import random
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
-
+from app.dependencies import require_roles
 from app.db import get_db
 
 from app.models import (
@@ -50,6 +50,59 @@ router = APIRouter(
 # ============================================================
 
 MAX_VENDOR_MATCHES = 10
+
+# ///////////////////////////////////////////////////////////////////////////////
+
+
+from pydantic import BaseModel, EmailStr, Field
+
+
+class ProfileUpdate(BaseModel):
+    # ============================================================
+    # COMMON USER
+    # ============================================================
+
+    full_name: str | None = Field(default=None, min_length=2)
+    phone: str | None = None
+
+    # ============================================================
+    # COMMON BUSINESS
+    # ============================================================
+
+    company_name: str | None = None
+    director_email: EmailStr | None = None
+    gst_number: str | None = None
+    website: str | None = None
+
+    # ============================================================
+    # BUYER
+    # ============================================================
+
+    industry: str | None = None
+    head_office_contact: str | None = None
+    ehs_contact: str | None = None
+    registered_address: str | None = None
+    plant_location: str | None = None
+
+    # ============================================================
+    # VENDOR
+    # ============================================================
+
+    industry_type: str | None = None
+    address: str | None = None
+    area_of_work: str | None = None
+    experience_years: int | None = Field(
+        default=None,
+        ge=0,
+        le=100
+    )
+    capacity: str | None = None
+    specialization: str | None = None
+    msme_number: str | None = None
+    contact_2: str | None = None
+
+    # SERVICE DOMAINS
+    domains: list[str] | None = None
 
 
 # ============================================================
@@ -686,3 +739,290 @@ def login(
             "email": user.email,
         },
     }
+
+
+
+# ============================================================
+# GET MY PROFILE
+# ============================================================
+
+@router.get("/profile")
+def get_my_profile(
+    user=Depends(require_roles("buyer", "vendor", "admin")),
+    db: Session = Depends(get_db),
+):
+    # --------------------------------------------------------
+    # COMMON USER INFORMATION
+    # --------------------------------------------------------
+
+    response = {
+        "id": user.id,
+        "role": user.role,
+        "full_name": user.full_name,
+        "email": user.email,
+        "phone": user.phone,
+    }
+
+    # --------------------------------------------------------
+    # BUYER PROFILE
+    # --------------------------------------------------------
+
+    if user.role == Role.BUYER.value:
+
+        profile = (
+            db.query(BuyerProfile)
+            .filter(
+                BuyerProfile.user_id == user.id
+            )
+            .first()
+        )
+
+        if not profile:
+            raise HTTPException(
+                status_code=404,
+                detail="Buyer profile not found",
+            )
+
+        response.update({
+            "company_name": profile.company_name,
+            "director_email": profile.director_email,
+            "industry": profile.industry,
+            "gst_number": profile.gst_number,
+            "website": profile.website,
+            "head_office_contact": profile.head_office_contact,
+            "ehs_contact": profile.ehs_contact,
+            "registered_address": profile.registered_address,
+            "plant_location": profile.plant_location,
+        })
+
+    # --------------------------------------------------------
+    # VENDOR PROFILE
+    # --------------------------------------------------------
+
+    elif user.role == Role.VENDOR.value:
+
+        profile = (
+            db.query(VendorProfile)
+            .filter(
+                VendorProfile.user_id == user.id
+            )
+            .first()
+        )
+
+        if not profile:
+            raise HTTPException(
+                status_code=404,
+                detail="Vendor profile not found",
+            )
+
+        response.update({
+            "company_name": profile.company_name,
+            "industry_type": profile.industry_type,
+            "address": profile.address,
+            "area_of_work": profile.area_of_work,
+            "experience_years": profile.experience_years,
+            "capacity": profile.capacity,
+            "specialization": profile.specialization,
+            "gst_number": profile.gst_number,
+            "msme_number": profile.msme_number,
+            "website": profile.website,
+            "contact_2": profile.contact_2,
+            "director_email": profile.director_email,
+
+            # Service Domains
+            "domains": profile.domains or [],
+        })
+
+    # --------------------------------------------------------
+    # ADMIN
+    # --------------------------------------------------------
+
+    elif user.role == Role.ADMIN.value:
+
+        response.update({
+            "admin": True,
+        })
+
+    return response
+
+
+
+# ============================================================
+# UPDATE MY PROFILE
+# ============================================================
+
+@router.put("/profile")
+def update_my_profile(
+    payload: ProfileUpdate,
+    user=Depends(require_roles("buyer", "vendor", "admin")),
+    db: Session = Depends(get_db),
+):
+    data = payload.model_dump(exclude_unset=True)
+
+    # --------------------------------------------------------
+    # USER FIELDS
+    # --------------------------------------------------------
+
+    user_fields = {
+        "full_name",
+        "phone",
+    }
+
+    # --------------------------------------------------------
+    # BUYER FIELDS
+    # --------------------------------------------------------
+
+    buyer_fields = {
+        "company_name",
+        "director_email",
+        "industry",
+        "gst_number",
+        "website",
+        "head_office_contact",
+        "ehs_contact",
+        "registered_address",
+        "plant_location",
+    }
+
+    # --------------------------------------------------------
+    # VENDOR FIELDS
+    # --------------------------------------------------------
+
+    vendor_fields = {
+        "company_name",
+        "industry_type",
+        "address",
+        "area_of_work",
+        "experience_years",
+        "capacity",
+        "specialization",
+        "gst_number",
+        "msme_number",
+        "website",
+        "contact_2",
+        "director_email",
+
+        # Service Domains
+        "domains",
+    }
+
+    try:
+
+        # ----------------------------------------------------
+        # UPDATE USER TABLE
+        # ----------------------------------------------------
+
+        for key in user_fields & data.keys():
+
+            if data[key] is not None:
+                setattr(
+                    user,
+                    key,
+                    data[key]
+                )
+
+        # ----------------------------------------------------
+        # GET PROFILE
+        # ----------------------------------------------------
+
+        if user.role == Role.BUYER.value:
+
+            profile = (
+                db.query(BuyerProfile)
+                .filter(
+                    BuyerProfile.user_id == user.id
+                )
+                .first()
+            )
+
+            allowed_fields = buyer_fields
+
+        elif user.role == Role.VENDOR.value:
+
+            profile = (
+                db.query(VendorProfile)
+                .filter(
+                    VendorProfile.user_id == user.id
+                )
+                .first()
+            )
+
+            allowed_fields = vendor_fields
+
+        else:
+
+            profile = None
+            allowed_fields = set()
+
+        # ----------------------------------------------------
+        # PROFILE NOT FOUND
+        # ----------------------------------------------------
+
+        if (
+            user.role != Role.ADMIN.value
+            and not profile
+        ):
+            raise HTTPException(
+                status_code=404,
+                detail="Profile not found",
+            )
+
+        # ----------------------------------------------------
+        # UPDATE PROFILE
+        # ----------------------------------------------------
+
+        if profile:
+
+            for key in allowed_fields & data.keys():
+
+                value = data[key]
+
+                if value is not None:
+
+                    # Service Domains
+                    if key == "domains":
+
+                        profile.domains = [
+                            str(domain).strip()
+                            for domain in value
+                            if str(domain).strip()
+                        ]
+
+                    else:
+
+                        setattr(
+                            profile,
+                            key,
+                            value
+                        )
+
+        # ----------------------------------------------------
+        # SAVE
+        # ----------------------------------------------------
+
+        db.commit()
+
+        return {
+            "message": "Profile updated successfully",
+        }
+
+    except HTTPException:
+        db.rollback()
+        raise
+
+    except Exception as exc:
+        db.rollback()
+
+        print(
+            f"[PROFILE UPDATE ERROR] "
+            f"user={user.id} "
+            f"error={exc}"
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to update profile",
+        )
+
+
+    
