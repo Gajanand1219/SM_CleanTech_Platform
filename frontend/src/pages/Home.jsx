@@ -656,6 +656,134 @@ export default function Home() {
           </div>
         </section>
 
+
+        {/* ================= PLATFORM BENEFITS ================= */}
+
+<section className="platform-benefits">
+  <div className="section-container">
+
+    <div className="platform-benefits-heading" data-reveal>
+      <span className="section-label">WHY SM CLEANTECH</span>
+
+      <h2>
+        Smarter Connections for
+        <span> Industrial Projects</span>
+      </h2>
+
+      <p>
+        A structured B2B platform designed to connect genuine industrial
+        requirements with relevant engineering, EPC and CleanTech solution
+        providers.
+      </p>
+    </div>
+
+    <div className="platform-benefits-grid">
+
+      {/* CARD 01 */}
+      <article className="platform-benefit-card" data-reveal>
+        <div className="platform-benefit-icon">🔍</div>
+
+        <div className="platform-benefit-content">
+          <h3>Verified Vendor Matching</h3>
+          <p>
+            Connect your requirement with relevant and approved engineering,
+            EPC and CleanTech solution providers.
+          </p>
+        </div>
+      </article>
+
+      {/* CARD 02 */}
+      <article
+        className="platform-benefit-card"
+        data-reveal
+        style={{ transitionDelay: '0.06s' }}
+      >
+        <div className="platform-benefit-icon">📋</div>
+
+        <div className="platform-benefit-content">
+          <h3>Structured Technical Requirements</h3>
+          <p>
+            Capture project details, technical parameters and business
+            requirements in a structured format.
+          </p>
+        </div>
+      </article>
+
+      {/* CARD 03 */}
+      <article
+        className="platform-benefit-card"
+        data-reveal
+        style={{ transitionDelay: '0.12s' }}
+      >
+        <div className="platform-benefit-icon">⚡</div>
+
+        <div className="platform-benefit-content">
+          <h3>Faster Project Connections</h3>
+          <p>
+            Reduce manual vendor discovery and connect with relevant solution
+            providers through technical matching.
+          </p>
+        </div>
+      </article>
+
+      {/* CARD 04 */}
+      <article
+        className="platform-benefit-card"
+        data-reveal
+        style={{ transitionDelay: '0.18s' }}
+      >
+        <div className="platform-benefit-icon">🏭</div>
+
+        <div className="platform-benefit-content">
+          <h3>Industrial & EPC Expertise</h3>
+          <p>
+            Access solution providers across water, waste, renewables,
+            carbon, ESG and environmental engineering domains.
+          </p>
+        </div>
+      </article>
+
+      {/* CARD 05 */}
+      <article
+        className="platform-benefit-card"
+        data-reveal
+        style={{ transitionDelay: '0.24s' }}
+      >
+        <div className="platform-benefit-icon">🔐</div>
+
+        <div className="platform-benefit-content">
+          <h3>Mutual-Consent Communication</h3>
+          <p>
+            Contact information remains protected until both parties accept
+            the opportunity and complete the handshake.
+          </p>
+        </div>
+      </article>
+
+      {/* CARD 06 */}
+      <article
+        className="platform-benefit-card"
+        data-reveal
+        style={{ transitionDelay: '0.30s' }}
+      >
+        <div className="platform-benefit-icon">🤝</div>
+
+        <div className="platform-benefit-content">
+          <h3>Trusted B2B Network</h3>
+          <p>
+            Build connections between verified industrial buyers and
+            approved technical solution providers.
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+        
+
         {/* ================= CONTACT ================= */}
 
         <section className="contact" id="contact">
