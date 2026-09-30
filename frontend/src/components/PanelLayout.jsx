@@ -1,152 +1,147 @@
-import { useEffect, useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import PanelLayout from '../components/PanelLayout'
-import '../styles/ProfilePage.css'
+import '../styles/PanelLayout.css'
+import profileImage from '../Profile.png'
 
-export default function ProfilePage() {
-  const { user } = useAuth()
+const MENUS = {
+  admin: [
+    { to: '/admin', label: 'Dashboard', icon: '📊', end: true },
+    { to: '/admin/enquiries', label: 'Enquiries', icon: '📋' },
+    { to: '/admin/registrations', label: 'Participants', icon: '👥' },
+  ],
+  buyer: [
+    { to: '/buyer', label: 'Dashboard', icon: '📊', end: true },
+    { to: '/buyer/enquiries/new', label: 'New', icon: '➕' },
+    { to: '/buyer/enquiries', label: 'Enquiries', icon: '📋' },
+    { to: '/buyer/crm', label: 'CRM', icon: '🗂️' },
+  ],
+  vendor: [
+    { to: '/vendor', label: 'Dashboard', icon: '📊', end: true },
+    { to: '/vendor/enquiries', label: 'Leads', icon: '📋' },
+    { to: '/vendor/crm', label: 'CRM', icon: '🗂️' },
+  ],
+}
 
-  const role = user?.role || 'buyer'
+const ROLE_LABEL = {
+  admin: 'Administrator',
+  buyer: 'Buyer',
+  vendor: 'Vendor',
+}
 
-  const [form, setForm] = useState({
-    full_name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-  })
+export default function PanelLayout({ role = 'admin', title = 'Dashboard', children }) {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    setForm({
-      full_name: user?.name || '',
-      email: user?.email || '',
-      phone: user?.phone || '',
-    })
-  }, [user])
+  const items = MENUS[role] || MENUS.admin
+  const roleLabel = ROLE_LABEL[role] || role
+  const initial = (user?.name || user?.email || roleLabel).charAt(0).toUpperCase()
 
-  const updateField = (key, value) => {
-    setForm((prev) => ({
-      ...prev,
-      [key]: value,
-    }))
+  const handleLogout = () => {
+    logout()
+    navigate('/')
   }
 
   return (
-    <PanelLayout role={role} title="My Profile">
-      <div className="profile-page">
+    <div className={`panel-shell panel-shell--${role}`}>
+      {/* ================= SIDEBAR ================= */}
 
-        {/* HEADER */}
-        <div className="profile-header">
+      <aside className="panel-sidebar">
+        <div className="panel-sidebar__brand">
+          <div className="panel-sidebar__logo">
+            <img src="/logo2.jpeg" alt="SM Clean Tech" />
+          </div>
           <div>
-            <span className="profile-kicker">ACCOUNT SETTINGS</span>
-            <h2>My Profile</h2>
-            <p>
-              View and update your account information.
-            </p>
-          </div>
-
-          <div className={`profile-avatar profile-avatar--${role}`}>
-            {(form.full_name || form.email || role)
-              .charAt(0)
-              .toUpperCase()}
+            <strong>SM Clean Tech</strong>
+            <span>Engineering Solutions</span>
           </div>
         </div>
 
-        {/* PROFILE CARD */}
-        <div className="profile-card">
+        <div className="panel-sidebar__role">
+          <span className="panel-sidebar__role-dot" />
+          {roleLabel} Panel
+        </div>
 
-          {/* ACCOUNT INFORMATION */}
-          <div className="profile-section-title">
-            <span>01</span>
-            Account Information
-          </div>
-
-          <div className="profile-grid">
-
-            {/* FULL NAME */}
-            <div className="profile-field">
-              <label>
-                <span>👤</span>
-                Full name
-              </label>
-
-              <input
-                type="text"
-                value={form.full_name}
-                onChange={(e) =>
-                  updateField('full_name', e.target.value)
-                }
-                placeholder="Enter full name"
-              />
-            </div>
-
-            {/* EMAIL - READ ONLY */}
-            <div className="profile-field">
-              <label>
-                <span>✉️</span>
-                Business Email
-              </label>
-
-              <input
-                type="email"
-                value={form.email}
-                disabled
-                className="profile-input-disabled"
-              />
-
-              <small>
-                Email address cannot be changed.
-              </small>
-            </div>
-
-            {/* PHONE */}
-            <div className="profile-field">
-              <label>
-                <span>📱</span>
-                Mobile Number
-              </label>
-
-              <input
-                type="tel"
-                value={form.phone}
-                onChange={(e) =>
-                  updateField('phone', e.target.value)
-                }
-                placeholder="Enter mobile number"
-              />
-            </div>
-
-          </div>
-
-          {/* SECURITY */}
-          <div className="profile-section-title">
-            <span>02</span>
-            Security
-          </div>
-
-          <div className="profile-security-note">
-            <span>🔐</span>
-
-            <div>
-              <strong>Password</strong>
-              <p>
-                Your password is hidden for security reasons.
-                Password changes can be handled separately.
-              </p>
-            </div>
-          </div>
-
-          {/* UPDATE BUTTON */}
-          <div className="profile-actions">
-            <button
-              type="button"
-              className="profile-update-btn"
+        <nav className="panel-sidebar__nav">
+          {items.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `panel-sidebar__link ${isActive ? 'is-active' : ''}`
+              }
             >
-              Update Profile
-              <span>→</span>
-            </button>
+              <span className="panel-sidebar__link-icon">{item.icon}</span>
+              <span className="panel-sidebar__link-label">{item.label}</span>
+            </NavLink>
+          ))}
+
+          {/* ⏻ LOGOUT AS LAST NAV ITEM (mobile will show in bottom bar) */}
+          <button
+            type="button"
+            className="panel-sidebar__link panel-sidebar__link--logout"
+            onClick={handleLogout}
+          >
+            <span className="panel-sidebar__link-icon">⏻</span>
+            <span className="panel-sidebar__link-label">Logout</span>
+          </button>
+        </nav>
+
+        <div className="panel-sidebar__user">
+          <div className={`panel-sidebar__avatar panel-sidebar__avatar--${role}`}>
+            {initial}
+          </div>
+          <div className="panel-sidebar__user-info">
+            <strong>{user?.name || roleLabel}</strong>
+            <span>{user?.email || '—'}</span>
+          </div>
+        </div>
+
+        {/* Desktop-only logout button */}
+        <button className="panel-sidebar__logout" onClick={handleLogout}>
+          <span>⏻</span>
+          Logout
+        </button>
+      </aside>
+
+      {/* ================= MAIN ================= */}
+
+      <div className="panel-body">
+        <header className="panel-topbar">
+          <div className="panel-topbar__left">
+            <h1 className="panel-topbar__title">{title}</h1>
+            <span className="panel-topbar__sub">
+              Welcome back, {user?.name || roleLabel}
+            </span>
           </div>
 
-        </div>
+          <div className="panel-topbar__right">
+            <div className="panel-topbar__chip">
+              <span className="panel-topbar__chip-dot" />
+              {roleLabel}
+            </div>
+
+           <button
+            type="button"
+            className={`panel-topbar__avatar panel-topbar__avatar--${role}`}
+            onClick={() => navigate('/profile')}
+            title="My Profile"
+          >
+            <span className="profile-avatar-animation">
+              <span className="profile-avatar-ring"></span>
+
+              <img
+                src={profileImage}
+                alt="My Profile"
+                className="profile-avatar-image"
+              />
+            </span>
+          </button>
+          </div>
+        </header>
+
+        <main className="panel-content">{children}</main>
       </div>
-    </PanelLayout>
+    </div>
   )
 }
