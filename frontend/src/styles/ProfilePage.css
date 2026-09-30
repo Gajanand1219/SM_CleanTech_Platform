@@ -1,0 +1,375 @@
+/* =========================================================
+   PROFILE PAGE
+   ========================================================= */
+
+.profile-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 0 40px;
+}
+
+/* ================= HEADER ================= */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.profile-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 6px;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.profile-header p {
+  margin: 7px 0 0;
+  font-size: 14px;
+  opacity: 0.65;
+}
+
+/* ================= AVATAR ================= */
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  font-size: 25px;
+  font-weight: 800;
+
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* Buyer */
+.profile-avatar--buyer {
+  background: #eff6ff;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+/* Vendor */
+.profile-avatar--vendor {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+
+/* Admin */
+.profile-avatar--admin {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border-color: #ddd6fe;
+}
+
+/* ================= CARD ================= */
+
+.profile-card {
+  width: 100%;
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+
+  padding: 30px;
+
+  box-shadow:
+    0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* ================= SECTION TITLE ================= */
+
+.profile-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 4px 0 22px;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+.profile-section-title span {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ================= GRID ================= */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 22px;
+
+  margin-bottom: 34px;
+}
+
+/* ================= FIELD ================= */
+
+.profile-field {
+  min-width: 0;
+}
+
+.profile-field label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 8px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #334155;
+}
+
+.profile-field label span {
+  font-size: 15px;
+}
+
+.profile-field input {
+  width: 100%;
+  height: 46px;
+
+  box-sizing: border-box;
+
+  padding: 0 14px;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #111827;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.profile-field input:focus {
+  border-color: #94a3b8;
+
+  box-shadow:
+    0 0 0 3px rgba(148, 163, 184, 0.14);
+}
+
+.profile-field input::placeholder {
+  color: #94a3b8;
+}
+
+/* ================= DISABLED EMAIL ================= */
+
+.profile-field input.profile-input-disabled {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.profile-field small {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* ================= SECURITY ================= */
+
+.profile-security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+
+  margin-bottom: 30px;
+}
+
+.profile-security-note > span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.profile-security-note strong {
+  display: block;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  color: #1e293b;
+}
+
+.profile-security-note p {
+  margin: 5px 0 0;
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  color: #64748b;
+}
+
+/* ================= ACTIONS ================= */
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  padding-top: 4px;
+}
+
+.profile-update-btn {
+  min-width: 170px;
+  height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  border: none;
+  border-radius: 11px;
+
+  padding: 0 20px;
+
+  background: #111827;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.profile-update-btn:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.16);
+}
+
+.profile-update-btn:active {
+  transform: translateY(0);
+}
+
+.profile-update-btn span {
+  font-size: 17px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 5px 0 30px;
+  }
+
+  .profile-header {
+    align-items: flex-start;
+  }
+
+  .profile-header h2 {
+    font-size: 24px;
+  }
+
+  .profile-avatar {
+    width: 54px;
+    height: 54px;
+    flex-basis: 54px;
+    border-radius: 15px;
+    font-size: 21px;
+  }
+
+  .profile-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .profile-actions {
+    justify-content: stretch;
+  }
+
+  .profile-update-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    gap: 14px;
+  }
+
+  .profile-header h2 {
+    font-size: 21px;
+  }
+
+  .profile-header p {
+    font-size: 12px;
+  }
+
+  .profile-avatar {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+    font-size: 19px;
+  }
+
+  .profile-card {
+    padding: 16px;
+  }
+}
