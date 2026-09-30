@@ -5,6 +5,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependencies import require_roles
 from app.db import get_db
+import secrets
 
 from app.models import (
     User,
@@ -24,12 +25,16 @@ from app.schemas.auth import (
     VendorRegister,
     LoginRequest,
     VerifyEmailRequest,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
 )
 
 from app.core.security import (
     hash_password,
     verify_password,
     create_access_token,
+    create_password_reset_token,
+    decode_password_reset_token,
 )
 
 from app.services.email import (
@@ -103,6 +108,7 @@ class ProfileUpdate(BaseModel):
 
     # SERVICE DOMAINS
     domains: list[str] | None = None
+
 
 
 # ============================================================
@@ -666,6 +672,140 @@ async def resend_verification(
 
     return {
         "message": "Verification code sent"
+    }
+
+
+# ============================================================
+# FORGOT PASSWORD
+# ============================================================
+@router.post("/forgot-password")
+async def forgot_password(
+    payload: ForgotPasswordRequest,
+    background: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    user = (
+        db.query(User)
+        .filter(User.email == payload.email)
+        .first()
+    )
+
+    if not user:
+        return {
+            "message": "If this email is registered, a password reset link has been sent."
+        }
+
+    token = create_password_reset_token(user.id)
+
+    reset_url = (
+        "http://localhost:5173/reset-password"
+        f"?token={token}"
+    )
+
+    html = email_template(
+        "Reset your password",
+        f"""
+        Hello {user.full_name},<br><br>
+
+        We received a request to reset your SM Clean Tech
+        account password.<br><br>
+
+        Click the button below to create a new password:
+
+        <br><br>
+
+        <div style="text-align:center;">
+            <a
+                href="{reset_url}"
+                style="
+                    display:inline-block;
+                    padding:12px 24px;
+                    background:#16a34a;
+                    color:#ffffff;
+                    text-decoration:none;
+                    border-radius:8px;
+                    font-weight:700;
+                "
+            >
+                Reset Password
+            </a>
+        </div>
+
+        <br><br>
+
+        This password reset link will expire in 30 minutes.
+
+        <br><br>
+
+        If you did not request this password reset,
+        you can safely ignore this email.
+
+        <br><br>
+
+        Regards,<br>
+        <strong>SM Clean Tech Engineering Solutions</strong>
+        """,
+    )
+
+    background.add_task(
+        send_email,
+        user.email,
+        "Reset your SM Clean Tech password",
+        html,
+    )
+
+    return {
+        "message": "If this email is registered, a password reset link has been sent."
+    }
+
+
+# ============================================================
+# RESET PASSWORD
+# ============================================================
+
+@router.post("/reset-password")
+def reset_password(
+    payload: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    decoded = decode_password_reset_token(
+        payload.token
+    )
+
+    if not decoded:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid or expired password reset link.",
+        )
+
+    user_id = decoded.get("sub")
+
+    if not user_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid password reset token.",
+        )
+
+    user = db.get(User, int(user_id))
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="Account not found.",
+        )
+
+    # --------------------------------------------------------
+    # UPDATE PASSWORD
+    # --------------------------------------------------------
+
+    user.password_hash = hash_password(
+        payload.password
+    )
+
+    db.commit()
+
+    return {
+        "message": "Password reset successfully. You can now login."
     }
 
 
