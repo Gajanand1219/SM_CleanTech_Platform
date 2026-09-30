@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './styles/base.css'
 import './styles.css'
 
+
+import ResetPassword from './pages/ResetPassword'
+
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -51,6 +54,10 @@ export default function App() {
           <Route path="/register/buyer" element={<RegistrationForm type="buyer" />} />
           <Route path="/register/vendor" element={<RegistrationForm type="vendor" />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/reset-password"
+            element={<ResetPassword />}
+          />
           {/* ============ BUYER ROUTES ============ */}
           <Route
             path="/buyer"
