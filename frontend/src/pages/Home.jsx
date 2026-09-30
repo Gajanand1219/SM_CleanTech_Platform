@@ -959,10 +959,10 @@ export default function Home() {
 
               <div className="footer-column footer-contact">
                 <h4>Contact</h4>
-                <p>
-                  Industrial CleanTech
+                 <p>
+                  SM CLEANTECH
                   <br />
-                  Engineering &amp; EPC Network
+                  ENGINEERING SOLUTIONS
                 </p>
                 <p>
                   Email:{" "}
