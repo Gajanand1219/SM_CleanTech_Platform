@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-// import './Login.css'
+import './Login.css'
 
 /* =========================================================
    ERROR MESSAGE
@@ -53,7 +53,9 @@ function generateCaptcha() {
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -104,6 +106,24 @@ export default function Login() {
       refreshCaptcha()
       return
     }
+
+    /* ---- PASSWORD CONFIRMATION ---- */
+
+      if (!password.trim()) {
+        setError('Please enter your password.')
+        return
+      }
+
+      if (!confirmPassword.trim()) {
+        setError('Please re-enter your password.')
+        return
+      }
+
+      if (password !== confirmPassword) {
+        setError('Passwords do not match. Please enter the same password.')
+        return
+      }
+
 
     /* ---- LOGIN ---- */
 
@@ -213,6 +233,60 @@ export default function Login() {
                   {showPassword ? '🙈' : '👁️'}
                 </button>
               </div>
+            </div>
+
+            {/* RE-ENTER PASSWORD */}
+
+            <div className="field-group">
+              <label>
+                <span className="field-icon">🔐</span>
+                Re-enter Password
+              </label>
+
+              <div className="password-wrap">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    setError('')
+                  }}
+                  placeholder="Re-enter your password"
+                  autoComplete="new-password"
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() =>
+                    setShowConfirmPassword((v) => !v)
+                  }
+                  aria-label={
+                    showConfirmPassword
+                      ? 'Hide password'
+                      : 'Show password'
+                  }
+                >
+                  {showConfirmPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+
+              {confirmPassword && (
+                <div
+                  className={
+                    `password-match ${
+                      password === confirmPassword
+                        ? 'password-match--success'
+                        : 'password-match--error'
+                    }`
+                  }
+                >
+                  {password === confirmPassword
+                    ? '✓ Passwords match'
+                    : '✕ Passwords do not match'}
+                </div>
+              )}
             </div>
 
             {/* CAPTCHA */}
