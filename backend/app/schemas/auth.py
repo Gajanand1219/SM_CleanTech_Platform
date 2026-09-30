@@ -21,6 +21,18 @@ class BuyerRegister(RegisterBase):
     # NEW
     director_email: EmailStr | None = None
 
+# ============================================================
+# PASSWORD RESET
+# ============================================================
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    password: str = Field(min_length=8)
+    
 
 class VendorRegister(RegisterBase):
     company_name: str = Field(min_length=2, max_length=255)
@@ -57,3 +69,4 @@ class UserOut(BaseModel):
     role: str
     status: str
     email_verified: bool
+
