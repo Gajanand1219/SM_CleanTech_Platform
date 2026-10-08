@@ -167,20 +167,20 @@ const handleForgotPassword = async () => {
 
     /* ---- PASSWORD CONFIRMATION ---- */
 
-      if (!password.trim()) {
-        setError('Please enter your password.')
-        return
-      }
+      // if (!password.trim()) {
+      //   setError('Please enter your password.')
+      //   return
+      // }
 
-      if (!confirmPassword.trim()) {
-        setError('Please re-enter your password.')
-        return
-      }
+      // if (!confirmPassword.trim()) {
+      //   setError('Please re-enter your password.')
+      //   return
+      // }
 
-      if (password !== confirmPassword) {
-        setError('Passwords do not match. Please enter the same password.')
-        return
-      }
+      // if (password !== confirmPassword) {
+      //   setError('Passwords do not match. Please enter the same password.')
+      //   return
+      // }
 
 
     /* ---- LOGIN ---- */
@@ -296,13 +296,10 @@ const handleForgotPassword = async () => {
             {/* RE-ENTER PASSWORD */}
 
             <div className="field-group">
-              <label>
-                <span className="field-icon">🔐</span>
-                Re-enter Password
-              </label>
+              
 
               <div className="password-wrap">
-                <input
+                {/* <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => {
@@ -312,9 +309,9 @@ const handleForgotPassword = async () => {
                   placeholder="Re-enter your password"
                   autoComplete="new-password"
                   required
-                />
+                /> */}
 
-                <button
+                {/* <button
                   type="button"
                   className="password-toggle"
                   onClick={() =>
@@ -327,7 +324,7 @@ const handleForgotPassword = async () => {
                   }
                 >
                   {showConfirmPassword ? '🙈' : '👁️'}
-                </button>
+                </button> */}
               </div>
 
               {confirmPassword && (
