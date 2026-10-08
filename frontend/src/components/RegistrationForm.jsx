@@ -9,10 +9,7 @@ import './RegistrationForm.css'
    ========================================================= */
 
 const buyerFields = [
-  ['full_name', 'Full name', 'text', true],
-  ['email', 'Business Email', 'email', true],
-  ['phone', 'Phone', 'tel', true],
-  ['password', 'Password', 'password', true],
+  
   ['company_name', 'Company name', 'text', true],
   ['director_email', 'Director Email', 'email', true],
   ['industry', 'Industry', 'text', true],
@@ -22,6 +19,13 @@ const buyerFields = [
   ['ehs_contact', 'EHS/EHS head contact', 'tel', false],
   ['registered_address', 'Registered address', 'text', true],
   ['plant_location', 'Plant location', 'text', true],
+
+
+  ['full_name', 'Full name', 'text', true],
+  ['email', 'Business Email', 'email', true],
+  ['phone', 'Phone', 'tel', true],
+  ['password', 'Password', 'password', true],
+  ['confirm_password', 'Re-enter Password', 'password', true],
 ]
 
 const vendorFields = [
@@ -45,6 +49,7 @@ const vendorFields = [
   ['email', 'Business Email', 'email', true],
   ['phone', 'Mobile Number', 'tel', true],
   ['password', 'Password', 'password', true],
+  ['confirm_password', 'Re-enter Password', 'password', true],
 ]
 
 const domains = [
@@ -161,6 +166,7 @@ export default function RegistrationForm({ type }) {
     if (!/[A-Z]/.test(form.password)) return 'Password must contain at least one uppercase letter.'
     if (!/[a-z]/.test(form.password)) return 'Password must contain at least one lowercase letter.'
     if (!/[0-9]/.test(form.password)) return 'Password must contain at least one number.'
+    if (form.password !== form.confirm_password)  return 'Passwords do not match.'
 
     if (!isBuyer) {
       const experience = Number(form.experience_years)
@@ -236,6 +242,7 @@ export default function RegistrationForm({ type }) {
       email: '✉️',
       phone: '📱',
       password: '🔐',
+      confirm_password: '🔐',
       company_name: '🏢',
       industry: '🏭',
       industry_type: '🏭',
@@ -343,24 +350,7 @@ export default function RegistrationForm({ type }) {
 
               {isBuyer ? (
                 <>
-                  {/* SECTION 01 — ACCOUNT INFORMATION */}
-                  <div className="form-section-title">
-                    <span>01</span>
-                    Account Information
-                  </div>
-
-                  <div className="registration-grid">
-                    {buyerFields
-                      .filter(([key]) =>
-                        [
-                          'full_name',
-                          'email',
-                          'phone',
-                          'password'
-                        ].includes(key)
-                      )
-                      .map(renderField)}
-                  </div>
+                  
 
                   {/* SECTION 02 — BUSINESS INFORMATION */}
                   <div className="form-section-title">
@@ -385,6 +375,27 @@ export default function RegistrationForm({ type }) {
                       )
                       .map(renderField)}
                   </div>
+
+                  {/* SECTION 01 — ACCOUNT INFORMATION */}
+                  <div className="form-section-title">
+                    <span>01</span>
+                    Account Information
+                  </div>
+
+                  <div className="registration-grid">
+                    {buyerFields
+                      .filter(([key]) =>
+                        [
+                          'full_name',
+                          'email',
+                          'phone',
+                          'password',
+                          'confirm_password'
+                        ].includes(key)
+                      )
+                      .map(renderField)}
+                  </div>
+
                 </>
               ) : (
                 <>
@@ -435,7 +446,8 @@ export default function RegistrationForm({ type }) {
                           'full_name',
                           'email',
                           'phone',
-                          'password'
+                          'password',
+                          'confirm_password'
                         ].includes(key)
                       )
                       .map(renderField)}
