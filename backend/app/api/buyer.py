@@ -94,6 +94,22 @@ def dashboard(
                 for e in enquiries
             ),
 
+
+            "accepted_quotations": sum(
+                1
+                for e in enquiries
+                for q in e.quotations
+                if str(q.status).upper().split(".")[-1] == "ACCEPTED"
+            ),
+
+
+            "rejected_quotations": sum(
+                1
+                for e in enquiries
+                for q in e.quotations
+                if str(q.status).upper().split(".")[-1] == "REJECTED"
+            ),
+
             "closed": sum(
                 e.status
                 == EnquiryStatus.CLOSED.value
