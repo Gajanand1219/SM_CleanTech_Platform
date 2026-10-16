@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-jose[cryptography]
+bcrypt
+email-validator
+python-multipart
+faiss-cpu
+numpy
+google-genai
+groq
+python-dotenv

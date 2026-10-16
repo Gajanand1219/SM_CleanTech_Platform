@@ -1,0 +1,418 @@
+/* ==========================================================
+   ADMIN DASHBOARD — Compact / Professional / Green-White
+   SM Clean Tech
+   ========================================================== */
+
+.admin-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================
+   STATS GRID — SMALL COMPACT BOXES
+   ========================================================== */
+
+.admin-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.stat-wrap {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* Make sure StatCard is compact — override big styles */
+.admin-dash__stats .stat-wrap > * {
+  padding: 14px 16px !important;
+  min-height: auto !important;
+  border-radius: 12px !important;
+}
+
+/* Skeleton loader */
+.stat-skeleton {
+  height: 72px;
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    #f0f6f2 0%,
+    #e6efe9 50%,
+    #f0f6f2 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border: 1px solid #dce7e1;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.admin-dash__empty {
+  grid-column: 1 / -1;
+  padding: 20px;
+  text-align: center;
+  color: #5f6d66;
+  background: #f7fbf9;
+  border: 1px dashed #dce7e1;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+/* ==========================================================
+   CONTROL CENTER
+   ========================================================== */
+
+.admin-dash__control {
+  background: #ffffff;
+  border: 1px solid #dce7e1;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 3px 10px rgba(20, 70, 45, 0.05);
+  animation: fadeUp 0.5s ease 0.08s both;
+}
+
+/* ============ HEADER ============ */
+
+.admin-dash__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eaf0ec;
+}
+
+.admin-dash__head-text {
+  max-width: 620px;
+}
+
+.admin-dash__eyebrow {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: #087f45;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.admin-dash__head h2 {
+  margin: 0 0 5px;
+  color: #126b40;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.admin-dash__head p {
+  margin: 0;
+  color: #5f6d66;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* ============ CTA BUTTON ============ */
+
+.admin-dash__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 15px;
+
+  background: #087f45;
+  color: #ffffff;
+
+  font-size: 12.5px;
+  font-weight: 800;
+  text-decoration: none;
+
+  border-radius: 9px;
+  box-shadow: 0 4px 12px rgba(8, 127, 69, 0.22);
+
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  transition: all 0.22s ease;
+}
+
+.admin-dash__cta:hover {
+  background: #056b3a;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(8, 127, 69, 0.3);
+}
+
+.admin-dash__cta span {
+  font-size: 14px;
+  transition: transform 0.22s ease;
+}
+
+.admin-dash__cta:hover span {
+  transform: translateX(3px);
+}
+
+/* ==========================================================
+   WORKFLOW STRIP
+   ========================================================== */
+
+.admin-dash__workflow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 7px;
+  padding: 10px;
+  background: #f7fbf9;
+  border: 1px solid #dce7e1;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+.wf-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 10px;
+  background: #ffffff;
+  border: 1px solid #e4ece7;
+  border-radius: 8px;
+
+  transition: all 0.2s ease;
+  animation: fadeUp 0.35s ease both;
+}
+
+.wf-step:hover {
+  border-color: #a8d4bc;
+  background: #f0faf4;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(8, 127, 69, 0.07);
+}
+
+.wf-step__icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: #eaf7f0;
+  border-radius: 7px;
+}
+
+.wf-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.wf-step__num {
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #087f45;
+}
+
+.wf-step__text {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2b3d33;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================
+   NOTICE
+   ========================================================== */
+
+.admin-dash__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 10px 12px;
+
+  background: #f0faf4;
+  border: 1px solid #cfe9db;
+  border-left: 3px solid #087f45;
+  border-radius: 9px;
+}
+
+.admin-dash__notice-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #cfe9db;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.admin-dash__notice p {
+  margin: 0;
+  color: #2b3d33;
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.admin-dash__notice p b {
+  color: #087f45;
+  font-weight: 800;
+}
+
+/* ==========================================================
+   RESPONSIVE — TABLET
+   ========================================================== */
+
+@media (max-width: 1024px) {
+  .admin-dash__workflow {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+}
+
+/* ==========================================================
+   RESPONSIVE — MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+  .admin-dash__head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .admin-dash__cta {
+    align-self: flex-start;
+  }
+
+  .admin-dash__head h2 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-dash {
+    gap: 12px;
+  }
+
+  /* 2-column stats — compact */
+  .admin-dash__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .admin-dash__stats .stat-wrap > * {
+    padding: 12px 13px !important;
+    border-radius: 10px !important;
+  }
+
+  .stat-skeleton {
+    height: 64px;
+    border-radius: 10px;
+  }
+
+  .admin-dash__control {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .admin-dash__head {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .admin-dash__head h2 {
+    font-size: 16px;
+  }
+
+  .admin-dash__head p {
+    font-size: 12px;
+  }
+
+  /* Workflow: 2 columns compact */
+  .admin-dash__workflow {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 8px;
+    gap: 5px;
+  }
+
+  .wf-step {
+    padding: 7px 8px;
+    gap: 6px;
+  }
+
+  .wf-step__icon {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  .wf-step__num {
+    font-size: 8px;
+  }
+
+  .wf-step__text {
+    font-size: 10px;
+  }
+
+  .admin-dash__notice {
+    padding: 9px 10px;
+    gap: 8px;
+  }
+
+  .admin-dash__notice p {
+    font-size: 11px;
+  }
+
+  .admin-dash__notice-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .admin-dash__cta {
+    padding: 8px 13px;
+    font-size: 11.5px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-dash__workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .wf-step__text {
+    white-space: normal;
+  }
+}
+
+/* ==========================================================
+   REDUCED MOTION
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-dash *,
+  .admin-dash *::before,
+  .admin-dash *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

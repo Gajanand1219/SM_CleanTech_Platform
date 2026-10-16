@@ -1,0 +1,778 @@
+/* ==========================================================
+   VERIFY EMAIL — CENTERED FORM (Home Theme)
+   Clean / Green-White Corporate
+   SM Clean Tech
+   ========================================================== */
+
+/* =========================================================
+   PAGE BASE
+   ========================================================= */
+
+.ve-page {
+  --ve-green: #087f45;
+  --ve-green-dark: #056b3a;
+  --ve-green-light: #eaf7f0;
+  --ve-green-soft: #f3faf6;
+  --ve-green-border: #dce7e1;
+
+  --ve-text: #17201c;
+  --ve-muted: #5f6d66;
+  --ve-white: #ffffff;
+
+  --ve-shadow: 0 5px 18px rgba(20, 70, 45, 0.08);
+  --ve-shadow-lg: 0 12px 32px rgba(20, 70, 45, 0.12);
+
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--ve-text);
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ve-page *,
+.ve-page *::before,
+.ve-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BACKGROUND ORBS (subtle — same as Home)
+   ========================================================= */
+
+.ve-bg {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ve-bg--one {
+  width: 420px;
+  height: 420px;
+  top: -180px;
+  left: -150px;
+  background: radial-gradient(circle, #8be3b4, transparent 70%);
+}
+
+.ve-bg--two {
+  width: 380px;
+  height: 380px;
+  bottom: -160px;
+  right: -140px;
+  background: radial-gradient(circle, #b6f2d2, transparent 70%);
+}
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.ve-topbar {
+  position: relative;
+  z-index: 10;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid var(--ve-green-border);
+  box-shadow: 0 2px 10px rgba(20, 70, 45, 0.04);
+  flex-shrink: 0;
+}
+
+.ve-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.ve-brand__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--ve-green);
+  background: #ffffff;
+  padding: 2px;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(8, 127, 69, 0.18);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ve-brand__logo:hover {
+  transform: scale(1.06);
+  box-shadow: 0 5px 16px rgba(8, 127, 69, 0.28);
+}
+
+.ve-brand__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ve-brand strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ve-green);
+  line-height: 1.2;
+}
+
+.ve-brand span {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ve-muted);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.ve-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: #ffffff;
+  border: 1px solid var(--ve-green);
+  border-radius: 8px;
+  color: var(--ve-green);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ve-back:hover {
+  background: var(--ve-green-light);
+  transform: translateX(-3px);
+}
+
+.ve-back span {
+  transition: transform 0.3s ease;
+}
+
+.ve-back:hover span {
+  transform: translateX(-3px);
+}
+
+/* =========================================================
+   MAIN — CENTERED
+   ========================================================= */
+
+.ve-main {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 60px;
+}
+
+.ve-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  padding: 34px 34px 30px;
+
+  background: #ffffff;
+  border: 1px solid var(--ve-green-border);
+  border-radius: 18px;
+
+  box-shadow: var(--ve-shadow-lg);
+
+  overflow: hidden;
+  animation: panelEnter 0.6s ease both;
+}
+
+.ve-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #087f45, #35a56b, #087f45);
+  background-size: 200% auto;
+  animation: topBarShine 4s linear infinite;
+}
+
+@keyframes topBarShine {
+  to { background-position: 200% center; }
+}
+
+@keyframes panelEnter {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.ve-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--ve-green-border);
+}
+
+.ve-card__icon {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 14px;
+  background: var(--ve-green-light);
+  border: 1px solid #c9e7d7;
+  box-shadow: 0 4px 12px rgba(8, 127, 69, 0.08);
+  animation: floatIcon 5s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.ve-kicker {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ve-green);
+  margin-bottom: 6px;
+}
+
+.ve-card__header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #126b40;
+  margin: 0 0 5px;
+  line-height: 1.2;
+}
+
+.ve-card__sub {
+  font-size: 13px;
+  color: var(--ve-muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.ve-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* FIELD */
+
+.ve-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ve-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2b3d33;
+  transition: color 0.25s ease;
+}
+
+.ve-field__icon {
+  font-size: 13px;
+}
+
+.ve-field:focus-within label {
+  color: var(--ve-green);
+}
+
+.ve-field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fafdfb;
+  border: 1px solid #cfdcd5;
+  border-radius: 9px;
+  color: var(--ve-text);
+  font-family: inherit;
+  font-size: 13.5px;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.ve-field input::placeholder {
+  color: #89968f;
+  font-size: 12.5px;
+}
+
+.ve-field input:hover {
+  border-color: #b8cec3;
+  background: #ffffff;
+}
+
+.ve-field input:focus {
+  border-color: var(--ve-green);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(8, 127, 69, 0.1);
+}
+
+/* =========================================================
+   OTP BOXES
+   ========================================================= */
+
+.ve-otp {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ve-otp__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2b3d33;
+}
+
+.ve-otp__boxes {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.ve-otp__box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ve-text);
+  background: #fafdfb;
+  border: 1.5px solid #cfdcd5;
+  border-radius: 11px;
+  outline: none;
+  transition: all 0.28s ease;
+  caret-color: var(--ve-green);
+}
+
+.ve-otp__box:hover {
+  border-color: #9dd4b6;
+  background: #ffffff;
+}
+
+.ve-otp__box:focus {
+  border-color: var(--ve-green);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(8, 127, 69, 0.12);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.ve-otp__box.is-filled {
+  border-color: var(--ve-green);
+  background: var(--ve-green-light);
+  color: var(--ve-green);
+}
+
+/* META ROW */
+
+.ve-otp__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.ve-otp__hint {
+  font-size: 11.5px;
+  color: var(--ve-muted);
+  font-weight: 700;
+}
+
+.ve-resend {
+  background: none;
+  border: none;
+  color: var(--ve-green);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ve-resend:hover:not(:disabled) {
+  background: var(--ve-green-light);
+  color: var(--ve-green-dark);
+}
+
+.ve-resend:disabled {
+  color: #9aa7a1;
+  cursor: not-allowed;
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.ve-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  animation: messageSlide 0.35s ease;
+}
+
+@keyframes messageSlide {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ve-msg__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.ve-msg--success {
+  background: #e8f6ef;
+  border: 1px solid #b8e0c8;
+  color: #087f45;
+}
+
+.ve-msg--success .ve-msg__icon {
+  background: #087f45;
+}
+
+.ve-msg--error {
+  background: #fdeaea;
+  border: 1px solid #f5c2c2;
+  color: #c0392b;
+}
+
+.ve-msg--error .ve-msg__icon {
+  background: #c0392b;
+}
+
+/* =========================================================
+   SUBMIT
+   ========================================================= */
+
+.ve-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 24px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #087f45, #0ea35a);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 22px rgba(8, 127, 69, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+
+.ve-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.ve-submit:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.ve-submit:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(8, 127, 69, 0.38);
+}
+
+.ve-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ve-submit__arrow {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.ve-submit:hover:not(:disabled) .ve-submit__arrow {
+  transform: translateX(5px);
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.ve-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ve-green-border);
+  font-size: 12.5px;
+  color: var(--ve-muted);
+}
+
+.ve-footer button {
+  background: none;
+  border: none;
+  color: var(--ve-green);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: color 0.25s;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ve-footer button:hover {
+  color: var(--ve-green-dark);
+}
+
+.ve-secure {
+  text-align: center;
+  font-size: 11px;
+  color: #7a8881;
+  margin-top: 8px;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .ve-main {
+    padding: 24px 16px 40px;
+    align-items: flex-start;
+  }
+
+  .ve-card {
+    padding: 26px 22px 24px;
+    border-radius: 14px;
+  }
+
+  .ve-card__header h2 {
+    font-size: 20px;
+  }
+
+  .ve-card__icon {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+    border-radius: 12px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .ve-topbar {
+    padding: 12px 16px;
+  }
+
+  .ve-brand__logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .ve-brand strong {
+    font-size: 13.5px;
+  }
+
+  .ve-brand span {
+    display: none;
+  }
+
+  .ve-back {
+    padding: 8px 13px;
+    font-size: 12px;
+  }
+
+  .ve-main {
+    padding: 20px 14px 32px;
+    align-items: flex-start;
+  }
+
+  .ve-card {
+    padding: 24px 20px 22px;
+    border-radius: 12px;
+    max-width: 100%;
+  }
+
+  .ve-card__header {
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+    gap: 14px;
+  }
+
+  .ve-card__icon {
+    width: 46px;
+    height: 46px;
+    font-size: 21px;
+    border-radius: 12px;
+  }
+
+  .ve-card__header h2 {
+    font-size: 19px;
+  }
+
+  .ve-card__sub {
+    font-size: 12.5px;
+  }
+
+  .ve-field input {
+    padding: 11px 13px;
+    font-size: 13px;
+  }
+
+  .ve-otp__boxes {
+    gap: 6px;
+  }
+
+  .ve-otp__box {
+    font-size: 20px;
+    border-radius: 9px;
+  }
+
+  .ve-otp__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ve-submit {
+    padding: 14px 20px;
+    font-size: 13.5px;
+  }
+
+  .ve-footer {
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .ve-card {
+    padding: 20px 16px 18px;
+  }
+
+  .ve-card__header h2 {
+    font-size: 17.5px;
+  }
+
+  .ve-card__icon {
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+  }
+
+  .ve-otp__boxes {
+    gap: 5px;
+  }
+
+  .ve-otp__box {
+    font-size: 17px;
+    border-radius: 8px;
+  }
+
+  .ve-submit {
+    padding: 13px 18px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ve-page *,
+  .ve-page *::before,
+  .ve-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
