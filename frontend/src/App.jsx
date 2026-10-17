@@ -169,7 +169,7 @@ export default function App() {
           />
         </Routes>
 
-        <FloatingChatButton />
+        {/* <FloatingChatButton /> */}
       </BrowserRouter>
     </AuthProvider>
   )
